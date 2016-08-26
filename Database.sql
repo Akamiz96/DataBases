@@ -316,14 +316,14 @@ INSERT INTO tasas values (40,1,to_date('19/08/2016','DD/MM/YYYY'),0.0913005);
 INSERT INTO tasas values (41,1,to_date('19/08/2016','DD/MM/YYYY'),0.0122457);
 INSERT INTO tasas values (42,1,to_date('19/08/2016','DD/MM/YYYY'),0.403123);
 /*VALORES PARA DIFERENTES FECHAS*/
-INSERT INTO tasas values (1,2,to_date('24/08/2016','DD/MM/YYYY'),0.850639);
-INSERT INTO tasas values (1,3,to_date('24/08/2016','DD/MM/YYYY'),9.46049);
-INSERT INTO tasas values (1,4,to_date('24/08/2016','DD/MM/YYYY'),1.08872);
-INSERT INTO tasas values (2,1,to_date('24/08/2016','DD/MM/YYYY'),1.17559);
-INSERT INTO tasas values (3,1,to_date('24/08/2016','DD/MM/YYYY'),0.105703);
-INSERT INTO tasas values (4,1,to_date('24/08/2016','DD/MM/YYYY'),0.918514);
-INSERT INTO tasas values (15,16,to_date('24/08/2016','DD/MM/YYYY'),1.04112);
-INSERT INTO tasas values (16,15,to_date('24/08/2016','DD/MM/YYYY'),0.960501);
+INSERT INTO tasas values (1,2,to_date('20/08/2016','DD/MM/YYYY'),0.850639);
+INSERT INTO tasas values (1,3,to_date('20/08/2016','DD/MM/YYYY'),9.46049);
+INSERT INTO tasas values (1,4,to_date('20/08/2016','DD/MM/YYYY'),1.08872);
+INSERT INTO tasas values (2,1,to_date('20/08/2016','DD/MM/YYYY'),1.17559);
+INSERT INTO tasas values (3,1,to_date('20/08/2016','DD/MM/YYYY'),0.105703);
+INSERT INTO tasas values (4,1,to_date('20/08/2016','DD/MM/YYYY'),0.918514);
+INSERT INTO tasas values (15,16,to_date('20/08/2016','DD/MM/YYYY'),1.04112);
+INSERT INTO tasas values (16,15,to_date('20/08/2016','DD/MM/YYYY'),0.960501);
 
 
 commit;
@@ -454,7 +454,7 @@ with tasaN(moneda_origen, moneda_destino, fecha_act, tasa_act) as
            group by M.nombre, N.nombre, fecha, tasa_cambio
            order by M.NOMBRE) 
 
-select A.moneda_origen, A.moneda_destino, A.fecha_act, A.tasa_act, B.fecha_act, B.tasa_act, (((A.tasa_act / B.tasa_act) - 1) * 100)
+select A.moneda_origen, A.moneda_destino, TO_CHAR(A.fecha_act, 'DD-MM-YYYY') Tasa_Cambio_a_Fecha, A.tasa_act, TO_CHAR(B.fecha_act, 'DD-MM-YYYY') Fecha_de_Tasa_del_Dia_Anterior, B.tasa_act, (((A.tasa_act / B.tasa_act) - 1) * 100) Porcentaje_de_Cambio
 from tasaN A, tasaN B
 where (B.fecha_act = A.fecha_act - interval '1' day or B.fecha_act = A.fecha_act ) and 
        A.moneda_origen = B.moneda_origen and A.moneda_destino = B.moneda_destino
