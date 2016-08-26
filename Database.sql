@@ -268,6 +268,8 @@ INSERT INTO tasas values (1,39,to_date('19/08/2016','DD/MM/YYYY'),655.957);
 INSERT INTO tasas values (1,40,to_date('19/08/2016','DD/MM/YYYY'),10.9528);
 INSERT INTO tasas values (1,41,to_date('19/08/2016','DD/MM/YYYY'),81.6616);
 INSERT INTO tasas values (1,42,to_date('19/08/2016','DD/MM/YYYY'),2.48063);
+INSERT INTO tasas values (1,43,to_date('19/08/2016','DD/MM/YYYY'),0.48063);
+INSERT INTO tasas values (1,44,to_date('19/08/2016','DD/MM/YYYY'),0.48063);
 INSERT INTO tasas values (2,1,to_date('19/08/2016','DD/MM/YYYY'),1.1596);
 INSERT INTO tasas values (2,19,to_date('19/08/2016','DD/MM/YYYY'),1.68778);
 INSERT INTO tasas values (3,1,to_date('19/08/2016','DD/MM/YYYY'),0.105562);
@@ -345,6 +347,7 @@ using(id_moneda)
 );
 select * from moneda
 ORDER by id_moneda;
+
 /* Punto 1: Monedas por continente */
 /*MONEDAS: Rublo Ruso y Dong deben aparecer en 0 ya que no fueron asignadas a ningun pais*/
 
