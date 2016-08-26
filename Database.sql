@@ -348,6 +348,67 @@ ORDER by id_moneda;
 /* Punto 1: Monedas por continente */
 /*MONEDAS: Rublo Ruso y Dong deben aparecer en 0 ya que no fueron asignadas a ningun pais*/
 
+drop view tabla_final;
+/* se crea una nueva vista que contendra todas las columnas por 
+por medio de le uso de un with*/
+create view tabla_final as(
+select * from(
+/*para cada continente se crea una tabla diferente que 
+contendra las el numero de monedas usadas*/
+WITH america (ID_MONEDA,cantidad) AS
+  (SELECT ID_MONEDA,SUM(+1) numero
+   FROM monedaxpais 
+   WHERE COD_CONTINENTE = 2
+   GROUP BY ID_MONEDA),
+   
+   europa (ID_MONEDA,cantidad) AS
+   (SELECT ID_MONEDA,SUM(+1) numero
+   FROM monedaxpais 
+   WHERE COD_CONTINENTE = 1
+   GROUP BY ID_MONEDA),
+   
+   oceania (ID_MONEDA,cantidad) AS
+   (SELECT ID_MONEDA,sum(+1) numero
+   FROM monedaxpais 
+   WHERE  COD_CONTINENTE = 3
+   GROUP BY ID_MONEDA),
+   
+   asia (ID_MONEDA,cantidad) AS
+   (SELECT ID_MONEDA,SUM(+1) numero
+   FROM monedaxpais 
+   WHERE  COD_CONTINENTE = 4
+   GROUP BY ID_MONEDA),
+   
+   africa (ID_MONEDA,cantidad) as
+   (SELECT  ID_MONEDA,sum(+1) numero
+   FROM monedaxpais 
+   WHERE  COD_CONTINENTE = 5
+   GROUP BY ID_MONEDA),
+   /*esta tabla contendra la suma de monedas por fila*/
+   suma (id_moneda,sumas) as
+   ( SELECT  id_moneda, count(*) 
+	from monedaxpais
+   	GROUP BY  id_moneda ),
+   
+   /* en esta tabla se hace la union de todos los continente con ta tabla moneda por medio de
+      un left join*/
+   total(moneda,america,europa,oceania,asia,africa,total) as
+   (SELECT  moneda.nombre, nvl(america.cantidad,0) america, nvl(europa.cantidad,0) europa,
+          nvl(oceania.cantidad,0) oceania, nvl(asia.cantidad,0) asia, nvl(africa.cantidad,0) africa
+          ,nvl(suma.sumas,0) total
+   FROM (((((moneda  left join america on moneda.ID_MONEDA= america.ID_MONEDA) 
+   left JOIN europa on moneda.ID_MONEDA= europa.ID_MONEDA)
+   left join oceania on moneda.ID_MONEDA = oceania.ID_MONEDA)
+   left join asia on moneda.ID_MONEDA = asia.ID_MONEDA)
+   left join africa on moneda.ID_MONEDA = africa.ID_MONEDA)
+   left join suma on moneda.ID_MONEDA = suma.ID_MONEDA)
+   
+   SELECT  * from total));
+   /*se agrega la ultima fila que contendran la suma de monedas por columna*/
+   SELECT  * from tabla_final
+   UNION ALL
+   SELECT 'TOTAL',SUM(america),SUM(europa),SUM(oceania),SUM(asia),SUM(africa),SUM(total)
+   FROM  moneda left join tabla_final on moneda.NOMBRE = tabla_final.MONEDA;
 
 /* Punto 2: Moneda con tasas de cambio en todas las monedas */
 select id_moneda, nombre
