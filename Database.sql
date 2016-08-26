@@ -425,6 +425,20 @@ where not exists((select id_moneda
 /*La Mayoria de monedas le faltan tasas de cambio con las demas monedas
   EXCEPTO EL EURO (NO DEBE APARECER EL EURO EN ESTA CONSULTA)*/
 
+/*Se crea una tabla con moneda y tasas, al cual le resto una tabla creada que tiene todos los codigos de moneda con las otras monedas que tienen tasa de cambio    */
+/*El resultado de la resta va a dar una tabla con todas las monedas junto con las que no tienen tasa de cambio */
+with moneda_tasa(id_coin,nombre_moneda,id_coin_destino) as
+              ((select id_moneda,nombre,id_moneda_destino
+              from moneda,tasas) 
+            minus 
+            (select id_moneda,nombre,id_moneda_destino
+            from moneda natural join tasas
+            where moneda.id_moneda = tasas.id_moneda_origen))
+/* Muestro una tabla con el nombre de una moneda, su codigo y tambien con el nombre y el codigo faltante de la moneda con la que no tiene tasa de cambio*/
+            select nombre_moneda,id_coin as codigo_moneda,id_coin_destino as codigo_faltante,nombre as moneda_faltante
+            from moneda_tasa,moneda  
+            where id_coin <> id_coin_destino and id_coin_destino=moneda.id_moneda ;
+
 
 /* Punto 4: Porcentaje de aumento o disminucion de la tasa de cambio de cada combinacion */
 /*Hay tasas de cambio con fechas diferentes
