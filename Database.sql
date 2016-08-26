@@ -369,3 +369,15 @@ where not exists((select id_moneda
 /*Hay tasas de cambio con fechas diferentes
   ->EURO CON LA MONEDAS PRIMERAS
   ->DOLAR AUSTRALIANO con DOLAR NEOZELANDES*/ 
+with tasaN(moneda_origen, moneda_destino, fecha_act, tasa_act) as 
+          (select M.nombre, N.nombre, fecha, tasa_cambio
+           from tasas, moneda M, moneda N
+           where id_moneda_origen = M.id_moneda and id_moneda_destino = N.id_moneda
+           group by M.nombre, N.nombre, fecha, tasa_cambio
+           order by M.NOMBRE) 
+
+select A.moneda_origen, A.moneda_destino, A.fecha_act, A.tasa_act, B.fecha_act, B.tasa_act, (((A.tasa_act / B.tasa_act) - 1) * 100)
+from tasaN A, tasaN B
+where (B.fecha_act = A.fecha_act - interval '1' day or B.fecha_act = A.fecha_act ) and 
+       A.moneda_origen = B.moneda_origen and A.moneda_destino = B.moneda_destino
+order by A.moneda_origen, A.fecha_act;
