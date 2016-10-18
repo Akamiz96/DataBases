@@ -52,7 +52,7 @@ public class CrearUsuario extends JPanel {
 							{
 						System.out.println("ENTRO");
 						lblNull.setText("SII");
-						lblNull.setIcon(new ImageIcon("C:\\Users\\andre\\Documents\\java\\splitpay\\src\\presentacion\\img\\ok.png"));
+						lblNull.setIcon(new ImageIcon("./img//ok.png"));
 						lblNull.revalidate();
 						lblNull.repaint();
 						
@@ -60,7 +60,7 @@ public class CrearUsuario extends JPanel {
 					else
 					{
 						lblNull.setText("Noo");
-						lblNull.setIcon(new ImageIcon("C:\\Users\\andre\\Documents\\java\\splitpay\\src\\presentacion\\img\\fall.png"));
+						lblNull.setIcon(new ImageIcon("./img/fall.png"));
 						lblNull.revalidate();
 						lblNull.repaint();
 						
@@ -99,7 +99,7 @@ public class CrearUsuario extends JPanel {
 		panel.add(lblNewLabel_1);
 		
 		JLabel titulo = new JLabel("");
-		titulo.setIcon(new ImageIcon("C:\\Users\\andre\\Documents\\java\\splitpay\\src\\presentacion\\img\\titulomenu2.png"));
+		titulo.setIcon(new ImageIcon("./img/titulomenu2.png"));
 		titulo.setForeground(new Color(0, 204, 102));
 		titulo.setBackground(new Color(51, 102, 0));
 		titulo.setBounds(0, 11, 780, 63);

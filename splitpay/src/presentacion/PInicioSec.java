@@ -35,12 +35,12 @@ public class PInicioSec extends JPanel {
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("SplitPay");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\andre\\Documents\\java\\splitpay\\src\\presentacion\\img\\inicio.png"));
+		lblNewLabel.setIcon(new ImageIcon("./img/inicio.png"));
 		lblNewLabel.setFont(new Font("Rockwell", Font.PLAIN, 25));
 		lblNewLabel.setBounds(243, 63, 280, 100);
 		panel.add(lblNewLabel);
 		
-		JLabel lblUsuairo = new JLabel("Usuairo");
+		JLabel lblUsuairo = new JLabel("Usuario");
 		lblUsuairo.setForeground(Color.WHITE);
 		lblUsuairo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUsuairo.setFont(new Font("Segoe UI Historic", Font.BOLD, 18));
@@ -83,7 +83,7 @@ public class PInicioSec extends JPanel {
 		panel.add(btnIniciar);
 		
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\andre\\Documents\\java\\splitpay\\src\\presentacion\\img\\fondoini.png"));
+		lblNewLabel_1.setIcon(new ImageIcon("./img/fondoini.png"));
 		lblNewLabel_1.setBounds(127, 63, 507, 328);
 		panel.add(lblNewLabel_1);
 		
