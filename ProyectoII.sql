@@ -84,8 +84,7 @@ CREATE TABLE LiderGrupo
     fechaIngreso     DATE NOT NULL ,
     fechaSalida      DATE ,
     Grupo_id         NUMBER (5) NOT NULL ,
-    Usuario_id       NUMBER (5) NOT NULL ,
-    fecha_aprobacion DATE
+    Usuario_id       NUMBER (5) NOT NULL
   ) ;
 ALTER TABLE LiderGrupo ADD CONSTRAINT LiderGrupo_PK PRIMARY KEY ( fechaIngreso, Grupo_id, Usuario_id ) ;
 
@@ -187,6 +186,7 @@ ALTER TABLE Transaccion ADD CONSTRAINT Transaccion_Deuda_FK FOREIGN KEY ( Deuda_
 
 ALTER TABLE Ubicacion ADD CONSTRAINT Ubicacion_Usuario_FK FOREIGN KEY ( Usuario_id ) REFERENCES Usuario ( id ) ;
 
+commit;
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
