@@ -69,7 +69,7 @@ public class JOpcionesDos extends JPanel {
 		panel.add(btnCrearCuenta);
 		
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon("C:\\Users\\andre\\Documents\\java\\splitpay\\src\\presentacion\\img\\fondoOpciones.png"));
+		label.setIcon(new ImageIcon("./img/fondoOpciones.png"));
 		label.setBounds(0, 0, 780, 87);
 		panel.add(label);
 

@@ -42,13 +42,13 @@ public class PMenu extends JPanel {
 				principal.pasarInicio();
 			}
 		});
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\andre\\Documents\\java\\splitpay\\src\\presentacion\\img\\cerrarCesion.png"));
+		lblNewLabel_1.setIcon(new ImageIcon("./img/cerrarCesion.png"));
 		lblNewLabel_1.setBounds(673, 0, 107, 63);
 		panel_1.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(0, 0, 780, 63);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\andre\\Documents\\java\\splitpay\\src\\presentacion\\img\\titulomenu4.png"));
+		lblNewLabel.setIcon(new ImageIcon("./img/titulomenu4.png"));
 		panel_1.add(lblNewLabel);
 		
 		PA_opciones = new JPanel();
