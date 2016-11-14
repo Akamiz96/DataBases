@@ -1,5 +1,6 @@
-package presentacion;
+package splitpay;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
@@ -16,6 +17,7 @@ import java.util.Vector;
 
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
+import javax.swing.table.TableModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -30,6 +32,7 @@ public class JGruposActuales extends JPanel {
 	private Vector columSerV;
 	private JTable tablaGrupos;
 	private JScrollPane scrollPane;
+	private JLabel label_s;
 
 	/**
 	 * Create the panel.
@@ -64,12 +67,16 @@ public class JGruposActuales extends JPanel {
 		JButton btnNewButton = new JButton("Seleccionar Grupo");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				seleccionarG();
 			}
 		});
 		btnNewButton.setBounds(542, 363, 148, 45);
 		panel.add(btnNewButton);
 		mostrarDatos();
+		
+		label_s = new JLabel("seleccione");
+		label_s.setBounds(89, 363, 153, 25);
+		panel.add(label_s);
 
 	}
 	public JTable getTableG() {
@@ -145,4 +152,19 @@ public class JGruposActuales extends JPanel {
 
 		return tablaGrupos;
 	}
+	public void seleccionarG()
+	{
+		int filaS = tablaGrupos.getSelectedRow();
+		if(filaS != -1){
+			TableModel model = tablaGrupos.getModel();
+			String codigoS =model.getValueAt(filaS, 0).toString();
+			label_s.setText(codigoS);
+			
+			
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "No ha seleccionado ningun servicio");
+			}
+	}
+	
 }

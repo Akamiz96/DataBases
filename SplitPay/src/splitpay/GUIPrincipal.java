@@ -1,4 +1,4 @@
-package presentacion;
+package splitpay;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -52,7 +52,7 @@ public class GUIPrincipal extends JFrame {
 		panel_p.setLayout(null);
 		
 		PInicioSec inicio = new PInicioSec(this);
-		inicio.setSize(780, 610); // tamaño del jpanel
+		inicio.setSize(780, 610); // tamano del jpanel
 		inicio.setLocation(5, 5); // posicion dentro del panel principal
 		 
 		panel_p.removeAll();
@@ -71,7 +71,7 @@ public class GUIPrincipal extends JFrame {
 		menu = new PMenu(this);
 		}
 		
-		menu.setSize(780, 610); // tamaño del jpanel
+		menu.setSize(780, 610); // tamano del jpanel
 		menu.setLocation(5, 5); // posicion dentro del panel principal
 		 
 		panel_p.removeAll();
@@ -94,7 +94,7 @@ public class GUIPrincipal extends JFrame {
 			System.out.println("entro else");
 			crear.timer();
 		}
-		crear.setSize(780, 610); // tamaño del jpanel
+		crear.setSize(780, 610); // tamano del jpanel
 		crear.setLocation(5, 5); // posicion dentro del panel principal
 		 
 		panel_p.removeAll();
@@ -110,7 +110,7 @@ public class GUIPrincipal extends JFrame {
 			inicio = new PInicioSec(this);
 		}
 		
-		inicio.setSize(780, 610); // tamaño del jpanel
+		inicio.setSize(780, 610); // tamano del jpanel
 		inicio.setLocation(5, 5); // posicion dentro del panel principal
 		 
 		panel_p.removeAll();

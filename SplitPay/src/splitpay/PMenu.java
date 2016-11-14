@@ -1,4 +1,4 @@
-package presentacion;
+package splitpay;
 
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -64,7 +64,7 @@ public class PMenu extends JPanel {
 		PA_informacion.setLayout(null);
 		
 		JOpciones opciones = new JOpciones(principal,this);
-		opciones.setSize(780, 87); // tamaño del jpanel
+		opciones.setSize(780, 87); // tamano del jpanel
 		opciones.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_opciones.removeAll();
@@ -78,7 +78,7 @@ public class PMenu extends JPanel {
 	
 	public void pasarOpcion2(){
 		JOpcionesDos opciones = new JOpcionesDos(principal,this);
-		opciones.setSize(780, 87); // tamaño del jpanel
+		opciones.setSize(780, 87); // tamano del jpanel
 		opciones.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_opciones.removeAll();
@@ -90,7 +90,7 @@ public class PMenu extends JPanel {
 	public void pasarOpcion1()
 	{
 		JOpciones opciones = new JOpciones(principal,this);
-		opciones.setSize(780, 87); // tamaño del jpanel
+		opciones.setSize(780, 87); // tamano del jpanel
 		opciones.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_opciones.removeAll();
@@ -101,7 +101,7 @@ public class PMenu extends JPanel {
 	
 	public void gruposActuales(){
 		JGruposActuales opciones = new JGruposActuales(principal,this);
-		opciones.setSize(780, 460); // tamaño del jpanel
+		opciones.setSize(780, 460); // tamano del jpanel
 		opciones.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
@@ -113,7 +113,7 @@ public class PMenu extends JPanel {
 	
 	public void cuentasDueno(){
 		JCuentasDueno opciones = new JCuentasDueno(principal,this);
-		opciones.setSize(780, 460); // tamaño del jpanel
+		opciones.setSize(780, 460); // tamano del jpanel
 		opciones.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
@@ -125,7 +125,7 @@ public class PMenu extends JPanel {
 	
 	public void deudas(){
 		JDeudas opciones = new JDeudas(principal,this);
-		opciones.setSize(780, 460); // tamaño del jpanel
+		opciones.setSize(780, 460); // tamano del jpanel
 		opciones.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
@@ -137,7 +137,7 @@ public class PMenu extends JPanel {
 	
 	public void crearGrupo(){
 		JCrearGrupo opciones = new JCrearGrupo(principal,this);
-		opciones.setSize(780, 460); // tamaño del jpanel
+		opciones.setSize(780, 460); // tamano del jpanel
 		opciones.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
@@ -149,7 +149,7 @@ public class PMenu extends JPanel {
 	
 	public void crearCuenta(){
 		JCrearCuenta opciones = new JCrearCuenta(principal,this);
-		opciones.setSize(780, 460); // tamaño del jpanel
+		opciones.setSize(780, 460); // tamano del jpanel
 		opciones.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
@@ -161,7 +161,7 @@ public class PMenu extends JPanel {
 	
 	public void contactos(){
 		JContactos opciones = new JContactos(principal,this);
-		opciones.setSize(780, 460); // tamaño del jpanel
+		opciones.setSize(780, 460); // tamano del jpanel
 		opciones.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
