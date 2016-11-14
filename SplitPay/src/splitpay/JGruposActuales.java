@@ -1,4 +1,4 @@
-package presentacion;
+package splitpay;
 
 import javax.swing.JPanel;
 import java.awt.Color;

@@ -24,6 +24,7 @@ import Negocio.Lidergrupo;
 import Negocio.Deuda;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -552,6 +553,33 @@ public class UsuarioJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    public Usuario signIn( String userName, String contrasena )
+    {
+        EntityManager em = getEntityManager();
+        try
+        {
+            EntityTransaction et = em.getTransaction();
+            et.begin();
+            Query consultaUN = em.createNamedQuery( "Usuario.findByUserName" );
+            consultaUN.setParameter( "userName", userName );
+            Query consultaC = em.createNamedQuery( "Usuario.findByContrasena" );
+            consultaC.setParameter( "contrasena", contrasena );
+            Usuario auxUN = ( Usuario ) consultaUN.getSingleResult();
+            Usuario auxC = ( Usuario ) consultaC.getSingleResult();
+            if( auxUN == auxC )
+            {
+                System.out.println("Datos.UsuarioJpaController.signIn()");
+            }
+            et.commit();
+        }
+        finally
+        {
+            em.close();
+            
+        }
+        return null;
     }
     
 }
