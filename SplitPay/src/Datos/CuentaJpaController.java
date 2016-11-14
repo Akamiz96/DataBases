@@ -17,6 +17,7 @@ import javax.persistence.criteria.Root;
 import Negocio.Grupo;
 import Negocio.Usuario;
 import Negocio.Deuda;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -263,5 +264,96 @@ public class CuentaJpaController implements Serializable {
             em.close();
         }
     }
+     public void GruposdeUsuario(){
+        EntityManager em = getEntityManager() ;
+             Query buscarNombres ;
+            int idUsuario = 1 ;
+           buscarNombres = em.createNativeQuery("SELECT u.nombre,u.id FROM Cuenta u" ); //Probar de esta forma
+           // buscarNombres = em.createNativeQuery("SELECT g.nombre,g.id,p.Usuario_id FROM Grupo g,Usuario u,Pertenece_a p");
+            //buscarNombres = em.createNativeQuery("SELECT distinct g.nombre,g.id FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =? and g.id = p.Grupo_id").setParameter(1,idUsuario);
+            List<Object[]> gruponombres = buscarNombres.getResultList() ;
+             int x=0;
+             List<String>nombresGrupos= new ArrayList<String>();
+             System.out.println("Este es  : "+gruponombres.get(0)[0]);
+              for(int i=0;i<gruponombres.size();i++){
+                     System.out.println("Este es  : "+gruponombres.get(x)[0]) ;
+                     System.out.println("Este es  : "+gruponombres.get(x)[1]) ;
+                     String nombre = (String)gruponombres.get(x)[0] ;
+                    nombresGrupos.add(nombre) ; 
+                    x++;
+             }
+                  for(int j=0;j<nombresGrupos.size();j++) {
+                        System.out.println(nombresGrupos.get(j));
+                    }
+               System.out.println("Falta sacar los grupos en los que el usuario es dueño") ;
+        
+              
+    }
+         
+         public void UsuariosdeGrupo(){
+             EntityManager em = getEntityManager() ;
+             Query buscarNombres ;
+             int idGrupo = 5 ;
+             buscarNombres = em.createNativeQuery("SELECT distinct u.nombre,u.id FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =u.id and p.Grupo_id= ?").setParameter(1,idGrupo); //Probar de esta forma
+             List<Object[]> listaNombres = buscarNombres.getResultList() ;
+             List<String>nombresUsuario= new ArrayList<String>();
+             for(int i=0;i<listaNombres.size();i++){
+                 String nombre = (String)listaNombres.get(i)[0] ;
+                    nombresUsuario.add(nombre) ; 
+                 System.out.println(nombre);
+             }
+         }
+         
+         public void RealizarBalanceGruposdeUsuario(){
+             EntityManager em = getEntityManager() ;
+             int idGrupo =1;
+             int idUsu =1;
+             Query buscarCuentas ;
+             Query buscarDeudas ;
+             Query buscarTransaccion ;
+             Query buscarDuenoCuenta ;
+             int i,j ;
+              BigDecimal total;
+             // Buscar las cuentas del usuario de un grupo
+             //Por cada cuenta buscar las deudas y despues sumarlas
+             // Dspues sacar las transacciones de cada una de las cuentas que se han hecho a las deudas
+             buscarCuentas = em.createNativeQuery("Select c.id,c.nombre from Cuenta c Where c.Grupo_id=? " ).setParameter(1, idGrupo);
+             List<Object[]> listaCuentas = buscarCuentas.getResultList() ;
+             List<BigDecimal>idCuentas= new ArrayList<BigDecimal>();
+             for(i=0;i<listaCuentas.size();i++){
+                 BigDecimal id_cuenta = (BigDecimal)listaCuentas.get(i)[0] ;
+                    idCuentas.add(id_cuenta) ; 
+                 System.out.println(id_cuenta);
+                 System.out.println(listaCuentas.get(i)[1]);
+                 buscarDeudas=  em.createNativeQuery("Select d.cantidad,d.Id_Deuda from Deuda d Where d.Usuario_id=? and d.Cuenta_id=? " ).setParameter(1, idUsu).setParameter(2,idCuentas.get(i) );
+                 List<Object[]> deuda_cuenta = buscarDeudas.getResultList() ;
+                 if(deuda_cuenta.size()>0){
+                     BigDecimal deuda_cantidad = (BigDecimal)deuda_cuenta.get(0)[0] ;
+                     BigDecimal id_deuda = (BigDecimal) deuda_cuenta.get(0)[1] ;
+                 buscarTransaccion= em.createNativeQuery("Select t.cantidad,t.id from Transaccion t Where t.Deuda_Usuario_id=? and t.Deuda_Cuenta_id=? and t.id_Deuda= ? " ).setParameter(1,idUsu).setParameter(2,idCuentas.get(i)).setParameter(3,id_deuda) ;
+                // Un posible error cuando pase este codigo al proyecto, verificar el nombre de los atributos en la busqueda de la Transaccion como t.Deuda_Id_Deuda
+                 List<Object[]> listaTransacciones = buscarTransaccion.getResultList() ;
+                 BigDecimal sumaTransacciones= new BigDecimal("0");
+                 BigDecimal mult = new BigDecimal("-1") ;
+                 total= deuda_cantidad.multiply(mult);
+                 for(j=0;j<listaTransacciones.size();j++){
+                      BigDecimal cant_Transaccion = (BigDecimal)listaTransacciones.get(j)[0] ;                   
+                      sumaTransacciones= sumaTransacciones.add(cant_Transaccion) ;   
+                 total= sumaTransacciones.subtract(deuda_cantidad) ;           
+                 }
+                 System.out.println("Esto es total : "+total) ; 
+                 } 
+                 if(deuda_cuenta.size()==0){
+                      buscarDuenoCuenta = em.createNativeQuery("Select c.costo,c.nombre from Cuenta c Where c.Grupo_id=? and c.Usuario_id=?" ).setParameter(1, idGrupo).setParameter(2,idUsu);
+                      List<Object[]> listaCosto = buscarDuenoCuenta.getResultList() ;
+                      BigDecimal costoCuenta = (BigDecimal)listaCosto.get(0)[0] ;
+                      total= costoCuenta ;
+                      System.out.println(" Esto es el costo de la cuenta en la que es dueño : "+total) ;
+                 }
+                 
+                
+             }
+         }
+    
     
 }

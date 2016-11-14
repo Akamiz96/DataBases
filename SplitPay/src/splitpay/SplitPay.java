@@ -5,6 +5,10 @@
  */
 package splitpay;
 
+import Datos.CuentaJpaController;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 /**
  *
  * @author Pablo
@@ -16,6 +20,13 @@ public class SplitPay {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        System.out.println(" Hola Mundo") ;
+        EntityManagerFactory emf = 
+                Persistence.createEntityManagerFactory("SplitPayPU");
+        CuentaJpaController contro = new CuentaJpaController(emf) ;
+        contro.GruposdeUsuario();
+        contro.RealizarBalanceGruposdeUsuario();
+        
     }
     
 }
