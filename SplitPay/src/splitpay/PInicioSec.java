@@ -2,19 +2,28 @@ package splitpay;
 
 import java.awt.Color;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import java.awt.Font;
+
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.ImageIcon;
 
+import Datos.UsuarioJpaController;
+import Negocio.Usuario;
+
 public class PInicioSec extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField TF_usuario;
+	private JTextField TF_pass;
 	private GUIPrincipal principal;
 	private JPanel panel;
 
@@ -54,15 +63,15 @@ public class PInicioSec extends JPanel {
 		lblContrasea.setBounds(196, 234, 119, 27);
 		panel.add(lblContrasea);
 		
-		textField = new JTextField();
-		textField.setBounds(325, 166, 172, 27);
-		panel.add(textField);
-		textField.setColumns(10);
+		TF_usuario = new JTextField();
+		TF_usuario.setBounds(325, 166, 172, 27);
+		panel.add(TF_usuario);
+		TF_usuario.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(325, 238, 172, 27);
-		panel.add(textField_1);
+		TF_pass = new JTextField();
+		TF_pass.setColumns(10);
+		TF_pass.setBounds(325, 238, 172, 27);
+		panel.add(TF_pass);
 		
 		JButton btnCrearCuenta = new JButton("Crear Cuenta");
 		btnCrearCuenta.addActionListener(new ActionListener() {
@@ -92,9 +101,19 @@ public class PInicioSec extends JPanel {
 	
 	private void iniciarc()
 	{
+		principal.pasarMenu();
 		// se revisa con la base de datos si los datos son correctos
-		
-		principal.pasarMenu();	
+		/*EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
+		UsuarioJpaController usuario = new UsuarioJpaController(emf);
+		Usuario user = usuario.signIn(TF_usuario.getText(), TF_pass.getText());
+		if(user != null){
+			
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "USUARIO INVALIDO");
+		}*/
+			
 	}
 	
 	private void crearcuenta()

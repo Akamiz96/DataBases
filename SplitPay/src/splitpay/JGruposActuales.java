@@ -1,5 +1,7 @@
 package splitpay;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -13,11 +15,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.table.TableModel;
+
+import Datos.CuentaJpaController;
+import Datos.UsuarioJpaController;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -96,6 +102,10 @@ public class JGruposActuales extends JPanel {
 		
 		//datosDefectos(empresa);
 		System.out.println("SERVICIOS");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
+		CuentaJpaController contro = new CuentaJpaController(emf);
+		
+		List<String> grupos = contro.RealizarBalanceCuentasdeUsuario();
 		this.rowDataSer = new Vector(); // datos de toda la tabla
 		/*
 		String nomIPS,codAmb;
@@ -137,11 +147,16 @@ public class JGruposActuales extends JPanel {
 			System.out.println(fila.toString());
 		}
 		*/
-		for(int i=0;i<15;i++)
+		for(String grupo: grupos)
 		{
 			Vector fila = new Vector();
-			fila.add(1+i);
-			fila.add("a"+i);
+			//fila.add(1+i);
+			//fila.add("a"+i);
+			
+			StringTokenizer st = new StringTokenizer(grupo, "$");
+			fila.add(st.nextToken().trim());
+			fila.add(st.nextToken().trim());
+			
 			this.rowDataSer.add(fila);
 			System.out.println(fila.toString());
 		}
