@@ -6,6 +6,7 @@
 package splitpay;
 
 import Datos.CuentaJpaController;
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -21,11 +22,14 @@ public class SplitPay {
     public static void main(String[] args) {
         // TODO code application logic here
         System.out.println(" Hola Mundo") ;
+        int idGrupo = 1 ;
+        int idUsu= 1 ;
         EntityManagerFactory emf = 
                 Persistence.createEntityManagerFactory("SplitPayPU");
         CuentaJpaController contro = new CuentaJpaController(emf) ;
-        contro.GruposdeUsuario();
-        contro.RealizarBalanceGruposdeUsuario();
+        contro.GruposdeUsuario(idUsu);
+       // List<String>usu=contro.UsuariosdeGrupo(idGrupo);
+       contro.RealizarBalanceGruposdeUsuario();
         
     }
     
