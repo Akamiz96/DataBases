@@ -102,60 +102,23 @@ public JTable mostrarDatos() {
 		
 		//datosDefectos(empresa);
 		System.out.println("SERVICIOS");
-		/*EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
+		
 		CuentaJpaController contro = new CuentaJpaController(emf);
 		
-		List<String> grupos = contro.RealizarBalanceCuentasdeUsuario();*/
+		List<String> grupos = contro.RealizarBalanceCuentasdeUsuario(1,1);
 		this.rowDataSer = new Vector(); // datos de toda la tabla
-		/*
-		String nomIPS,codAmb;
-		List<Servicio> servicios = empresa.getServicios();
-		List<Servicio> newServicios = new ArrayList<Servicio>();
-		*/
 		
 		 
-
-		/*for (String ser : newServicios) {
-			
-			Vector fila = new Vector();
-			// llenar los datos de una fila:
-			fila.add(ser.getCodigo());
-			fila.add(Utils.convertirHoraString(ser.getHoraSolicitud()));
-			fila.add(ser.getPaciente());
-			fila.add(ser.getTipoServicio());
-			fila.add(ser.getTelefono());
-			fila.add(ser.getDireccion().toString());
-			fila.add(ser.getEstado());
-			if(ser.getEstado()== EstadoServicio.ASIGNADO){
-				codAmb =Integer.toString(ser.getAmbulancia().getCodigo());
-				if(ser.getTipoServicio()!= TipoServicio.DOMICILIO){
-				nomIPS = ser.getIps().getNombre();
-				}
-				else{
-					nomIPS="    -----";	
-				}
-			}
-			else{
-				codAmb="    -----";
-				nomIPS="    -----";		
-			}
-			fila.add(nomIPS);
-			fila.add(codAmb);
-
-			// agregar fila al vector que representa la tabla:
-			this.rowDataSer.add(fila);
-			System.out.println(fila.toString());
-		}
-		*/
-		for(int i=0;i<15;i++)
+		/*for(int i=0;i<15;i++)
 		{
 			Vector fila = new Vector();
 			fila.add(1+i);
 			fila.add("a"+i);
 			this.rowDataSer.add(fila);
 			System.out.println(fila.toString());
-		}
-		/*for(String grupo: grupos)
+		}*/
+		for(String grupo: grupos)
 		{
 			Vector fila = new Vector();
 			//fila.add(1+i);
@@ -167,7 +130,7 @@ public JTable mostrarDatos() {
 			
 			this.rowDataSer.add(fila);
 			System.out.println(fila.toString());
-		}*/
+		}
 		// refrescar el JTable dentro del JScrollPane:
 		tablaGrupos = new JTable(this.rowDataSer, this.columSerV);
 		System.out.println("#ser");
