@@ -67,9 +67,15 @@ public class JPCrearUsuario extends JPanel {
 					
 					}
 				}
+				
 				else
 				{
 					System.out.println(" NULL");
+				}
+				
+				if(TF_nombreUsuario.getText().length() != 0)
+				{
+					// TODO buscsar el nombre en la lista
 				}
 			}
 		};
@@ -230,6 +236,10 @@ public class JPCrearUsuario extends JPanel {
 		TF_confirmarCon = new JPasswordField();
 		TF_confirmarCon.setBounds(545, 244, 163, 32);
 		panel.add(TF_confirmarCon);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(363, 189, 48, 43);
+		panel.add(lblNewLabel);
 		
 		
 		

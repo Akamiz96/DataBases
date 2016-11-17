@@ -98,7 +98,7 @@ public class JPGruposActuales extends JPanel {
 		return tablaGrupos;
 	}
 	
-	public JTable mostrarDatos() {
+public JTable mostrarDatos() {
 		
 		//datosDefectos(empresa);
 		System.out.println("SERVICIOS");
@@ -188,6 +188,10 @@ public class JPGruposActuales extends JPanel {
 			else {
 				JOptionPane.showMessageDialog(null, "No ha seleccionado ningun servicio");
 			}
+	}
+	public void limpiar()
+	{
+		
 	}
 	
 }

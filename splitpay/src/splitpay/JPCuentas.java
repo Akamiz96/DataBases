@@ -9,23 +9,20 @@ import java.util.Vector;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JButton;
 
-public class JPContactos extends JPanel {
+public class JPCuentas extends JPanel {
 	private GUIPrincipal principal;
 	private PMenu menu;
-	private JScrollPane scrollPane;
 	private JTable tablaC;
-	private String[] columnSer = { "Nombres", "Telefono", "Email", "Username", "Conectado" };
+	private JScrollPane scrollPane;
+	private String[] columnSer = { "Nombre", "Grupo", "Balance" };
 	private Vector rowDataSer;
 	private Vector columSerV;
-	private JTextField TF_username;
 
 	/**
 	 * Create the panel.
 	 */
-	public JPContactos(GUIPrincipal principal, PMenu menu) {
+	public JPCuentas(GUIPrincipal principal, PMenu menu) {
 		this.principal = principal;
 		this.menu = menu;
 
@@ -34,45 +31,31 @@ public class JPContactos extends JPanel {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(0, 0,790, 460);
+		panel.setBounds(0, 0, 790, 460);
 		add(panel);
 		panel.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("Contactos");
+		JLabel lblNewLabel = new JLabel("Cuentas");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 36));
-		lblNewLabel.setBounds(10, 11, 181, 44);
+		lblNewLabel.setBounds(10, 11, 274, 44);
 		panel.add(lblNewLabel);
 
-		JLabel lblContactosActuales = new JLabel("Contactos actuales");
-		lblContactosActuales.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblContactosActuales.setBounds(10, 50, 170, 27);
-		panel.add(lblContactosActuales);
+		JLabel lblCuentasALas = new JLabel("Cuentas a las que pertenece actualmente");
+		lblCuentasALas.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblCuentasALas.setBounds(141, 81, 345, 35);
+		panel.add(lblCuentasALas);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 76, 747, 197);
+		scrollPane.setBounds(151, 128, 490, 254);
 		panel.add(scrollPane);
 
 		tablaC = getTableC();
 		scrollPane.setViewportView(tablaC);
+
+		tablaC = getTableC();
+		scrollPane.setViewportView(tablaC);
+
 		mostrarDatos();
-		
-		JLabel lblAgregarContacto = new JLabel("Agregar contacto");
-		lblAgregarContacto.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblAgregarContacto.setBounds(20, 302, 181, 35);
-		panel.add(lblAgregarContacto);
-		
-		JLabel lblIngreseUsername = new JLabel("Ingrese username");
-		lblIngreseUsername.setBounds(20, 356, 117, 27);
-		panel.add(lblIngreseUsername);
-		
-		TF_username = new JTextField();
-		TF_username.setBounds(138, 357, 140, 24);
-		panel.add(TF_username);
-		TF_username.setColumns(10);
-		
-		JButton btnAgregar = new JButton("agregar");
-		btnAgregar.setBounds(161, 402, 117, 35);
-		panel.add(btnAgregar);
 
 	}
 
@@ -104,11 +87,9 @@ public class JPContactos extends JPanel {
 
 		for (int i = 0; i < 15; i++) {
 			Vector fila = new Vector();
-			fila.add("nombre "+1 + i);
-			fila.add("telefono" + i);
-			fila.add("email" + (i + 100));
-			fila.add("username" + (i + 50));
-			fila.add("contacto" + (i + 27));
+			fila.add(1 + i);
+			fila.add("grupo " + i);
+			fila.add("balance" + (i + 100));
 			this.rowDataSer.add(fila);
 			System.out.println(fila.toString());
 		}
@@ -127,5 +108,4 @@ public class JPContactos extends JPanel {
 
 		return tablaC;
 	}
-
 }

@@ -37,52 +37,24 @@ public class Navegacion extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-		JButton btnNewButton = new JButton("Grupos Actuales");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton BT_gruposActuales = new JButton("Grupos Actuales");
+		BT_gruposActuales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gruposActuales();
 			}
 		});
-		btnNewButton.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNewButton.setBounds(10, 11, 111, 52);
-		panel.add(btnNewButton);
+		BT_gruposActuales.setHorizontalAlignment(SwingConstants.LEFT);
+		BT_gruposActuales.setBounds(10, 11, 140, 52);
+		panel.add(BT_gruposActuales);
 		
-		JButton btnCuentasDueo = new JButton("Cuentas Due\u00F1o");
-		btnCuentasDueo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cuentasDueno();
-			}
-		});
-		btnCuentasDueo.setHorizontalAlignment(SwingConstants.LEFT);
-		btnCuentasDueo.setBounds(131, 11, 111, 52);
-		panel.add(btnCuentasDueo);
-		
-		JButton btnDeudas = new JButton("Deudas");
-		btnDeudas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				deudas();
-			}
-		});
-		btnDeudas.setBounds(252, 11, 111, 52);
-		panel.add(btnDeudas);
-		
-		JButton btnCrearGrupo = new JButton("Crear Grupo");
-		btnCrearGrupo.addActionListener(new ActionListener() {
+		JButton BT_crearGrupo = new JButton("Crear Grupo");
+		BT_crearGrupo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				crearGrupo();
 			}
 		});
-		btnCrearGrupo.setBounds(373, 11, 111, 52);
-		panel.add(btnCrearGrupo);
-		
-		JButton btnCrearCuenta = new JButton("Crear Cuenta");
-		btnCrearCuenta.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				crearCuenta();
-			}
-		});
-		btnCrearCuenta.setBounds(494, 11, 111, 52);
-		panel.add(btnCrearCuenta);
+		BT_crearGrupo.setBounds(160, 11, 140, 52);
+		panel.add(BT_crearGrupo);
 		
 		JButton button = new JButton(">>");
 		button.addActionListener(new ActionListener() {
@@ -92,6 +64,24 @@ public class Navegacion extends JPanel {
 		});
 		button.setBounds(659, 11, 111, 52);
 		panel.add(button);
+		
+		JButton BT_cuentas = new JButton("Cuentas");
+		BT_cuentas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cuentas();
+			}
+		});
+		BT_cuentas.setBounds(310, 11, 140, 52);
+		panel.add(BT_cuentas);
+		
+		JButton BT_contactos = new JButton("Contactos");
+		BT_contactos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				contactos();
+			}
+		});
+		BT_contactos.setBounds(460, 11, 140, 52);
+		panel.add(BT_contactos);
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon("./img/fondoOpciones.png"));
@@ -108,19 +98,15 @@ public class Navegacion extends JPanel {
 		menu.gruposActuales();
 	}
 	
-	private void cuentasDueno(){
-		menu.cuentasDueno();
-	}
-	
-	private void deudas(){
-		menu.deudas();
-	}
-	
 	private void crearGrupo(){
 		menu.crearGrupo();
 	}
-	
-	private void crearCuenta(){
-		menu.crearCuenta();
+	private void cuentas()
+	{
+		menu.cuentas();
+	}
+	private void contactos()
+	{
+		menu.contactos();
 	}
 }
