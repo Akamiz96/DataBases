@@ -504,6 +504,8 @@ INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA
 INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(44,TO_DATE('04-07-2015','DD-MM-YY'),5000,11,8,50,'O');
 
 commit;
+
+SELECT * FROM Usuario u WHERE u.user_name = 'andres111' AND u.contrasena = 468946431;
 /*
 
   Historial de transacciones realizadas por cada grupo discriminando por usuarios que la realizaron
