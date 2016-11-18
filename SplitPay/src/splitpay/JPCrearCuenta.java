@@ -5,14 +5,14 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Font;
 
-public class JCrearCuenta extends JPanel {
+public class JPCrearCuenta extends JPanel {
 	private GUIPrincipal principal;
 	private PMenu menu;
 
 	/**
 	 * Create the panel.
 	 */
-	public JCrearCuenta(GUIPrincipal principal, PMenu menu) {
+	public JPCrearCuenta(GUIPrincipal principal, PMenu menu) {
 		this.principal = principal;
 		this.menu = menu;
 		

@@ -15,7 +15,7 @@ public class GUIPrincipal extends JFrame {
 	public JPanel contentPane;
 	public int num;
 	public JPanel panel_p;
-	private CrearUsuario crear = null;
+	private JPCrearUsuario crear = null;
 	private PInicioSec inicio = null;
 	private PMenu menu = null;
 
@@ -85,7 +85,7 @@ public class GUIPrincipal extends JFrame {
 		if(crear == null)
 		{
 			// si no existe se cre solo una vez
-		crear = new CrearUsuario(this);
+		crear = new JPCrearUsuario(this);
 		System.out.println("CREO USUARIO");
 		}
 		else
