@@ -15,8 +15,9 @@ public class PMenu extends JPanel {
 	private JPanel PA_informacion;
 	private JPanel PA_opciones;
 	
-	private NavegacionDos opcionesdos = null;
-	private Navegacion opciones = null;
+	private NavGrupoNormal navGruposNor = null;
+	private NavGrupoAdm navGruposAdm = null;
+	private NavegacionPrin opciones = null;
 	private JPGruposActuales grupos = null;
 	private JPCuentas cuentas = null;
 	private JPDeudas deudas = null;
@@ -72,7 +73,7 @@ public class PMenu extends JPanel {
 		panel.add(PA_informacion);
 		PA_informacion.setLayout(null);
 		
-		Navegacion opciones = new Navegacion(principal,this);
+		NavegacionPrin opciones = new NavegacionPrin(principal,this);
 		opciones.setSize(780, 87); // tamano del jpanel
 		opciones.setLocation(0, 0); // posicion dentro del panel principal
 		 
@@ -85,19 +86,36 @@ public class PMenu extends JPanel {
 		
 	}
 	
-	public void pasarOpcion2(){
-		if(opcionesdos == null)
+	public void navGruposNor(){
+		if(navGruposNor == null)
 		{
 			System.out.println("creo navegacion dos");
-			opcionesdos = new NavegacionDos(principal,this);
+			navGruposNor = new NavGrupoNormal(principal,this);
 		}
 		
 		
-		opcionesdos.setSize(780, 87); // tamano del jpanel
-		opcionesdos.setLocation(0, 0); // posicion dentro del panel principal
+		navGruposNor.setSize(780, 87); // tamano del jpanel
+		navGruposNor.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_opciones.removeAll();
-		PA_opciones.add(opcionesdos, BorderLayout.CENTER);
+		PA_opciones.add(navGruposNor, BorderLayout.CENTER);
+		PA_opciones.revalidate();
+		PA_opciones.repaint();
+	}
+	
+	public void navGruposAdm(){
+		if(navGruposAdm  == null)
+		{
+			System.out.println("creo navegacion dos");
+			navGruposAdm  = new NavGrupoAdm(principal,this);
+		}
+		
+		
+		navGruposAdm .setSize(780, 87); // tamano del jpanel
+		navGruposAdm .setLocation(0, 0); // posicion dentro del panel principal
+		 
+		PA_opciones.removeAll();
+		PA_opciones.add(navGruposAdm , BorderLayout.CENTER);
 		PA_opciones.revalidate();
 		PA_opciones.repaint();
 	}
@@ -107,7 +125,7 @@ public class PMenu extends JPanel {
 		if(opciones == null)
 		{
 			System.out.println("creo navegacion");
-			 opciones = new Navegacion(principal,this);
+			 opciones = new NavegacionPrin(principal,this);
 		}
 		
 		opciones.setSize(780, 87); // tamano del jpanel
@@ -236,6 +254,10 @@ public class PMenu extends JPanel {
 		PA_informacion.revalidate();
 		PA_informacion.repaint();
 		System.out.println("PA_informacion");
+	}
+	public void salirGrupo(){
+		gruposActuales();
+		pasarOpcion1();
 	}
 	
 }

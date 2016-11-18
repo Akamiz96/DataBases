@@ -145,6 +145,7 @@ public JTable mostrarDatos() {
 			TableModel model = tablaGrupos.getModel();
 			String codigoS =model.getValueAt(filaS, 0).toString();
 			label_s.setText(codigoS);
+			menu.navGruposNor();
 			
 			
 			}
