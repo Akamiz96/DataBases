@@ -5,14 +5,14 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Font;
 
-public class JContactos extends JPanel {
+public class JPDeudas extends JPanel {
 	private GUIPrincipal principal;
 	private PMenu menu;
 
 	/**
 	 * Create the panel.
 	 */
-	public JContactos(GUIPrincipal principal, PMenu menu) {
+	public JPDeudas(GUIPrincipal principal, PMenu menu) {
 		this.principal = principal;
 		this.menu = menu;
 		
@@ -25,9 +25,9 @@ public class JContactos extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Contactos");
+		JLabel lblNewLabel = new JLabel("Deudas");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 36));
-		lblNewLabel.setBounds(297, 144, 181, 44);
+		lblNewLabel.setBounds(227, 174, 296, 44);
 		panel.add(lblNewLabel);
 
 	} 

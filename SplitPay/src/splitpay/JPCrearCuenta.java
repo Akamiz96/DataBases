@@ -5,14 +5,14 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Font;
 
-public class JCuentasDueno extends JPanel {
+public class JPCrearCuenta extends JPanel {
 	private GUIPrincipal principal;
 	private PMenu menu;
 
 	/**
 	 * Create the panel.
 	 */
-	public JCuentasDueno(GUIPrincipal principal, PMenu menu) {
+	public JPCrearCuenta(GUIPrincipal principal, PMenu menu) {
 		this.principal = principal;
 		this.menu = menu;
 		
@@ -25,9 +25,9 @@ public class JCuentasDueno extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Cuentas Dueno");
+		JLabel lblNewLabel = new JLabel("Crear Grupo");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 36));
-		lblNewLabel.setBounds(253, 170, 274, 44);
+		lblNewLabel.setBounds(260, 180, 238, 44);
 		panel.add(lblNewLabel);
 
 	} 

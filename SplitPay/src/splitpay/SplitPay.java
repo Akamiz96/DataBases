@@ -32,7 +32,7 @@ public class SplitPay {
         CuentaJpaController controCuenta = new CuentaJpaController(emf);
         controCuenta.GruposdeUsuario(idUsu);
        // List<String>usu=contro.UsuariosdeGrupo(idGrupo);
-       controCuenta.RealizarBalanceGruposdeUsuario();
+     /*  controCuenta.RealizarBalanceGruposdeUsuario();*/
     }
     
 }

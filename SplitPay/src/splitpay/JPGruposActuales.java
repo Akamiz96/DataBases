@@ -1,5 +1,7 @@
 package splitpay;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -13,18 +15,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.table.TableModel;
 
+import Datos.CuentaJpaController;
+import Datos.UsuarioJpaController;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
 
-public class JGruposActuales extends JPanel {
+public class JPGruposActuales extends JPanel {
 	private GUIPrincipal principal;
 	private PMenu menu;
 	private String[] columnSer = { "Nombre", "Balance" };
@@ -37,7 +43,7 @@ public class JGruposActuales extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public JGruposActuales(GUIPrincipal principal, PMenu menu) {
+	public JPGruposActuales(GUIPrincipal principal, PMenu menu) {
 		this.principal = principal;
 		this.menu = menu;
 	
@@ -92,56 +98,36 @@ public class JGruposActuales extends JPanel {
 		return tablaGrupos;
 	}
 	
-	public JTable mostrarDatos() {
+public JTable mostrarDatos() {
 		
 		//datosDefectos(empresa);
 		System.out.println("SERVICIOS");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
+		
+		CuentaJpaController contro = new CuentaJpaController(emf);
+		
+		List<String> grupos = contro.RealizarBalanceCuentasdeUsuario(1,1);
 		this.rowDataSer = new Vector(); // datos de toda la tabla
-		/*
-		String nomIPS,codAmb;
-		List<Servicio> servicios = empresa.getServicios();
-		List<Servicio> newServicios = new ArrayList<Servicio>();
-		*/
 		
 		 
-
-		/*for (String ser : newServicios) {
-			
-			Vector fila = new Vector();
-			// llenar los datos de una fila:
-			fila.add(ser.getCodigo());
-			fila.add(Utils.convertirHoraString(ser.getHoraSolicitud()));
-			fila.add(ser.getPaciente());
-			fila.add(ser.getTipoServicio());
-			fila.add(ser.getTelefono());
-			fila.add(ser.getDireccion().toString());
-			fila.add(ser.getEstado());
-			if(ser.getEstado()== EstadoServicio.ASIGNADO){
-				codAmb =Integer.toString(ser.getAmbulancia().getCodigo());
-				if(ser.getTipoServicio()!= TipoServicio.DOMICILIO){
-				nomIPS = ser.getIps().getNombre();
-				}
-				else{
-					nomIPS="    -----";	
-				}
-			}
-			else{
-				codAmb="    -----";
-				nomIPS="    -----";		
-			}
-			fila.add(nomIPS);
-			fila.add(codAmb);
-
-			// agregar fila al vector que representa la tabla:
-			this.rowDataSer.add(fila);
-			System.out.println(fila.toString());
-		}
-		*/
-		for(int i=0;i<15;i++)
+		/*for(int i=0;i<15;i++)
 		{
 			Vector fila = new Vector();
 			fila.add(1+i);
 			fila.add("a"+i);
+			this.rowDataSer.add(fila);
+			System.out.println(fila.toString());
+		}*/
+		for(String grupo: grupos)
+		{
+			Vector fila = new Vector();
+			//fila.add(1+i);
+			//fila.add("a"+i);
+			
+			StringTokenizer st = new StringTokenizer(grupo, "$");
+			fila.add(st.nextToken().trim());
+			fila.add(st.nextToken().trim());
+			
 			this.rowDataSer.add(fila);
 			System.out.println(fila.toString());
 		}
@@ -159,12 +145,17 @@ public class JGruposActuales extends JPanel {
 			TableModel model = tablaGrupos.getModel();
 			String codigoS =model.getValueAt(filaS, 0).toString();
 			label_s.setText(codigoS);
+			menu.navGruposNor();
 			
 			
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "No ha seleccionado ningun servicio");
 			}
+	}
+	public void limpiar()
+	{
+		
 	}
 	
 }

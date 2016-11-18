@@ -14,6 +14,16 @@ public class PMenu extends JPanel {
 	private GUIPrincipal principal;
 	private JPanel PA_informacion;
 	private JPanel PA_opciones;
+	
+	private NavGrupoNormal navGruposNor = null;
+	private NavGrupoAdm navGruposAdm = null;
+	private NavegacionPrin opciones = null;
+	private JPGruposActuales grupos = null;
+	private JPCuentas cuentas = null;
+	private JPDeudas deudas = null;
+	private JPCrearGrupo crearGrupo = null;
+	private JPCrearCuenta crearCuenta = null;
+	private JPContactos contactos = null;
 	 
 	/**
 	 * Create the panel.
@@ -63,7 +73,7 @@ public class PMenu extends JPanel {
 		panel.add(PA_informacion);
 		PA_informacion.setLayout(null);
 		
-		JOpciones opciones = new JOpciones(principal,this);
+		NavegacionPrin opciones = new NavegacionPrin(principal,this);
 		opciones.setSize(780, 87); // tamano del jpanel
 		opciones.setLocation(0, 0); // posicion dentro del panel principal
 		 
@@ -76,20 +86,48 @@ public class PMenu extends JPanel {
 		
 	}
 	
-	public void pasarOpcion2(){
-		JOpcionesDos opciones = new JOpcionesDos(principal,this);
-		opciones.setSize(780, 87); // tamano del jpanel
-		opciones.setLocation(0, 0); // posicion dentro del panel principal
+	public void navGruposNor(){
+		if(navGruposNor == null)
+		{
+			System.out.println("creo navegacion dos");
+			navGruposNor = new NavGrupoNormal(principal,this);
+		}
+		
+		
+		navGruposNor.setSize(780, 87); // tamano del jpanel
+		navGruposNor.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_opciones.removeAll();
-		PA_opciones.add(opciones, BorderLayout.CENTER);
+		PA_opciones.add(navGruposNor, BorderLayout.CENTER);
+		PA_opciones.revalidate();
+		PA_opciones.repaint();
+	}
+	
+	public void navGruposAdm(){
+		if(navGruposAdm  == null)
+		{
+			System.out.println("creo navegacion dos");
+			navGruposAdm  = new NavGrupoAdm(principal,this);
+		}
+		
+		
+		navGruposAdm .setSize(780, 87); // tamano del jpanel
+		navGruposAdm .setLocation(0, 0); // posicion dentro del panel principal
+		 
+		PA_opciones.removeAll();
+		PA_opciones.add(navGruposAdm , BorderLayout.CENTER);
 		PA_opciones.revalidate();
 		PA_opciones.repaint();
 	}
 	
 	public void pasarOpcion1()
 	{
-		JOpciones opciones = new JOpciones(principal,this);
+		if(opciones == null)
+		{
+			System.out.println("creo navegacion");
+			 opciones = new NavegacionPrin(principal,this);
+		}
+		
 		opciones.setSize(780, 87); // tamano del jpanel
 		opciones.setLocation(0, 0); // posicion dentro del panel principal
 		 
@@ -100,75 +138,126 @@ public class PMenu extends JPanel {
 	}
 	
 	public void gruposActuales(){
-		JGruposActuales opciones = new JGruposActuales(principal,this);
-		opciones.setSize(780, 460); // tamano del jpanel
-		opciones.setLocation(0, 0); // posicion dentro del panel principal
+		if(grupos == null)
+		{
+			System.out.println("creo grupos actutuales");
+			grupos = new JPGruposActuales(principal,this);
+		}
+		else
+		{
+			grupos.limpiar();
+		}
+		grupos.setSize(780, 460); // tamano del jpanel
+		grupos.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
-		PA_informacion.add(opciones, BorderLayout.CENTER);
+		PA_informacion.add(grupos, BorderLayout.CENTER);
 		PA_informacion.revalidate();
 		PA_informacion.repaint();
 		System.out.println("PA_informacion");
 	}
 	
-	public void cuentasDueno(){
-		JCuentasDueno opciones = new JCuentasDueno(principal,this);
-		opciones.setSize(780, 460); // tamano del jpanel
-		opciones.setLocation(0, 0); // posicion dentro del panel principal
+	public void cuentas(){
+		if(cuentas == null){
+			cuentas = new JPCuentas(principal,this);
+		}
+		else
+		{
+			cuentas.mostrarDatos();
+		}
+		
+		cuentas.setSize(780, 460); // tamano del jpanel
+		cuentas.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
-		PA_informacion.add(opciones, BorderLayout.CENTER);
+		PA_informacion.add(cuentas, BorderLayout.CENTER);
 		PA_informacion.revalidate();
 		PA_informacion.repaint();
 		System.out.println("PA_informacion");
 	}
 	
 	public void deudas(){
-		JDeudas opciones = new JDeudas(principal,this);
-		opciones.setSize(780, 460); // tamano del jpanel
-		opciones.setLocation(0, 0); // posicion dentro del panel principal
+		if(deudas == null)
+		{
+			deudas = new JPDeudas(principal,this);
+		}
+		
+	
+		
+		deudas.setSize(780, 460); // tamano del jpanel
+		deudas.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
-		PA_informacion.add(opciones, BorderLayout.CENTER);
+		PA_informacion.add(deudas, BorderLayout.CENTER);
 		PA_informacion.revalidate();
 		PA_informacion.repaint();
 		System.out.println("PA_informacion");
 	}
 	
 	public void crearGrupo(){
-		JCrearGrupo opciones = new JCrearGrupo(principal,this);
-		opciones.setSize(780, 460); // tamano del jpanel
-		opciones.setLocation(0, 0); // posicion dentro del panel principal
+		if(crearGrupo == null)
+		{
+			System.out.println("crear grupo");
+			crearGrupo = new JPCrearGrupo(principal,this);
+		}
+		else
+		{
+			crearGrupo.limpiar();
+			// falta actualizar datos
+		}
+		
+		crearGrupo.setSize(780, 460); // tamano del jpanel
+		crearGrupo.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
-		PA_informacion.add(opciones, BorderLayout.CENTER);
+		PA_informacion.add(crearGrupo, BorderLayout.CENTER);
 		PA_informacion.revalidate();
 		PA_informacion.repaint();
 		System.out.println("PA_informacion");
 	}
 	
 	public void crearCuenta(){
-		JCrearCuenta opciones = new JCrearCuenta(principal,this);
-		opciones.setSize(780, 460); // tamano del jpanel
-		opciones.setLocation(0, 0); // posicion dentro del panel principal
+		if(crearCuenta == null)
+		{
+			crearCuenta = new JPCrearCuenta(principal,this);
+		}
+		else
+		{
+			// TODO revizar que se hace
+		}
+		
+		crearCuenta.setSize(780, 460); // tamano del jpanel
+		crearCuenta.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
-		PA_informacion.add(opciones, BorderLayout.CENTER);
+		PA_informacion.add(crearCuenta, BorderLayout.CENTER);
 		PA_informacion.revalidate();
 		PA_informacion.repaint();
 		System.out.println("PA_informacion");
 	}
 	
 	public void contactos(){
-		JContactos opciones = new JContactos(principal,this);
-		opciones.setSize(780, 460); // tamano del jpanel
-		opciones.setLocation(0, 0); // posicion dentro del panel principal
+		if(contactos == null)
+		{
+			contactos = new JPContactos(principal,this);
+		}
+		else
+		{
+			contactos.mostrarDatos();
+		}
+		
+		contactos.setSize(780, 460); // tamano del jpanel
+		contactos.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
-		PA_informacion.add(opciones, BorderLayout.CENTER);
+		PA_informacion.add(contactos, BorderLayout.CENTER);
 		PA_informacion.revalidate();
 		PA_informacion.repaint();
 		System.out.println("PA_informacion");
+	}
+	public void salirGrupo(){
+		gruposActuales();
+		pasarOpcion1();
 	}
 	
 }

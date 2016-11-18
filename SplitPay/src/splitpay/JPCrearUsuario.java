@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPasswordField;
 import javax.swing.UIManager;
 
-public class CrearUsuario extends JPanel {
+public class JPCrearUsuario extends JPanel {
 	private JPanel panel;
 	private JLabel lblNull;
 	private JTextField TF_nombres;
@@ -36,7 +36,7 @@ public class CrearUsuario extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CrearUsuario(GUIPrincipal principal) {
+	public JPCrearUsuario(GUIPrincipal principal) {
 		this.principal = principal;
 		
 		al = new ActionListener() {
@@ -67,9 +67,15 @@ public class CrearUsuario extends JPanel {
 					
 					}
 				}
+				
 				else
 				{
 					System.out.println(" NULL");
+				}
+				
+				if(TF_nombreUsuario.getText().length() != 0)
+				{
+					// TODO buscsar el nombre en la lista
 				}
 			}
 		};
@@ -80,8 +86,8 @@ public class CrearUsuario extends JPanel {
 		setLayout(null);
 		
 		panel = new JPanel();
-		panel.setBackground(Color.WHITE);
 		panel.setBounds(0, 0, 780, 610);
+		panel.setBackground(Color.WHITE);
 		add(panel);
 		panel.setLayout(null);
 		
@@ -230,6 +236,10 @@ public class CrearUsuario extends JPanel {
 		TF_confirmarCon = new JPasswordField();
 		TF_confirmarCon.setBounds(545, 244, 163, 32);
 		panel.add(TF_confirmarCon);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(363, 189, 48, 43);
+		panel.add(lblNewLabel);
 		
 		
 		

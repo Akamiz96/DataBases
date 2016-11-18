@@ -17,13 +17,13 @@ import javax.swing.UIManager;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 
-public class JOpcionesDos extends JPanel {
+public class NavegacionDos extends JPanel {
 	private GUIPrincipal principal;
 	private PMenu menu;
 	/**
 	 * Create the panel.
 	 */
-	public JOpcionesDos(GUIPrincipal principal, PMenu menu) {
+	public NavegacionDos(GUIPrincipal principal, PMenu menu) {
 		
 		this.principal = principal;
 		this.menu = menu;

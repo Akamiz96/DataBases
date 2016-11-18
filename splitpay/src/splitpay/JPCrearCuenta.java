@@ -5,14 +5,14 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Font;
 
-public class JDeudas extends JPanel {
+public class JPCrearCuenta extends JPanel {
 	private GUIPrincipal principal;
 	private PMenu menu;
 
 	/**
 	 * Create the panel.
 	 */
-	public JDeudas(GUIPrincipal principal, PMenu menu) {
+	public JPCrearCuenta(GUIPrincipal principal, PMenu menu) {
 		this.principal = principal;
 		this.menu = menu;
 		
@@ -25,9 +25,9 @@ public class JDeudas extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Deudas");
+		JLabel lblNewLabel = new JLabel("Crear Grupo");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 36));
-		lblNewLabel.setBounds(227, 174, 296, 44);
+		lblNewLabel.setBounds(260, 180, 238, 44);
 		panel.add(lblNewLabel);
 
 	} 

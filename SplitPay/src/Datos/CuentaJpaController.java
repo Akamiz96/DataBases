@@ -9,17 +9,23 @@ import Datos.exceptions.IllegalOrphanException;
 import Datos.exceptions.NonexistentEntityException;
 import Datos.exceptions.PreexistingEntityException;
 import Negocio.Cuenta;
+
 import java.io.Serializable;
+
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
 import Negocio.Grupo;
 import Negocio.Usuario;
 import Negocio.Deuda;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -28,6 +34,7 @@ import javax.persistence.EntityManagerFactory;
  * @author Pablo
  */
 public class CuentaJpaController implements Serializable {
+	
 
     public CuentaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
@@ -264,10 +271,9 @@ public class CuentaJpaController implements Serializable {
             em.close();
         }
     }
-     public List<BigDecimal> GruposdeUsuario(int idUsuario){
+    public List<BigDecimal> GruposdeUsuario(int idUsuario){
         EntityManager em = getEntityManager() ;
              Query buscarNombres ;
-            idUsuario = 1 ;
            //buscarNombres = em.createNativeQuery("SELECT u.nombre,u.id FROM Cuenta u" ); //Probar de esta forma
            // buscarNombres = em.createNativeQuery("SELECT g.nombre,g.id,p.Usuario_id FROM Grupo g,Usuario u,Pertenece_a p");
             buscarNombres = em.createNativeQuery("SELECT distinct g.nombre,g.id FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =? and g.id = p.Grupo_id").setParameter(1,idUsuario);
@@ -289,7 +295,6 @@ public class CuentaJpaController implements Serializable {
          public List<String> UsuariosdeGrupo(int idGrupo){
              EntityManager em = getEntityManager() ;
              Query buscarNombres ;
-             idGrupo = 5 ;
              buscarNombres = em.createNativeQuery("SELECT distinct u.nombre,u.id FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =u.id and p.Grupo_id= ?").setParameter(1,idGrupo); //Probar de esta forma
              List<Object[]> listaNombres = buscarNombres.getResultList() ;
              List<String>nombresUsuario= new ArrayList<String>();
@@ -301,10 +306,8 @@ public class CuentaJpaController implements Serializable {
              return nombresUsuario;
          }
         
-         public List<String> RealizarBalanceCuentasdeUsuario(){
+         public List<String> RealizarBalanceCuentasdeUsuario(int idGrupo, int idUsu){
              EntityManager em = getEntityManager() ;
-             int idGrupo =1;
-             int idUsu =1;
              Query buscarCuentas ;
              Query buscarDeudas ;
              Query buscarTransaccion ;
@@ -349,25 +352,15 @@ public class CuentaJpaController implements Serializable {
                       total= costoCuenta ;
                       devolver = devolver + "$" + total ;
                       listaDevolver.add(devolver);
-                      System.out.println(" Esto es el costo de la cuenta en la que es dueÃ±o : "+devolver) ;     
+                      System.out.println(" Esto es el costo de la cuenta en la que es dueño : "+devolver) ;     
                  }
              } 
              return listaDevolver ;
          }
-    public void RealizarBalancedeUsuariosporGrupos(){
-             EntityManager em = getEntityManager() ;
-             int idGrupo =1;
-             Query buscarUsuariosGrupo ;
-             buscarUsuariosGrupo= em.createNativeQuery("Select u.nombre,u.id from Pertence_a p,Usuario u Where p.Grupo_id=? and p.Usuario_id = u.id " ).setParameter(1,idGrupo) ;
-             List<String> listaUsuarios = UsuariosdeGrupo(idGrupo) ;
-                     
-         }
     
     
-    public List<String> RealizarBalanceGruposdeUsuario(){
+    public List<String> RealizarBalanceGruposdeUsuario(int idGrupo,int idUsu){
              EntityManager em = getEntityManager() ;
-             int idGrupo =1;
-             int idUsu =1;
              Query buscarCuentas ;
              Query buscarDeudas ;
              Query buscarTransaccion ;
@@ -420,9 +413,103 @@ public class CuentaJpaController implements Serializable {
              } 
                         devolver = devolver + "$" + total2 ;
                         listaDevolver.add(devolver);
-                        System.out.println("Este es valor que tiene en el grupo: "+total2);
+                        System.out.println("Este es valor que tiene en el grupo: "+devolver);
              }
              return listaDevolver ;
          }
+    public List<String> RealizarBalancedeUsuariosporGrupos(String nombGrupo){
+        // Este debe devolver una lista de los usuario de tal grupo con sus deudas      
+        EntityManager em = getEntityManager() ;
+             Query buscaridGrupo ;
+             buscaridGrupo= em.createNativeQuery("Select g.id,g.nombre from Grupo g Where g.nombre=?  " ).setParameter(1,nombGrupo) ;
+             List<Object[]> listidGr = buscaridGrupo.getResultList();
+             BigDecimal idG=(BigDecimal)listidGr.get(0)[0];
+             int idGrupo =idG.intValueExact() ;
+             List<String> listaUsuarios = UsuariosdeGrupo(idGrupo) ;
+             String devolver,nombCuenta,balanceS ;
+             int total=0,balance ;
+             List<String> listaDevolver = new ArrayList<String>() ;
+             for(int i=0;i<listaUsuarios.size();i++){
+                 Query buscarnombre=  em.createNativeQuery("Select u.id,u.nombre from Usuario u Where u.nombre=?  " ).setParameter(1,listaUsuarios.get(i)) ;
+                 List<Object[]> listidUsu = buscarnombre.getResultList();
+                 BigDecimal idUsu=(BigDecimal)listidUsu.get(i)[0];
+                 List<String>cuentasUsu=RealizarBalanceCuentasdeUsuario(idGrupo,idUsu.intValueExact() ); 
+                 // Me va a llegar una lista con datos como "almuerzo$300" tengo que tokenizarlo para sacar el balance de las cuentas y sumarlas todas
+                for(int j=0;j<cuentasUsu.size();j++){
+                    StringTokenizer st = new StringTokenizer(cuentasUsu.get(j),"$");
+                    nombCuenta = (st.nextToken()).trim() ;
+                    balanceS= (st.nextToken()).trim() ;
+                    balance= Integer.parseInt(balanceS) ;
+                    total = total + balance ;
+                    System.out.println("Este es el nombre de la cuenta "+ nombCuenta);
+                    System.out.println("Este es el balance de la cuenta "+balance);
+                }
+                String nomUsu= (String)listidUsu.get(i)[1] ;
+                devolver = nomUsu + "$"+ total ;
+                 listaDevolver.add(devolver);
+             }
+             
+             return listaDevolver ;
+         }
     
+    public List<String> ContactosUsuario(int idUsuario){
+        // Recibo id y devuelvo los nombres con el correo de los contactos del usario, telefono, username y estado online
+        EntityManager em = getEntityManager() ;
+        int i=0;
+        List<String>listaDevolver = new ArrayList<String>();
+        String devolver ;
+        Query buscarIdContacto = em.createNativeQuery("Select d.Usuario_id1,d.Usuario_id from contacto_de d Where d.Usuario_id=? " ).setParameter(1,idUsuario ) ;
+             List<Object[]> idContactoUsuario = buscarIdContacto.getResultList();
+             for(i=0;i<idContactoUsuario.size();i++){
+                 BigDecimal idContacto = (BigDecimal)idContactoUsuario.get(i)[0] ;
+                 Query buscarUsuario = em.createNativeQuery("Select u.nombre,u.email,u.numeroTelefono,u.user_name from Usuario u Where u.id=? " ).setParameter(1,idContacto.intValueExact() ) ;
+                 // En el Select colocar el estado online, cuando se actualice la tabla de Usuario con ese atributo
+                 List<Object[]> Usuario = buscarUsuario.getResultList();
+                 String nomContacto = (String)Usuario.get(i)[0] ;
+                 String emailContacto = (String)Usuario.get(i)[1] ;
+                 BigDecimal telefonoContacto = (BigDecimal)Usuario.get(i)[2] ;
+                 String usernameContacto = (String)Usuario.get(i)[3] ;
+                 String telefono = String.valueOf(telefonoContacto) ;
+                 devolver=nomContacto +"$"+emailContacto+"$"+usernameContacto+"$"+telefono ;
+                 listaDevolver.add(devolver);
+             }
+             return listaDevolver ;
+    }
+    public List<String> TablaUsuarioCuentaGrupo(int idUsu ){
+        
+        // Busco los grupos del usuario 
+        // Le mando el id del grupo y el id del usuario al metodo RealizarBalanceCuentasdeUsuario
+        //Esto me manda una lista de las cuentas junto con su balance
+        EntityManager em = getEntityManager() ;
+        List<BigDecimal>gruposUsu=GruposdeUsuario(idUsu) ;
+        List<String> listaDevolver = new ArrayList<String>();
+        String devolver ;
+        for(int i=0;i<gruposUsu.size();i++){
+          List<String>cuentaUsu=RealizarBalanceCuentasdeUsuario(gruposUsu.get(i).intValueExact(),idUsu ) ;
+          for(int j=0;j<cuentaUsu.size();j++){
+          Query nombreGrupo = em.createNativeQuery("Select g.nombre,g.id from Grupo g Where g.id=? " ).setParameter(1,gruposUsu.get(i)) ;
+          List<Object[]> nGrupo= nombreGrupo.getResultList();
+          String grupo =(String)nGrupo.get(0)[0];
+          System.out.println("Esto es el nombre del grupo : "+grupo) ;
+          devolver = cuentaUsu.get(j)+"$"+ grupo ;
+          listaDevolver.add(devolver) ;
+          }
+         
+        }
+        return listaDevolver ;      
+      }
+
+    public void AgregarContacto(int idUsu, String username){
+        //Me envian la id del usuario y el username 
+        //Agregar contacto de un usuario
+        // Recibo el username, reviso si existe y lo agrego a la la tabla de contactos de con el id de los dos usuarios
+        EntityManager em = getEntityManager() ;
+        Query revisarUsuario= em.createNamedQuery("Select u.id,u.user_name from Usuario u where u.user_name=?").setParameter( 1,username ) ;
+        if(revisarUsuario!=null){
+            // Llamar una funcion que haga en la base de datos que me haga el insert values en la tabla de Contacto_de
+        }
+        else{
+            System.out.println("El usuario no existe");
+        }
+    }
 }
