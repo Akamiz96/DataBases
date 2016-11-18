@@ -574,10 +574,13 @@ public class UsuarioJpaController implements Serializable {
             }
             et.commit();
         }
+        catch( Exception e )
+        {
+            return null;
+        }
         finally
         {
             em.close();
-            
         }
         return null;
     }
