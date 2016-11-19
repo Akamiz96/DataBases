@@ -8,21 +8,29 @@ package Controladores;
 import Controladores.exceptions.IllegalOrphanException;
 import Controladores.exceptions.NonexistentEntityException;
 import Controladores.exceptions.PreexistingEntityException;
+
 import java.io.Serializable;
+
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
 import Negocio.Usuario;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import Negocio.Grupo;
 import Negocio.Ubicacion;
 import Negocio.Cuenta;
 import Negocio.PerteneceA;
 import Negocio.Lidergrupo;
 import Negocio.Deuda;
+
 import java.math.BigDecimal;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -556,7 +564,7 @@ public class UsuarioJpaController implements Serializable {
         }
     }
     
-    public Usuario signIn( String userName, String contrasena )
+    public Usuario signIn( String userName, String contrasena )throws SQLException
     {
         EntityManager em = getEntityManager();
         Usuario user = null;
@@ -572,17 +580,20 @@ public class UsuarioJpaController implements Serializable {
             update.setParameter(1, contrasena);
             update.executeUpdate();
             et.commit();
+            return user;
+            
         }
         catch( Exception e )
         {
-            System.out.println(e);
-            return user;
+            
+            throw new SQLException();
         }
         finally
         {
-            em.close();      
+            em.close(); 
+            
         }
-        return user;
+       
     }
     
     public void signOut( Usuario user )
