@@ -11,4 +11,5 @@ package Conecciones;
  */
 public interface ConeccionBases {
     void CrearUsuario();
+    void CrearGrupo();
 }
