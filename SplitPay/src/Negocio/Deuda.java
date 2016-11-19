@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -50,6 +51,9 @@ public class Deuda implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario usuario;
 
+    @Transient
+    private boolean pagada;
+    
     public Deuda() {
     }
 
@@ -100,6 +104,16 @@ public class Deuda implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+    
+    public boolean getPagada()
+    {
+        return pagada;
+    }
+    
+    public void setPagada( boolean pagada )
+    {
+        this.pagada = pagada;
     }
 
     @Override

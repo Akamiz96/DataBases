@@ -18,9 +18,13 @@ import Negocio.EsAprobada;
 import Negocio.Transaccion;
 import Negocio.TransaccionPK;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -245,4 +249,26 @@ public class TransaccionJpaController implements Serializable {
         }
     }
     
+    public boolean memberToMemberTrans( TransaccionPK referencias, long cantidad, Character tipo )
+    {
+        EntityManager em = getEntityManager();
+        try
+        {   
+            EntityTransaction et = em.getTransaction();
+            et.begin();
+            Calendar fecha = new GregorianCalendar();
+            Transaccion trans = new Transaccion( referencias, new Date(fecha.get(Calendar.YEAR), fecha.get(Calendar.MONTH), fecha.get(Calendar.DATE)), cantidad, tipo);
+            create(trans);
+            et.commit();
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        finally
+        {
+            em.close();
+        }
+        return true;
+    }
 }
