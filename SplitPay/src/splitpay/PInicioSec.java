@@ -107,9 +107,10 @@ public class PInicioSec extends JPanel {
 					.createEntityManagerFactory("SplitPayPU");
 			UsuarioJpaController usuario = new UsuarioJpaController(emf);
 			Usuario user = usuario.signIn(TF_usuario.getText(),TF_pass.getText());
-			principal.userActual = principal.userActual;
+			principal.userActual = user;
 			principal.pasarMenu();
 			System.out.println(user.toString());
+			System.out.println(principal.userActual.toString());
 			
 		} catch ( SQLException e) {
 			JOptionPane.showMessageDialog(null, "USUARIO INVALIDO");

@@ -55,7 +55,7 @@ public class PMenu extends JPanel {
 		lblNewLabel_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				principal.pasarInicio();
+				principal.singnOut();;
 				
 			}
 		});

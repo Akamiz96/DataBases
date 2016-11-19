@@ -123,8 +123,10 @@ public class GUIPrincipal extends JFrame {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
 		
 		UsuarioJpaController contro = new UsuarioJpaController(emf);
+		System.out.println("USUARIO ACTUAL:_"+userActual);
 		contro.signOut(userActual);
 		userActual = null;
+		System.out.println("cerrar cesion");
 		
 		inicio.setSize(780, 610); // tamano del jpanel
 		inicio.setLocation(5, 5); // posicion dentro del panel principal
