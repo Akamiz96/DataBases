@@ -21,9 +21,11 @@ import java.util.List;
 import Negocio.PerteneceA;
 import Negocio.Lidergrupo;
 import java.math.BigDecimal;
+import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -375,7 +377,7 @@ public class GrupoJpaController implements Serializable {
         for (int i = 0; i < listaUsuarios.size(); i++) {
             Query buscarnombre = em.createNativeQuery("Select u.id,u.nombre from Usuario u Where u.nombre=?  ").setParameter(1, listaUsuarios.get(i));
             List<Object[]> listidUsu = buscarnombre.getResultList();
-            BigDecimal idUsu = (BigDecimal) listidUsu.get(i)[0];
+            BigDecimal idUsu = (BigDecimal) listidUsu.get(0)[0];
             List<String> cuentasUsu = controCuenta.RealizarBalanceCuentasdeUsuario(idGrupo, idUsu.intValueExact());
             // Me va a llegar una lista con datos como "almuerzo$300" tengo que tokenizarlo para sacar el balance de las cuentas y sumarlas todas
             for (int j = 0; j < cuentasUsu.size(); j++) {
@@ -387,12 +389,33 @@ public class GrupoJpaController implements Serializable {
                 System.out.println("Este es el nombre de la cuenta " + nombCuenta);
                 System.out.println("Este es el balance de la cuenta " + balance);
             }
-            String nomUsu = (String) listidUsu.get(i)[1];
+            String nomUsu = (String) listidUsu.get(0)[1];
             devolver = nomUsu + "$" + total;
             listaDevolver.add(devolver);
         }
-
+        
         return listaDevolver;
     }
-    
+    public void CambiarLider(int idGrupo, int idLider){
+        EntityManager em = getEntityManager();
+        //Averiguar como se hace un dato Date con la fecha actual  
+        GregorianCalendar date = new GregorianCalendar() ; // Esto me da la fecha actual
+        LidergrupoJpaController liderController = new LidergrupoJpaController(emf);
+        try
+        {   EntityTransaction et = em.getTransaction();
+            et.begin();
+            Query cambiarEstadoFechaSalida = em.createNativeQuery( "UPDATE LiderGrupo l SET l.fechaSalida=? WHERE l.Grupo_id = ? and l.Usuario_id=? ").setParameter(1,date).setParameter(2,idGrupo).setParameter(3,idLider);
+            cambiarEstadoFechaSalida.executeUpdate();
+            liderController.CrearLider( idGrupo, idLider,date);
+            et.commit();
+        }
+        catch( Exception e )
+        {
+            System.out.println(e);
+        }
+        finally
+        {
+            em.close();      
+        }
+    }
 }
