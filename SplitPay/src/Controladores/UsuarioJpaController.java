@@ -706,30 +706,5 @@ public class UsuarioJpaController implements Serializable {
         return listaDevolver;
     }
      
-      public List<String> TablaUsuarioCuentaGrupo(int idUsu) {
-        // Busco los grupos del usuario 
-        // Le mando el id del grupo y el id del usuario al metodo RealizarBalanceCuentasdeUsuario
-        //Esto me manda una lista de las cuentas junto con su balance
-        EntityManager em = getEntityManager();
-        CuentaJpaController controCuenta = new CuentaJpaController(emf);
-        // Si ocurre un error puede ser que el emf este en un null, tocaria volver a asignarle el EntityManagerFactory
-        List<BigDecimal> gruposUsu = GruposdeUsuario(idUsu);
-        List<String> listaDevolver = new ArrayList<String>();
-        String devolver;
-        for (int i = 0; i < gruposUsu.size(); i++) {
-            List<String> cuentaUsu = controCuenta.RealizarBalanceCuentasdeUsuario(gruposUsu.get(i).intValueExact(), idUsu);
-            for (int j = 0; j < cuentaUsu.size(); j++) {
-                Query nombreGrupo = em.createNativeQuery("Select g.nombre,g.id from Grupo g Where g.id=? ").setParameter(1, gruposUsu.get(i));
-                List<Object[]> nGrupo = nombreGrupo.getResultList();
-                String grupo = (String) nGrupo.get(0)[0];
-                System.out.println("Esto es el nombre del grupo : " + grupo);
-                BigDecimal decgrupo = (BigDecimal) nGrupo.get(0)[1];
-                int id_grupo = decgrupo.intValueExact();
-                devolver = cuentaUsu.get(j) + "$" + grupo+ "$"+id_grupo;
-                listaDevolver.add(devolver);
-            }
-
-        }
-        return listaDevolver;
-    }
+      
 }
