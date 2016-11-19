@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import Negocio.PerteneceA;
 import Negocio.Lidergrupo;
+import java.math.BigDecimal;
+import java.util.StringTokenizer;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -341,6 +343,56 @@ public class GrupoJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    public List<String> UsuariosdeGrupo(int idGrupo) {
+        EntityManager em = getEntityManager();
+        Query buscarNombres;
+        buscarNombres = em.createNativeQuery("SELECT distinct u.nombre,u.id FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =u.id and p.Grupo_id= ?").setParameter(1, idGrupo); //Probar de esta forma
+        List<Object[]> listaNombres = buscarNombres.getResultList();
+        List<String> nombresUsuario = new ArrayList<String>();
+        for (int i = 0; i < listaNombres.size(); i++) {
+            String nombre = (String) listaNombres.get(i)[0];
+            nombresUsuario.add(nombre);
+            System.out.println(nombre);
+        }
+        return nombresUsuario;
+    }
+    
+    public List<String> RealizarBalancedeUsuariosporGrupos(String nombGrupo) {
+        // Este debe devolver una lista de los usuario de tal grupo con sus deudas      
+        EntityManager em = getEntityManager();
+        Query buscaridGrupo;
+        CuentaJpaController controCuenta = new CuentaJpaController(emf);
+        // Si ocurre un error puede ser que el emf este en un null, tocaria volver a asignarle el EntityManagerFactory
+        buscaridGrupo = em.createNativeQuery("Select g.id,g.nombre from Grupo g Where g.nombre=?  ").setParameter(1, nombGrupo);
+        List<Object[]> listidGr = buscaridGrupo.getResultList();
+        BigDecimal idG = (BigDecimal) listidGr.get(0)[0];
+        int idGrupo = idG.intValueExact();
+        List<String> listaUsuarios = UsuariosdeGrupo(idGrupo);
+        String devolver, nombCuenta, balanceS;
+        int total = 0, balance;
+        List<String> listaDevolver = new ArrayList<String>();
+        for (int i = 0; i < listaUsuarios.size(); i++) {
+            Query buscarnombre = em.createNativeQuery("Select u.id,u.nombre from Usuario u Where u.nombre=?  ").setParameter(1, listaUsuarios.get(i));
+            List<Object[]> listidUsu = buscarnombre.getResultList();
+            BigDecimal idUsu = (BigDecimal) listidUsu.get(i)[0];
+            List<String> cuentasUsu = controCuenta.RealizarBalanceCuentasdeUsuario(idGrupo, idUsu.intValueExact());
+            // Me va a llegar una lista con datos como "almuerzo$300" tengo que tokenizarlo para sacar el balance de las cuentas y sumarlas todas
+            for (int j = 0; j < cuentasUsu.size(); j++) {
+                StringTokenizer st = new StringTokenizer(cuentasUsu.get(j), "$");
+                nombCuenta = (st.nextToken()).trim();
+                balanceS = (st.nextToken()).trim();
+                balance = Integer.parseInt(balanceS);
+                total = total + balance;
+                System.out.println("Este es el nombre de la cuenta " + nombCuenta);
+                System.out.println("Este es el balance de la cuenta " + balance);
+            }
+            String nomUsu = (String) listidUsu.get(i)[1];
+            devolver = nomUsu + "$" + total;
+            listaDevolver.add(devolver);
+        }
+
+        return listaDevolver;
     }
     
 }
