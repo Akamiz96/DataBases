@@ -257,15 +257,12 @@ public class TransaccionJpaController implements Serializable {
         {   
             EntityTransaction et = em.getTransaction();
             et.begin();
-            Query insertar = em.createNativeQuery("INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(?,CURRENT_DATE,?,?,?,?,?)");
-            Query consecutivo = em.createNativeQuery("select max(id) from Transaccion");
-            int idPK = ((BigDecimal)consecutivo.getSingleResult()).intValue() + 1;
-            insertar.setParameter(1, idPK);
-            insertar.setParameter(2, cantidad);
-            insertar.setParameter(3, cuentaId);
-            insertar.setParameter(4, usuarioId);
-            insertar.setParameter(5, idDeuda);
-            insertar.setParameter(6, tipo);
+            Query insertar = em.createNativeQuery("INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,CURRENT_DATE,?,?,?,?,?)");
+            insertar.setParameter(1, cantidad);
+            insertar.setParameter(2, cuentaId);
+            insertar.setParameter(3, usuarioId);
+            insertar.setParameter(4, idDeuda);
+            insertar.setParameter(5, tipo);
             insertar.executeUpdate();
             System.out.println("Controladores.TransaccionJpaController.memberToMemberTrans()------------------: ");
             et.commit();
