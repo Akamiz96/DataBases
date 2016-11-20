@@ -1,0 +1,47 @@
+create or replace PROCEDURE CrearGrupo (NOMBRE IN VARCHAR2,USUARIODUENO_ID IN NUMBER,FECHA_CREACION IN DATE)
+IS 
+BEGIN
+  INSERT INTO GRUPO VALUES(null,
+  NOMBRE,
+  USUARIODUENO_ID,
+  FECHA_CREACION,
+  'N',
+  'N');
+END;
+
+
+
+create or replace PROCEDURE EstadoOffline ( username IN varchar2)
+IS 
+BEGIN
+UPDATE Usuario
+SET Usuario."online" = 'N'
+WHERE username = Usuario.user_name ;
+END;
+
+
+create or replace PROCEDURE EstadoOnline ( username IN varchar2)
+IS 
+BEGIN
+UPDATE Usuario 
+SET Usuario."online" = 'S'
+WHERE username = Usuario.user_name ;
+END;
+
+
+create or replace PROCEDURE RegistrarUsuario (USERNAME IN VARCHAR2,NOMBRE IN VARCHAR2,NUMEROTELEFONO IN NUMBER,EMAIL IN VARCHAR2,PAYPAL IN VARCHAR2,APELLIDOS IN VARCHAR2,FECHANACIMIENTO IN DATE,GENERO IN CHAR,CONTRASENA IN VARCHAR2,ONLINE_USER IN CHAR)
+IS 
+BEGIN
+  INSERT INTO USUARIO VALUES(null,
+  NOMBRE,
+  NUMEROTELEFONO,
+  EMAIL,
+  PAYPAL,
+  APELLIDOS,
+  FECHANACIMIENTO,
+  GENERO,
+  USERNAME,
+  CONTRASENA,
+  'N');
+  commit ;
+END;
