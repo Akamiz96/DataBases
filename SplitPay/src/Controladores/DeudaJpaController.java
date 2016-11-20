@@ -18,6 +18,7 @@ import Negocio.Deuda;
 import Negocio.DeudaPK;
 import Negocio.Usuario;
 import Negocio.Transaccion;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -271,5 +272,15 @@ public class DeudaJpaController implements Serializable {
             em.close();
         }
     }
+    
+     public int DeudasdeUsuario(int  idCuenta, int idUsu){
+         
+         EntityManager em = getEntityManager();
+         Query buscarDeuda = em.createNamedQuery("Select d.id, d.cantidad from Deuda d where d.Usuario_id= ? and d.Cuenta_id = ? ").setParameter(1,idUsu).setParameter(2,idCuenta) ;
+         List<Object[]> deuda = buscarDeuda.getResultList();
+         BigDecimal idDeudaBig = (BigDecimal)deuda.get(0)[0] ;
+         int idDeuda = idDeudaBig.intValueExact();
+         return idDeuda ;
+     }
     
 }

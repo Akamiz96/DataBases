@@ -30,6 +30,7 @@ import Negocio.Lidergrupo;
 import Negocio.Deuda;
 
 import java.math.BigDecimal;
+import java.util.GregorianCalendar;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -686,9 +687,12 @@ public class UsuarioJpaController implements Serializable {
                     total2 = total2.add(total);
                 }
             }
-            devolver = devolver + "$" + total2;
+           
+             BigDecimal idGru = (BigDecimal)nombreGrupo.get(0)[1];
+            devolver = devolver + "$" + total2 + "$" + idGru;
             listaDevolver.add(devolver);
             System.out.println("Este es valor que tiene en el grupo: " + devolver);
+
         }
         return listaDevolver;
     }
@@ -717,9 +721,23 @@ public class UsuarioJpaController implements Serializable {
         }
         return listaDevolver;
     }
-     public void Prueba(){
-         EntityManager em = getEntityManager();
-         Query insertar = em.createNamedQuery("INSERT INTO PAIS values (5,'Desconocido')");
-     }
       
+     public List<String> TransaccionesdeUsuario(int idUsu){
+         // Como posibilidad, mostrar tambien si la transaccion fue aceptada o no 
+         EntityManager em = getEntityManager();
+         Query buscarTransacciones = em.createNativeQuery("Select t.fecha,t.cantidad,t.tipo  from Transaccion t where t.Deuda_Usuario_Id= ?").setParameter(1,idUsu) ;
+         List<Object[]> transaccion = buscarTransacciones.getResultList();
+         List<String> devolver = new ArrayList<String>();
+         BigDecimal cantidad ;
+         String tipo ;
+         
+         for(int i=0;i<transaccion.size();i++){
+             GregorianCalendar fecha = (GregorianCalendar)transaccion.get(i)[0] ;
+             cantidad = (BigDecimal)transaccion.get(i)[1];
+             tipo = (String)transaccion.get(i)[2];
+             String fechaS= fecha.toString();
+             System.out.println(fechaS);
+         }
+         return devolver ;
+     }
 }
