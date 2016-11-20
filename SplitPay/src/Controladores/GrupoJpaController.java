@@ -364,22 +364,20 @@ public class GrupoJpaController implements Serializable {
         return nombresUsuario;
     }
     
-    public List<String> RealizarBalancedeUsuariosporGrupos(String nombGrupo) {
+    public List<String> RealizarBalancedeUsuariosporGrupos(int idGrupo) {
         // Este debe devolver una lista de los usuario de tal grupo con sus deudas      
         EntityManager em = getEntityManager();
         Query buscaridGrupo;
         CuentaJpaController controCuenta = new CuentaJpaController(emf);
         // Si ocurre un error puede ser que el emf este en un null, tocaria volver a asignarle el EntityManagerFactory
-        buscaridGrupo = em.createNativeQuery("Select g.id,g.nombre from Grupo g Where g.nombre=?  ").setParameter(1, nombGrupo);
+        buscaridGrupo = em.createNativeQuery("Select g.id,g.nombre from Grupo g Where g.id=?  ").setParameter(1, idGrupo);
         List<Object[]> listidGr = buscaridGrupo.getResultList();
-        BigDecimal idG = (BigDecimal) listidGr.get(0)[0];
-        int idGrupo = idG.intValueExact();
         List<String> listaUsuarios = UsuariosdeGrupo(idGrupo);
         String devolver, nombCuenta, balanceS;
         int total = 0, balance;
         List<String> listaDevolver = new ArrayList<String>();
         for (int i = 0; i < listaUsuarios.size(); i++) {
-            Query buscarnombre = em.createNativeQuery("Select u.id,u.nombre from Usuario u Where u.nombre=?  ").setParameter(1, listaUsuarios.get(i));
+            Query buscarnombre = em.createNativeQuery("Select u.id,u.user_name from Usuario u Where u.nombre=?  ").setParameter(1, listaUsuarios.get(i));
             List<Object[]> listidUsu = buscarnombre.getResultList();
             BigDecimal idUsu = (BigDecimal) listidUsu.get(0)[0];
             List<String> cuentasUsu = controCuenta.RealizarBalanceCuentasdeUsuario(idGrupo, idUsu.intValueExact());
@@ -395,6 +393,7 @@ public class GrupoJpaController implements Serializable {
             }
             String nomUsu = (String) listidUsu.get(0)[1];
             devolver = nomUsu + "$" + total;
+            System.out.println("Esto es devolver "+ devolver);
             listaDevolver.add(devolver);
         }
         
