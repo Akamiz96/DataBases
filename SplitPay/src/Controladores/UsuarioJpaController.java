@@ -31,7 +31,9 @@ import Negocio.Lidergrupo;
 import Negocio.Deuda;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.GregorianCalendar;
+import java.util.StringTokenizer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -565,7 +567,6 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
-    
     public Usuario signIn( String userName, String contrasena )throws SQLException
     {
         EntityManager em = getEntityManager();
@@ -611,7 +612,7 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
         
-    }
+}
     public List<BigDecimal> GruposdeUsuario(int idUsuario) {
         EntityManager em = getEntityManager();
         Query buscarNombres;
@@ -630,7 +631,6 @@ public class UsuarioJpaController implements Serializable {
             System.out.println(idGrupos.get(j));
         }
         return idGrupos;
-
     }
      public List<String> RealizarBalanceGruposdeUsuario(int idUsu) {
         EntityManager em = getEntityManager();
@@ -725,19 +725,31 @@ public class UsuarioJpaController implements Serializable {
      public List<String> TransaccionesdeUsuario(int idUsu){
          // Como posibilidad, mostrar tambien si la transaccion fue aceptada o no 
          EntityManager em = getEntityManager();
-         Query buscarTransacciones = em.createNativeQuery("Select t.fecha,t.cantidad,t.tipo  from Transaccion t where t.Deuda_Usuario_Id= ?").setParameter(1,idUsu) ;
+         Query buscarTransacciones = em.createNativeQuery("Select t.fecha,t.cantidad,t.tipo,t.Deuda_Cuenta_Id  from Transaccion t where t.Deuda_Usuario_Id= ?").setParameter(1,idUsu) ;
          List<Object[]> transaccion = buscarTransacciones.getResultList();
-         List<String> devolver = new ArrayList<String>();
+         List<String> listaDevolver = new ArrayList<String>();
          BigDecimal cantidad ;
          String tipo ;
-         
          for(int i=0;i<transaccion.size();i++){
-             GregorianCalendar fecha = (GregorianCalendar)transaccion.get(i)[0] ;
+             Timestamp fecha = (Timestamp)transaccion.get(i)[0] ;
              cantidad = (BigDecimal)transaccion.get(i)[1];
              tipo = (String)transaccion.get(i)[2];
              String fechaS= fecha.toString();
-             System.out.println(fechaS);
+             StringTokenizer st = new StringTokenizer(fechaS,"-") ;
+             String anio = st.nextToken().trim();
+             String mes = st.nextToken().trim();
+             String diaTok = st.nextToken().trim();
+             StringTokenizer st2 = new StringTokenizer(diaTok," ");
+             String dia = st2.nextToken().trim();
+             String union = anio+"/"+mes+"/"+dia ;
+             BigDecimal idCuenta = (BigDecimal)transaccion.get(i)[3];
+             Query buscarUsername = em.createNativeQuery("Select u.user_name,u.id from Usuario u, Cuenta c where c.id=? and c.Usuario_id=u.id").setParameter(1,idCuenta) ;
+             List<Object[]> listaUser = buscarUsername.getResultList();
+             String username = (String)listaUser.get(0)[0];
+             String devolver = cantidad + "$" + tipo + "$" + union + "$" + username;
+             listaDevolver.add(devolver);
+             System.out.println(devolver) ;
          }
-         return devolver ;
+         return listaDevolver ;
      }
 }

@@ -5,6 +5,8 @@
  */
 package Conecciones;
 
+import java.sql.Date;
+
 /**
  *
  * @author santi
@@ -12,4 +14,5 @@ package Conecciones;
 public interface ConeccionBases {
     void CrearUsuario();
     void CrearGrupo();
+    void CrearLiderGrupo(int idGrupo, int idnuevoLider,Date date);
 }
