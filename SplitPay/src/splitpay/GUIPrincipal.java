@@ -3,11 +3,15 @@ package splitpay;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 
+import Controladores.CuentaJpaController;
+import Controladores.UsuarioJpaController;
 import Negocio.Grupo;
 import Negocio.Usuario;
 
@@ -45,6 +49,7 @@ public class GUIPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public GUIPrincipal() {
+		this.setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 660);
 		contentPane = new JPanel();
@@ -110,11 +115,18 @@ public class GUIPrincipal extends JFrame {
 	}
 	
 	// cuando el usuario da clic en iniciar sesion 
-	public void pasarInicio(){
+	public void singnOut(){
 		if(inicio == null)
 		{
 			inicio = new PInicioSec(this);
 		}
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
+		
+		UsuarioJpaController contro = new UsuarioJpaController(emf);
+		System.out.println("USUARIO ACTUAL:_"+userActual);
+		contro.signOut(userActual);
+		userActual = null;
+		System.out.println("cerrar cesion");
 		
 		inicio.setSize(780, 610); // tamano del jpanel
 		inicio.setLocation(5, 5); // posicion dentro del panel principal
@@ -126,4 +138,21 @@ public class GUIPrincipal extends JFrame {
 	}
 	
 	
+
+
+public void pasarInicio(){
+	if(inicio == null)
+	{
+		inicio = new PInicioSec(this);
+	}
+	inicio.setSize(780, 610); // tamano del jpanel
+	inicio.setLocation(5, 5); // posicion dentro del panel principal
+	 
+	panel_p.removeAll();
+	panel_p.add(inicio, BorderLayout.CENTER);
+	panel_p.revalidate();
+	panel_p.repaint();
+}
+
+
 }

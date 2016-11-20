@@ -127,7 +127,7 @@ public JTable mostrarDatos() {
 			StringTokenizer st = new StringTokenizer(grupo, "$");
 			fila.add(st.nextToken().trim());
 			fila.add(st.nextToken().trim());
-			
+			fila.add(st.nextToken().trim());
 			this.rowDataSer.add(fila);
 			System.out.println(fila.toString());
 		}
@@ -146,6 +146,7 @@ public JTable mostrarDatos() {
 			String codigoS =model.getValueAt(filaS, 0).toString();
 			label_s.setText(codigoS);
 			menu.navGruposNor();
+			menu.tutoGrupo();
 			
 			
 			}

@@ -25,6 +25,11 @@ public class PMenu extends JPanel {
 	private JPCrearCuenta crearCuenta = null;
 	private JPContactos contactos = null;
 	private JPMiembrosGr miembros = null;
+	private JPCambiarMiembros cambiarMiem = null;
+	private JPCambiarLider cambiarLid = null;
+	private JPLimpiarDeudas limpiarDeu = null;
+	private JPTutoMain tutoMain = null;
+	private JPTutoGrupo tutoGrupo = null;
 	 
 	/**
 	 * Create the panel.
@@ -50,7 +55,8 @@ public class PMenu extends JPanel {
 		lblNewLabel_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				principal.pasarInicio();
+				principal.singnOut();;
+				
 			}
 		});
 		lblNewLabel_1.setIcon(new ImageIcon("./img/cerrarCesion.png"));
@@ -82,7 +88,7 @@ public class PMenu extends JPanel {
 		PA_opciones.add(opciones, BorderLayout.CENTER);
 		PA_opciones.revalidate();
 		PA_opciones.repaint();
-		
+		tutoMain();
 		
 		
 	}
@@ -296,7 +302,105 @@ public class PMenu extends JPanel {
 		PA_informacion.repaint();
 		System.out.println("PA_miembros");
 	}
+	public void cambiarmiem(){
+		if(cambiarMiem == null)
+		{
+			cambiarMiem = new JPCambiarMiembros(principal,this);
+		}
+		else
+		{
+			//contactos.mostrarDatos();
+		}
+		
+		cambiarMiem.setSize(780, 460); // tamano del jpanel
+		cambiarMiem.setLocation(0, 0); // posicion dentro del panel principal
+		 
+		PA_informacion.removeAll();
+		PA_informacion.add(cambiarMiem, BorderLayout.CENTER);
+		PA_informacion.revalidate();
+		PA_informacion.repaint();
+		System.out.println("PA_miembros");
+	}
 	
+	public void cambiarLid(){
+		if(cambiarLid == null)
+		{
+			cambiarLid = new JPCambiarLider(principal,this);
+		}
+		else
+		{
+			//contactos.mostrarDatos();
+		}
+		
+		cambiarLid.setSize(780, 460); // tamano del jpanel
+		cambiarLid.setLocation(0, 0); // posicion dentro del panel principal
+		 
+		PA_informacion.removeAll();
+		PA_informacion.add(cambiarLid, BorderLayout.CENTER);
+		PA_informacion.revalidate();
+		PA_informacion.repaint();
+		System.out.println("PA_cambiar due");
+	}
+	
+	public void limpiarDeu(){
+		if(limpiarDeu == null)
+		{
+			limpiarDeu = new JPLimpiarDeudas(principal,this);
+		}
+		else
+		{
+			//contactos.mostrarDatos();
+		}
+		
+		limpiarDeu.setSize(780, 460); // tamano del jpanel
+		limpiarDeu.setLocation(0, 0); // posicion dentro del panel principal
+		 
+		PA_informacion.removeAll();
+		PA_informacion.add(limpiarDeu, BorderLayout.CENTER);
+		PA_informacion.revalidate();
+		PA_informacion.repaint();
+		System.out.println("PA_limpiar");
+	}
+	
+	public void tutoMain(){
+		if(tutoMain == null)
+		{
+			tutoMain = new JPTutoMain(principal,this);
+		}
+		else
+		{
+			//contactos.mostrarDatos();
+		}
+		
+		tutoMain.setSize(780, 460); // tamano del jpanel
+		tutoMain.setLocation(0, 0); // posicion dentro del panel principal
+		 
+		PA_informacion.removeAll();
+		PA_informacion.add(tutoMain, BorderLayout.CENTER);
+		PA_informacion.revalidate();
+		PA_informacion.repaint();
+		System.out.println("PA_limpiar");
+	}
+	
+	public void tutoGrupo(){
+		if(tutoGrupo == null)
+		{
+			tutoGrupo = new JPTutoGrupo(principal,this);
+		}
+		else
+		{
+			//contactos.mostrarDatos();
+		}
+		
+		tutoGrupo.setSize(780, 460); // tamano del jpanel
+		tutoGrupo.setLocation(0, 0); // posicion dentro del panel principal
+		 
+		PA_informacion.removeAll();
+		PA_informacion.add(tutoGrupo, BorderLayout.CENTER);
+		PA_informacion.revalidate();
+		PA_informacion.repaint();
+		System.out.println("PA_limpiar");
+	}
 	public void salirGrupo(){
 		gruposActuales();
 		pasarOpcion1();

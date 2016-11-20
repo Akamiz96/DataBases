@@ -17,6 +17,7 @@ import Negocio.Deuda;
 import Negocio.EsAprobada;
 import Negocio.Transaccion;
 import Negocio.TransaccionPK;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -249,20 +250,29 @@ public class TransaccionJpaController implements Serializable {
         }
     }
     
-    public boolean memberToMemberTrans( TransaccionPK referencias, long cantidad, Character tipo )
+    public boolean memberToMemberTrans( int usuarioId, long cuentaId, short idDeuda, long cantidad, char tipo )
     {
         EntityManager em = getEntityManager();
         try
         {   
             EntityTransaction et = em.getTransaction();
             et.begin();
-            Calendar fecha = new GregorianCalendar();
-            Transaccion trans = new Transaccion( referencias, new Date(fecha.get(Calendar.YEAR), fecha.get(Calendar.MONTH), fecha.get(Calendar.DATE)), cantidad, tipo);
-            create(trans);
+            Query insertar = em.createNativeQuery("INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(?,CURRENT_DATE,?,?,?,?,?)");
+            Query consecutivo = em.createNativeQuery("select max(id) from Transaccion");
+            int idPK = ((BigDecimal)consecutivo.getSingleResult()).intValue() + 1;
+            insertar.setParameter(1, idPK);
+            insertar.setParameter(2, cantidad);
+            insertar.setParameter(3, cuentaId);
+            insertar.setParameter(4, usuarioId);
+            insertar.setParameter(5, idDeuda);
+            insertar.setParameter(6, tipo);
+            insertar.executeUpdate();
+            System.out.println("Controladores.TransaccionJpaController.memberToMemberTrans()------------------: ");
             et.commit();
         }
         catch(Exception e)
         {
+            System.out.println(e);
             return false;
         }
         finally

@@ -44,7 +44,7 @@ public class NavGrupoAdm extends JPanel {
 		JButton btnCuentasDueo = new JButton("Cambiar miembros");
 		btnCuentasDueo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				cambiarmiemb();
 			}
 		});
 		btnCuentasDueo.setHorizontalAlignment(SwingConstants.LEFT);
@@ -52,10 +52,20 @@ public class NavGrupoAdm extends JPanel {
 		panel.add(btnCuentasDueo);
 		
 		JButton btnDeudas = new JButton("Cambiar lider");
+		btnDeudas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cambiarlid();
+			}
+		});
 		btnDeudas.setBounds(145, 11, 129, 52);
 		panel.add(btnDeudas);
 		
 		JButton btnCrearGrupo = new JButton("limpiar deudas");
+		btnCrearGrupo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				limpiarDeu();
+			}
+		});
 		btnCrearGrupo.setBounds(284, 11, 128, 52);
 		panel.add(btnCrearGrupo);
 		
@@ -83,6 +93,15 @@ public class NavGrupoAdm extends JPanel {
 	
 	private void salirGrupo(){
 		menu.salirGrupo();
+	}
+	private void cambiarmiemb(){
+		menu.cambiarmiem();
+	}
+	private void cambiarlid(){
+		menu.cambiarLid();
+	}
+	private void limpiarDeu(){
+		menu.limpiarDeu();
 	}
 
 }

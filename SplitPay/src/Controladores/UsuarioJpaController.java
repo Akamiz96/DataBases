@@ -8,21 +8,29 @@ package Controladores;
 import Controladores.exceptions.IllegalOrphanException;
 import Controladores.exceptions.NonexistentEntityException;
 import Controladores.exceptions.PreexistingEntityException;
+
 import java.io.Serializable;
+
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
 import Negocio.Usuario;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import Negocio.Grupo;
 import Negocio.Ubicacion;
 import Negocio.Cuenta;
 import Negocio.PerteneceA;
 import Negocio.Lidergrupo;
 import Negocio.Deuda;
+
 import java.math.BigDecimal;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -556,7 +564,7 @@ public class UsuarioJpaController implements Serializable {
         }
     }
     
-    public Usuario signIn( String userName, String contrasena )
+    public Usuario signIn( String userName, String contrasena )throws SQLException
     {
         EntityManager em = getEntityManager();
         Usuario user = null;
@@ -572,17 +580,16 @@ public class UsuarioJpaController implements Serializable {
             update.setParameter(1, contrasena);
             update.executeUpdate();
             et.commit();
+            return user;
         }
         catch( Exception e )
         {
-            System.out.println(e);
-            return user;
+            throw new SQLException();
         }
         finally
         {
-            em.close();      
+            em.close();
         }
-        return user;
     }
     
     public void signOut( Usuario user )
@@ -692,19 +699,23 @@ public class UsuarioJpaController implements Serializable {
         List<Object[]> idContactoUsuario = buscarIdContacto.getResultList();
         for (i = 0; i < idContactoUsuario.size(); i++) {
             BigDecimal idContacto = (BigDecimal) idContactoUsuario.get(i)[0];
-            Query buscarUsuario = em.createNativeQuery("Select u.nombre,u.email,u.numeroTelefono,u.user_name from Usuario u Where u.id=? ").setParameter(1, idContacto.intValueExact());
+            Query buscarUsuario = em.createNativeQuery("Select u.nombre,u.email,u.numeroTelefono,u.user_name,\"online\" from Usuario u Where u.id=? ").setParameter(1, idContacto.intValueExact());
             // En el Select colocar el estado online, cuando se actualice la tabla de Usuario con ese atributo
             List<Object[]> Usuario = buscarUsuario.getResultList();
-            String nomContacto = (String) Usuario.get(i)[0];
-            String emailContacto = (String) Usuario.get(i)[1];
-            BigDecimal telefonoContacto = (BigDecimal) Usuario.get(i)[2];
-            String usernameContacto = (String) Usuario.get(i)[3];
+            String nomContacto = (String) Usuario.get(0)[0];
+            String emailContacto = (String) Usuario.get(0)[1];
+            BigDecimal telefonoContacto = (BigDecimal) Usuario.get(0)[2];
+            String usernameContacto = (String) Usuario.get(0)[3];
             String telefono = String.valueOf(telefonoContacto);
-            devolver = nomContacto + "$" + emailContacto + "$" + usernameContacto + "$" + telefono;
+            String online = (String)Usuario.get(0)[4] ;
+            devolver = nomContacto + "$" + emailContacto + "$" + usernameContacto + "$" + telefono+"$"+online;
             listaDevolver.add(devolver);
         }
         return listaDevolver;
     }
-     
+     public void Prueba(){
+         EntityManager em = getEntityManager();
+         Query insertar = em.createNamedQuery("INSERT INTO PAIS values (5,'Desconocido')");
+     }
       
 }
