@@ -1,3 +1,172 @@
+-------------------------------------------------------------------------
+--Tablas de Auditorias--
+------------------------------------------------------------------------
+DROP TABLE AuditoriaAprobada CASCADE CONSTRAINTS ;
+
+DROP TABLE AuditoriaContactos CASCADE CONSTRAINTS ;
+
+DROP TABLE AuditoriaCuenta CASCADE CONSTRAINTS ;
+
+DROP TABLE AuditoriaDeuda CASCADE CONSTRAINTS ;
+
+DROP TABLE AuditoriaGrupos CASCADE CONSTRAINTS ;
+
+DROP TABLE AuditoriaPertenece CASCADE CONSTRAINTS ;
+
+DROP TABLE AuditoriaTransaccion CASCADE CONSTRAINTS ;
+
+DROP TABLE AuditoriaUbicacion CASCADE CONSTRAINTS ;
+
+DROP TABLE AuditoriaUsuario CASCADE CONSTRAINTS ;
+
+DROP TABLE AuditoriaLiderGrupo CASCADE CONSTRAINTS ;
+
+
+CREATE TABLE AuditoriaLiderGrupo
+  (
+    fecha         DATE NOT NULL ,
+    operacion     CHAR (1 CHAR) NOT NULL ,
+    valorNuevo    VARCHAR2 (50 CHAR) ,
+    valorAnterior VARCHAR2 (50 CHAR) ,
+    columna       VARCHAR2 (50 CHAR) ,
+    fechaIngreso  DATE NOT NULL ,
+    Grupo_id      NUMBER (5) NOT NULL ,
+    Usuario_id    NUMBER (5) NOT NULL
+  ) ;
+ALTER TABLE AuditoriaLiderGrupo ADD CONSTRAINT AuditoriaLiderGrupo_PK PRIMARY KEY ( operacion, fecha, fechaIngreso, Grupo_id, Usuario_id ) ;
+
+CREATE TABLE AuditoriaAprobada
+  (
+    fecha                        DATE NOT NULL ,
+    operacion                    CHAR (1 CHAR) NOT NULL ,
+    valorNuevo                   VARCHAR2 (50 CHAR) ,
+    valorAnterior                VARCHAR2 (50 CHAR) ,
+    columna                      VARCHAR2 (50 CHAR) ,
+    Transaccion_id               NUMBER (5) NOT NULL ,
+    Transaccion_Deuda_Cuenta_id  NUMBER (10) NOT NULL ,
+    Transaccion_Deuda_Usuario_id NUMBER (5) NOT NULL ,
+    Transaccion_Deuda_id_Deuda   NUMBER (5) NOT NULL ,
+    LiderGrupo_fechaIngreso      DATE NOT NULL ,
+    LiderGrupo_Grupo_id          NUMBER (5) NOT NULL ,
+    LiderGrupo_Usuario_id        NUMBER (5) NOT NULL
+  ) ;
+CREATE INDEX AuditoriaAprobada__IDX ON AuditoriaAprobada
+  (
+    Transaccion_id ASC ,
+    Transaccion_Deuda_Cuenta_id ASC ,
+    Transaccion_Deuda_Usuario_id ASC ,
+    Transaccion_Deuda_id_Deuda ASC ,
+    LiderGrupo_fechaIngreso ASC ,
+    LiderGrupo_Grupo_id ASC ,
+    LiderGrupo_Usuario_id ASC
+  ) ;
+ALTER TABLE AuditoriaAprobada ADD CONSTRAINT AuditoriaAprobada_PK PRIMARY KEY ( fecha, operacion, Transaccion_id, Transaccion_Deuda_Cuenta_id, Transaccion_Deuda_Usuario_id, LiderGrupo_Grupo_id, LiderGrupo_fechaIngreso, LiderGrupo_Usuario_id, Transaccion_Deuda_id_Deuda ) ;
+
+
+CREATE TABLE AuditoriaContactos
+  (
+    fecha      DATE NOT NULL ,
+    operacion  CHAR (1 CHAR) NOT NULL ,
+    id_usuario NUMBER (5) NOT NULL ,
+    contacto   NUMBER (5) NOT NULL
+  ) ;
+ALTER TABLE AuditoriaContactos ADD CONSTRAINT AuditoriaContactos_PK PRIMARY KEY ( fecha, operacion, id_usuario, contacto ) ;
+
+
+CREATE TABLE AuditoriaCuenta
+  (
+    fecha         DATE NOT NULL ,
+    operacion     CHAR (1 CHAR) NOT NULL ,
+    valorNuevo    VARCHAR2 (50 CHAR) NOT NULL ,
+    valorAnterior VARCHAR2 (50 CHAR) NOT NULL ,
+    id_cuenta     NUMBER (10) NOT NULL ,
+    columna       VARCHAR2 (50 CHAR)
+  ) ;
+ALTER TABLE AuditoriaCuenta ADD CONSTRAINT AuditoriaCuenta_PK PRIMARY KEY ( fecha, operacion, valorNuevo, valorAnterior, id_cuenta ) ;
+
+
+CREATE TABLE AuditoriaDeuda
+  (
+    fecha         DATE NOT NULL ,
+    operacion     CHAR (1 CHAR) NOT NULL ,
+    id_deuda      NUMBER (10) NOT NULL ,
+    usuario_id    NUMBER (5) NOT NULL ,
+    cuenta_id     NUMBER (10) NOT NULL ,
+    valorNuevo    VARCHAR2 (50 CHAR) ,
+    valorAnterior VARCHAR2 (50 CHAR) ,
+    columna       VARCHAR2 (50 CHAR)
+  ) ;
+ALTER TABLE AuditoriaDeuda ADD CONSTRAINT AuditoriaDeuda_PK PRIMARY KEY ( fecha, operacion, id_deuda, usuario_id, cuenta_id ) ;
+
+
+CREATE TABLE AuditoriaGrupos
+  (
+    fecha         DATE NOT NULL ,
+    operacion     CHAR (1 CHAR) NOT NULL ,
+    valorNuevo    VARCHAR2 (50 CHAR) NOT NULL ,
+    valorAnterior VARCHAR2 (50 CHAR) NOT NULL ,
+    id_grupo      NUMBER (5) NOT NULL ,
+    columna       VARCHAR2 (50 CHAR)
+  ) ;
+ALTER TABLE AuditoriaGrupos ADD CONSTRAINT AuditoriaGrupos_PK PRIMARY KEY ( id_grupo, valorAnterior, valorNuevo, operacion, fecha ) ;
+
+
+CREATE TABLE AuditoriaPertenece
+  (
+    fecha         DATE NOT NULL ,
+    operacion     CHAR (1 CHAR) NOT NULL ,
+    id_usuario    NUMBER (5) NOT NULL ,
+    grupo_id      NUMBER (10) NOT NULL ,
+    fechaIngreso  DATE NOT NULL ,
+    valorNuevo    VARCHAR2 (50 CHAR) ,
+    valorAnterior VARCHAR2 (50 CHAR) ,
+    columna       VARCHAR2 (50 CHAR)
+  ) ;
+ALTER TABLE AuditoriaPertenece ADD CONSTRAINT AuditoriaPertenece_PK PRIMARY KEY ( operacion, fecha, id_usuario, grupo_id, fechaIngreso ) ;
+
+
+CREATE TABLE AuditoriaTransaccion
+  (
+    fecha            DATE NOT NULL ,
+    operacion        CHAR (1 CHAR) NOT NULL ,
+    valorNuevo       VARCHAR2 (50 CHAR) ,
+    valorAnterior    VARCHAR2 (50 CHAR) ,
+    columna          VARCHAR2 (50 CHAR) ,
+    id_transaccion   NUMBER (5) NOT NULL ,
+    Deuda_Cuenta_id  NUMBER (10) NOT NULL ,
+    Deuda_Usuario_id NUMBER (5) NOT NULL ,
+    Deuda_id_Deuda   NUMBER (10) NOT NULL
+  ) ;
+ALTER TABLE AuditoriaTransaccion ADD CONSTRAINT AuditoriaTransaccion_PK PRIMARY KEY ( fecha, operacion, Deuda_Cuenta_id, id_transaccion, Deuda_Usuario_id, Deuda_id_Deuda ) ;
+
+
+CREATE TABLE AuditoriaUbicacion
+  (
+    fecha          DATE NOT NULL ,
+    operacion      CHAR (1 CHAR) NOT NULL ,
+    id_usuario     NUMBER (5) NOT NULL ,
+    fechaUbicacion DATE NOT NULL ,
+    valorNuevo     VARCHAR2 (50 CHAR) NOT NULL ,
+    valorAntiguo   VARCHAR2 (50 CHAR) NOT NULL ,
+    columna        VARCHAR2 (50 CHAR)
+  ) ;
+ALTER TABLE AuditoriaUbicacion ADD CONSTRAINT AuditoriaUbicacion_PK PRIMARY KEY ( fecha, operacion, valorNuevo, valorAntiguo, id_usuario, fechaUbicacion ) ;
+
+
+CREATE TABLE AuditoriaUsuario
+  (
+    fecha         DATE NOT NULL ,
+    operacion     CHAR (1 CHAR) NOT NULL ,
+    valorNuevo    VARCHAR2 (50 CHAR) NOT NULL ,
+    valorAnterior VARCHAR2 (50 CHAR) NOT NULL ,
+    id_usuario    NUMBER (5) NOT NULL ,
+    columna       VARCHAR2 (50 CHAR)
+  ) ;
+ALTER TABLE AuditoriaUsuario ADD CONSTRAINT AuditoriaUsuario_PK PRIMARY KEY ( fecha, operacion, valorNuevo, valorAnterior, id_usuario ) ;
+
+---------------------------------------------------------------------------
+-- Tablas de diseno --
+---------------------------------------------------------------------------
 DROP TABLE contacto_de;
 Drop Table Ubicacion;
 DROP TABLE Pertenece_a;
@@ -8,10 +177,6 @@ DROP TABLE Deuda;
 DROP TABLE Cuenta;
 DROP TABLE Grupo;
 DROP TABLE Usuario;
--- Generado por Oracle SQL Developer Data Modeler 4.1.3.901
---   en:        2016-11-09 12:03:07 COT
---   sitio:      Oracle Database 11g
---   tipo:      Oracle Database 11g
 
 CREATE TABLE Cuenta
   (
@@ -181,14 +346,8 @@ ALTER TABLE Transaccion ADD CONSTRAINT Transaccion_Deuda_FK FOREIGN KEY ( Deuda_
 
 ALTER TABLE Ubicacion ADD CONSTRAINT Ubicacion_Usuario_FK FOREIGN KEY ( Usuario_id ) REFERENCES Usuario ( id ) ;
 
-delete from cuenta;
-delete from deuda;
-delete from grupo;
-delete from usuario;
-delete from PERTENECE_A;
-delete from TRANSACCION;
-
 INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(1,'andres',5645646,'asdasd@email.com','asddasddssd','contreras', TO_DATE('21-08-1986','DD-MM-YY'),'M','andres111','468946431');
+commit;
 INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(2,'felipe',6456487,'felipe@email.com','12121ww','ramirez',TO_DATE('22-08-1981','DD-MM-YY'),'M','felipe4564','12468qd');
 INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(3,'carlos',11122235,'carlos@email.com','11aa1d12s1','rodrigez',TO_DATE('15-01-1984','DD-MM-YY'),'M','carlos12q','87rer87r');
 INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(4,'pedro',78115775,'pedro@email.com','a121a1001a1','morales',TO_DATE('22-08-1985','DD-MM-YY'),'M','pedro154e','124qqasd');
@@ -202,6 +361,7 @@ INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimi
 INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(12,'juana',784523264,'juana@email.com','f1564sdf1d','perez',TO_DATE('12-12-1982','DD-MM-YY'),'F','juana4564','1214541sdf');
 INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(13,'tulia',4252154,'tulia@email.com','45d4f5fs','jimenez',TO_DATE('12-12-1982','DD-MM-YY'),'F','tulia154','011010101');
 INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(14,'lucia',425215410,'lucia@email.com','5454sdf','torres',TO_DATE('12-12-1987','DD-MM-YY'),'F','lucia81d','31101101');
+commit;
 
 INSERT INTO UBICACION values(TO_DATE('24-08-1986','DD-MM-YY'), 124,24,35,12,34,12,1);
 INSERT INTO UBICACION values(TO_DATE('26-08-1986','DD-MM-YY'), 124,24,35,12,34,12,1);
@@ -264,6 +424,7 @@ INSERT INTO UBICACION values(TO_DATE('21-09-1990','DD-MM-YY'), 124,24,35,12,34,1
 
 INSERT INTO UBICACION values(TO_DATE('21-08-1990','DD-MM-YY'), 124,24,35,12,34,12,14);
 INSERT INTO UBICACION values(TO_DATE('12-08-1992','DD-MM-YY'), 124,24,35,12,34,12,14);
+commit;
 
 INSERT INTO CONTACTO_DE values (1,2);
 INSERT INTO CONTACTO_DE values (1,3);
@@ -339,18 +500,22 @@ INSERT INTO CONTACTO_DE values (11,7);
 INSERT INTO CONTACTO_DE values (11,8);
 INSERT INTO CONTACTO_DE values (11,9);
 INSERT INTO CONTACTO_DE values (11,10);
+commit;
 
 INSERT INTO grupo values(1,'grupo_1',1,TO_DATE('21-08-2016','DD-MM-YY'),'N','N');
+commit;
 INSERT INTO grupo values(2,'grupo_2',2,TO_DATE('14-02-2016','DD-MM-YY'),'N','N');
 INSERT INTO grupo values(3,'grupo_3',3,TO_DATE('29-09-2016','DD-MM-YY'),'N','N');
 INSERT INTO grupo values(4,'grupo_4',1,TO_DATE('05-01-2016','DD-MM-YY'),'N','N');
 INSERT INTO grupo values(5,'grupo_5',1,TO_DATE('20-08-2016','DD-MM-YY'),'N','N');
+commit;
 
 INSERT INTO LIDERGRUPO values(TO_DATE('21-08-2016','DD-MM-YY'),null,1,1);
 INSERT INTO LIDERGRUPO values(TO_DATE('14-02-2016','DD-MM-YY'),null,2,2);
 INSERT INTO LIDERGRUPO values(TO_DATE('21-08-2016','DD-MM-YY'),null,3,3);
 INSERT INTO LIDERGRUPO values(TO_DATE('29-09-2016','DD-MM-YY'),null,4,1);
 INSERT INTO LIDERGRUPO values(TO_DATE('21-08-2016','DD-MM-YY'),null,5,1);
+commit;
 
 INSERT INTO pertenece_a values(1,1,TO_DATE('22-07-2016','DD-MM-YY'),null);
 INSERT INTO pertenece_a values(1,2,TO_DATE('12-07-2016','DD-MM-YY'),null);
@@ -378,8 +543,10 @@ INSERT INTO pertenece_a values(4,3,TO_DATE('22-06-2016','DD-MM-YY'),null);
 INSERT INTO pertenece_a values(7,3,TO_DATE('22-06-2016','DD-MM-YY'),null);
 INSERT INTO pertenece_a values(5,4,TO_DATE('22-06-2016','DD-MM-YY'),null);
 INSERT INTO pertenece_a values(6,4,TO_DATE('22-06-2016','DD-MM-YY'),null);
+commit;
 
 INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(1,'almuerzo',300000,null,TO_DATE('22-07-2016','DD-MM-YY'),1,1);
+commit;
 INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(2,'spotify',800000,null,TO_DATE('03-07-2016','DD-MM-YY'),1,2);
 INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(9,'televisor',450000,null,TO_DATE('22-07-2016','DD-MM-YY'),1,8);
 INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(10,'utiles',600000,null,TO_DATE('22-07-2016','DD-MM-YY'),1,3);
@@ -394,8 +561,7 @@ INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) va
 INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(6,'deuda',250000,null,sysdate,4,6);
 
 INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(11,'evento',600000,null,sysdate,5,5);
-
-
+commit;
 
 INSERT INTO Deuda values(60000,2,1,1);
 INSERT INTO Deuda values(60000,3,1,2);
@@ -457,6 +623,7 @@ INSERT INTO Deuda values(41667,13,6,48);
 
 INSERT INTO Deuda values(300000,4,11,49);
 INSERT INTO Deuda values(300000,8,11,50);
+commit;
 
 INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(1,TO_DATE('23-07-2015','DD-MM-YY'),20000,1,2,1,'P');
 INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(2,TO_DATE('24-07-2015','DD-MM-YY'),2000,1,2,1,'P');
@@ -504,190 +671,3 @@ INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA
 INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(44,TO_DATE('04-07-2015','DD-MM-YY'),5000,11,8,50,'O');
 
 commit;
-
-SELECT * FROM Usuario u WHERE u.user_name = 'andres111' AND u.contrasena = 468946431;
-/*
-
-  Historial de transacciones realizadas por cada grupo discriminando por usuarios que la realizaron
-  
-  3.7.1 Step 2 
-  UsuarioId Nombre Apellido GrupoID NombreGrupo CuentaID CuentaNombre DeudaId TrasaccionID TransaccionFecha TransaccionCantidad
-
-*/
-with CuentaXTransaccion(cuentaid,cuentanombre,cuentagrupoid,deudausuario_id,deuda_deudaid,transaccionid,transaccionfecha,transaccioncantidad) as 
-(select Cuenta.id,Cuenta.nombre,Cuenta.Grupo_Id,Deuda.Usuario_Id,Deuda.Id_Deuda,Transaccion.ID,Transaccion.fecha,Transaccion.cantidad
-from Cuenta,Deuda,Transaccion 
-where Cuenta.id=Deuda.Cuenta_Id and Transaccion.Deuda_Cuenta_Id=Deuda.Cuenta_Id and Transaccion.Deuda_Usuario_Id = Deuda.Usuario_Id and Transaccion.Id_Deuda = Deuda.Id_Deuda
-),
-UsuarioXGrupo (usunombre ,usuapellido,usuid,grunombre,gruid) as 
-(select Usuario.nombre,Usuario.apellidos,Usuario.id,Grupo.nombre, Grupo.ID
-from Grupo,Usuario,Pertenece_a
-where Usuario.id = Pertenece_a.Usuario_id and Grupo.id = Pertenece_a.Grupo_Id and Grupo.DISUELTO='N' )
-
-select  usuid UsuarioID, usunombre Nombre, usuapellido Apellido, gruid Grupo_ID, grunombre GrupoNombre,cuentaid Cuenta_ID,cuentanombre Cuenta_Nombre,deuda_deudaid Deuda_ID,transaccionid Transaccion_ID,transaccionfecha Transaccion_Fecha,transaccioncantidad Transaccion_Cantidad
-from UsuarioXGrupo,CuentaXTransaccion  
-where CuentaXTransaccion.DEUDAUSUARIO_ID = UsuarioXGrupo.USUID and CuentaXTransaccion.CUENTAGRUPOID = UsuarioXGrupo.GRUID;
-
-
-/*
-  3.5.1. step 3 parte A
-*/
-with grupo_usuario(grupo,id_g,usuario,id_u)as
-(select gg.nombre,gg.id as ID_G,uu.nombre ||' '|| uu.apellidos as nombre,uu.id as ID_U
-from grupo gg, pertenece_a pp,usuario uu
-where (gg.id = pp.grupo_id) and pp.usuario_id = uu.id
-),
-
-deudas(grupo,usuario,deudas)as
-(select gg.id as grupo,dd.usuario_id,sum(dd.cantidad) as deudas
-from grupo gg, cuenta cc, deuda dd
-where gg.id = cc.grupo_id and cc.id = dd.cuenta_id
-group by gg.id,dd.usuario_id),
-
-transacciones(grupo,usuario,transacciones)as
-(select gg.id as grupo,dd.usuario_id, sum(-1*tt.cantidad) as transaccion
-from grupo gg, cuenta cc, deuda dd, transaccion tt
-where( gg.id = cc.grupo_id and cc.id = dd.cuenta_id) and (tt.deuda_usuario_id = dd.usuario_id  and tt.deuda_cuenta_id = cc.id)
-group by gg.id,dd.usuario_id),
-
-balance(grupo,usuario,balance)as
-(select *
-from ((select * from transacciones) UNION (select * from deudas))),
-
-balance_final(grupo,usuario,balancef)as
-(select grupo,usuario,sum(balance) from balance group by grupo,usuario)
-
-
-select gg.grupo , gg.usuario, bb.balancef
-from grupo_usuario gg,balance_final bb
-where gg.id_g = bb.grupo and gg.id_u = bb.usuario;
-
-/*
-  3.5.1 Step 3
-  Parte B y C
-*/
-with 
-  cuentas( id, costo, nombrec, dueno_id, grupo ) as
-  ( select id, costo, nombre, Usuario_id, Grupo_id
-    from cuenta ),
-    
-  deudas( grupo, usuario, deudas )as
-  ( select gg.id as grupo, dd.usuario_id, sum( dd.cantidad ) as deudas
-    from grupo gg, cuentas cc, deuda dd
-    where gg.id = cc.grupo and cc.id = dd.cuenta_id
-    group by gg.id, dd.usuario_id ),
-
-  transacciones( grupo, usuario, transacciones ) as
-  ( select gg.id as grupo, dd.usuario_id, -1 * sum( tt.cantidad ) as transaccion
-    from grupo gg, cuentas cc, deuda dd, transaccion tt
-    where ( gg.id = cc.grupo and cc.id = dd.cuenta_id ) and ( tt.deuda_usuario_id = dd.usuario_id and tt.deuda_cuenta_id = cc.id )
-    group by gg.id,dd.usuario_id ),
-
-  balance( grupo, usuario, balance ) as
-  ( select *
-    from ( ( select * from transacciones ) UNION ( select * from deudas ) ) ),
-
-  balance_fin( grupo, usuario, balancef ) as
-  ( select grupo, usuario, sum( balance ) 
-    from balance 
-    group by grupo, usuario ),
-  
-  balance_final( grupo, usuario, balancef ) as
-  ( select grupo, usuario.nombre || ' ' || usuario.apellidos , balancef 
-    from balance_fin, usuario
-    where balance_fin.usuario = usuario.id)
-
-select distinct grupo.nombre as Grupo, nombrec as Cuenta, usuario.nombre as dueño, usuario Deudor, balancef Debe
-from cuentas natural join balance_final, usuario, grupo
-where dueno_id = usuario.id and grupo = grupo.id
-order by grupo.nombre;
-/*
-
-  1) Cuentas Por grupo (CuentasXGrupo)
-  2) Transacciones por grupo (TransaccionesXGrupo)
-  3.6.1
-  
-*/
-DROP VIEW CuentasXGrupo;
-CREATE VIEW CuentasXGrupo AS
-SELECT Grupo.ID GrupoID, Grupo.NOMBRE GrupoNombre, Cuenta.ID CuentaID, Cuenta.NOMBRE CuentaNombre, Cuenta.COSTO Costo, Cuenta.FECHA_CREACION
-FROM Grupo left outer join Cuenta
-ON Grupo.ID = Cuenta.GRUPO_ID;  
-
-DROP VIEW TransaccionesXDeuda;
-CREATE VIEW TransaccionesXDeuda AS 
-SELECT ID_DEUDA, Deuda.CUENTA_ID, Deuda.USUARIO_ID, Transaccion.CANTIDAD, Transaccion.FECHA, Transaccion.TIPO
-FROM Deuda right outer join Transaccion
-USING (ID_DEUDA); 
-
-DROP VIEW DeudasXCuenta;
-CREATE VIEW DeudasXCuenta AS
-SELECT CuentasxGrupo.GRUPOID, CuentasxGrupo.GRUPONOMBRE, CuentasxGrupo.FECHA_CREACION, CuentasxGrupo.CUENTAID, CuentasxGrupo.CUENTANOMBRE, Deuda.USUARIO_ID, Deuda.CANTIDAD, Deuda.ID_DEUDA
-FROM CuentasxGrupo right outer join Deuda
-ON CUENTASXGRUPO.CuentaID = DEUDA.Cuenta_id;
-
-
-DROP VIEW TransaccionesXGrupo;
-CREATE VIEW TransaccionesXGrupo AS 
-with TransaccionesXGrupoI as
-(SELECT DeudasXCuenta.GRUPOID, DeudasXCuenta.GRUPONOMBRE, DeudasXCuenta.CUENTAID, DeudasXCuenta.CUENTANOMBRE, DeudasXCuenta.FECHA_CREACION, DeudasXCuenta.USUARIO_ID Paga, TransaccionesXDeuda.CANTIDAD, TransaccionesXDeuda.FECHA, TransaccionesXDeuda.TIPO
-FROM DeudasXCuenta right outer join TransaccionesXDeuda
-USING (Id_deuda))
-SELECT GRUPOID, GRUPONOMBRE, CUENTAID, CUENTANOMBRE, FECHA_CREACION, Paga PAGAID, Usuario.nombre, Usuario.apellidos, CANTIDAD, FECHA FECHAPAGO, TIPO
-FROM TransaccionesXGrupoI, Usuario
-WHERE paga = Usuario.id;
-
-SELECT * 
-FROM CuentasXGrupo;
-
-SELECT * 
-FROM TransaccionesXGrupo;
-
-/*
-
-  Notificacion a los deudores cuando se genera una nueva Cuenta
-  3.10.1
-  
-*/
-with 
-  cuentas( id, costo, nombrec, dueno_id, grupo ) as
-  ( select id, costo, nombre, Usuario_id, Grupo_id
-    from cuenta
-    where to_char( fecha_creacion ) = to_char( sysdate ) ),
-    
-  deudas( grupo, usuario, deudas )as
-  ( select gg.id as grupo, dd.usuario_id, sum( dd.cantidad ) as deudas
-    from grupo gg, cuentas cc, deuda dd
-    where gg.id = cc.grupo and cc.id = dd.cuenta_id
-    group by gg.id, dd.usuario_id ),
-
-  transacciones( grupo, usuario, transacciones ) as
-  ( select gg.id as grupo, dd.usuario_id, -1 * sum( tt.cantidad ) as transaccion
-    from grupo gg, cuentas cc, deuda dd, transaccion tt
-    where ( gg.id = cc.grupo and cc.id = dd.cuenta_id ) and ( tt.deuda_usuario_id = dd.usuario_id and tt.deuda_cuenta_id = cc.id )
-    group by gg.id,dd.usuario_id ),
-
-  balance( grupo, usuario, balance ) as
-  ( select *
-    from ( ( select * from transacciones ) UNION ( select * from deudas ) ) ),
-
-  balance_fin( grupo, usuario, balancef ) as
-  ( select grupo, usuario, sum( balance ) 
-    from balance 
-    group by grupo, usuario ),
-  
-  balance_final( grupo, usuario, balancef ) as
-  ( select grupo, usuario.nombre, balancef 
-    from balance_fin, usuario
-    where balance_fin.usuario = usuario.id)
-
-select distinct '$' || to_char( costo ) || ' ' || nombrec as New_Bill , usuario.nombre as Paid_by, grupo.nombre as Group_, usuario, balancef
-from cuentas natural join balance_final, usuario, grupo
-where dueno_id = usuario.id and grupo = grupo.id;
-
-/*
-  4.1.8
-*/
-select u2.nombre Quien_paga, u1.nombre Quien_recibe, tt.cantidad Monto, tt.tipo Tipo_Pago
-from transaccion tt, usuario u1, usuario u2, cuenta cc
-where tt.deuda_cuenta_id = cc.id and u1.id = cc.usuario_id and u2.id = tt.deuda_usuario_id;
