@@ -1,7 +1,11 @@
 package splitpay;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.JPanel;
+
 import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
@@ -13,30 +17,37 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+
 import javax.swing.UIManager;
+
+import Controladores.GrupoJpaController;
+import Controladores.UsuarioJpaController;
+
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 
 public class NavGrupoNormal extends JPanel {
 	private GUIPrincipal principal;
 	private PMenu menu;
+	private JButton btnNewButton;
+
 	/**
 	 * Create the panel.
 	 */
 	public NavGrupoNormal(GUIPrincipal principal, PMenu menu) {
-		
+
 		this.principal = principal;
 		this.menu = menu;
 		setLayout(null);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLUE);
 		panel.setBounds(0, 0, 780, 87);
-		
+
 		add(panel);
 		panel.setLayout(null);
-		
-		JButton btnNewButton = new JButton("Opc. Administrador");
+
+		btnNewButton = new JButton("Opc. Administrador");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				opcionAdm();
@@ -45,7 +56,7 @@ public class NavGrupoNormal extends JPanel {
 		btnNewButton.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNewButton.setBounds(422, 11, 128, 52);
 		panel.add(btnNewButton);
-		
+
 		JButton btnCuentasDueo = new JButton("Crear cuenta");
 		btnCuentasDueo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -55,7 +66,7 @@ public class NavGrupoNormal extends JPanel {
 		btnCuentasDueo.setHorizontalAlignment(SwingConstants.LEFT);
 		btnCuentasDueo.setBounds(10, 11, 125, 52);
 		panel.add(btnCuentasDueo);
-		
+
 		JButton btnDeudas = new JButton("Transacciones");
 		btnDeudas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -64,7 +75,7 @@ public class NavGrupoNormal extends JPanel {
 		});
 		btnDeudas.setBounds(145, 11, 129, 52);
 		panel.add(btnDeudas);
-		
+
 		JButton btnCrearGrupo = new JButton("Miembros");
 		btnCrearGrupo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -73,7 +84,7 @@ public class NavGrupoNormal extends JPanel {
 		});
 		btnCrearGrupo.setBounds(284, 11, 128, 52);
 		panel.add(btnCrearGrupo);
-		
+
 		JButton btnCrearCuenta = new JButton("salir de grupo");
 		btnCrearCuenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -83,32 +94,52 @@ public class NavGrupoNormal extends JPanel {
 		btnCrearCuenta.setBackground(new Color(250, 128, 114));
 		btnCrearCuenta.setBounds(642, 11, 128, 52);
 		panel.add(btnCrearCuenta);
-		
+
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon("./img/fondoOpciones.png"));
 		label.setBounds(0, 0, 780, 87);
 		panel.add(label);
+		RevisarDueno();
 
 	}
-	
-	private void opcionAdm()
+
+	public void RevisarDueno()
 	{
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
+		
+		GrupoJpaController contro = new GrupoJpaController(emf);
+		
+		
+		if(principal.userActual.getId() != contro.revisarDueno(principal.grupoActual)){
+			
+			btnNewButton.setEnabled(false);
+			System.out.println("No es dueno");
+		}
+		else
+		{
+			System.out.println("es dueno");
+			btnNewButton.setEnabled(true);
+		}
+	}
+
+	private void opcionAdm() {
 		menu.navGruposAdm();
 	}
-	
-	private void salirGrupo(){
+
+	private void salirGrupo() {
 		menu.salirGrupo();
 	}
-	private void crearCuenta(){
+
+	private void crearCuenta() {
 		menu.crearCuenta();
 	}
-	
-	private void transacciones(){
-		
+
+	private void transacciones() {
+
 		menu.trasacciones();
 	}
-	
-	private void miembros(){
+
+	private void miembros() {
 		menu.miembros();
 	}
 }

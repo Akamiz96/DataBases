@@ -167,16 +167,25 @@ ALTER TABLE AuditoriaUsuario ADD CONSTRAINT AuditoriaUsuario_PK PRIMARY KEY ( fe
 ---------------------------------------------------------------------------
 -- Tablas de diseno --
 ---------------------------------------------------------------------------
-DROP TABLE contacto_de;
-Drop Table Ubicacion;
-DROP TABLE Pertenece_a;
-DROP TABLE Es_aprobada;
-DROP TABLE LiderGrupo;
-DROP TABLE Transaccion;
-DROP TABLE Deuda;
-DROP TABLE Cuenta;
-DROP TABLE Grupo;
-DROP TABLE Usuario;
+DROP TABLE Cuenta CASCADE CONSTRAINTS ;
+
+DROP TABLE Deuda CASCADE CONSTRAINTS ;
+
+DROP TABLE Es_aprobada CASCADE CONSTRAINTS ;
+
+DROP TABLE Grupo CASCADE CONSTRAINTS ;
+
+DROP TABLE LiderGrupo CASCADE CONSTRAINTS ;
+
+DROP TABLE Pertenece_a CASCADE CONSTRAINTS ;
+
+DROP TABLE Transaccion CASCADE CONSTRAINTS ;
+
+DROP TABLE Ubicacion CASCADE CONSTRAINTS ;
+
+DROP TABLE Usuario CASCADE CONSTRAINTS ;
+
+DROP TABLE contacto_de CASCADE CONSTRAINTS ;
 
 CREATE TABLE Cuenta
   (
@@ -235,17 +244,17 @@ CREATE TABLE Grupo
     disuelto        CHAR (1 CHAR) NOT NULL ,
     retenido        CHAR (1 CHAR) NOT NULL
   ) ;
-ALTER TABLE Grupo ADD CONSTRAINT disuelto_Invalido CHECK ( disuelto IN ('N', 'S', 'Y')) ;
-ALTER TABLE Grupo ADD CONSTRAINT retenido_Invalido CHECK ( retenido IN ('N', 'S', 'Y')) ;
+ALTER TABLE Grupo ADD CONSTRAINT valor_Disuelto_Invalido CHECK ( disuelto IN ('N', 'S', 'Y')) ;
+ALTER TABLE Grupo ADD CONSTRAINT valor_Retenido_Invalido CHECK ( retenido IN ('N', 'S', 'Y')) ;
 ALTER TABLE Grupo ADD CONSTRAINT Grupo_PK PRIMARY KEY ( id ) ;
 
 
 CREATE TABLE LiderGrupo
   (
-    fechaIngreso     DATE NOT NULL ,
-    fechaSalida      DATE ,
-    Grupo_id         NUMBER (5) NOT NULL ,
-    Usuario_id       NUMBER (5) NOT NULL 
+    fechaIngreso DATE NOT NULL ,
+    fechaSalida  DATE ,
+    Grupo_id     NUMBER (5) NOT NULL ,
+    Usuario_id   NUMBER (5) NOT NULL
   ) ;
 ALTER TABLE LiderGrupo ADD CONSTRAINT LiderGrupo_PK PRIMARY KEY ( fechaIngreso, Grupo_id, Usuario_id ) ;
 
@@ -269,7 +278,7 @@ CREATE TABLE Transaccion
     Deuda_Usuario_id NUMBER (5) NOT NULL ,
     Deuda_Id_Deuda   NUMBER (3) NOT NULL ,
     Tipo             CHAR (1 CHAR) NOT NULL ,
-    fecha_aprobacion DATE 
+    fecha_aprobacion DATE
   ) ;
 ALTER TABLE Transaccion ADD CONSTRAINT Transaccion_PK PRIMARY KEY ( id, Deuda_Cuenta_id, Deuda_Usuario_id, Deuda_Id_Deuda ) ;
 
@@ -303,7 +312,7 @@ CREATE TABLE Usuario
     "online"         CHAR (1 CHAR) DEFAULT 'N' NOT NULL
   ) ;
 ALTER TABLE Usuario ADD CONSTRAINT Genero_Invalido CHECK ( genero  IN ('F', 'M')) ;
-ALTER TABLE Usuario ADD CONSTRAINT Online_invalido CHECK ( "online" IN ('N', 'S', 'Y')) ;
+ALTER TABLE Usuario ADD CONSTRAINT valor_Online_invalido CHECK ( "online" IN ('N', 'S', 'Y')) ;
 ALTER TABLE Usuario ADD CONSTRAINT Usuario_PK PRIMARY KEY ( id ) ;
 ALTER TABLE Usuario ADD CONSTRAINT Usuario_user_name_UN UNIQUE ( user_name ) ;
 
@@ -345,6 +354,17 @@ ALTER TABLE LiderGrupo ADD CONSTRAINT LiderGrupo_Usuario_FK FOREIGN KEY ( Usuari
 ALTER TABLE Transaccion ADD CONSTRAINT Transaccion_Deuda_FK FOREIGN KEY ( Deuda_Cuenta_id, Deuda_Usuario_id, Deuda_Id_Deuda ) REFERENCES Deuda ( Cuenta_id, Usuario_id, Id_Deuda ) ;
 
 ALTER TABLE Ubicacion ADD CONSTRAINT Ubicacion_Usuario_FK FOREIGN KEY ( Usuario_id ) REFERENCES Usuario ( id ) ;
+
+DROP SEQUENCE CU_id_SEQ;
+DROP SEQUENCE GR_id_SEQ;
+DROP SEQUENCE TR_id_SEQ;
+DROP SEQUENCE US_id_SEQ;
+
+CREATE SEQUENCE CU_id_SEQ START WITH 1 MAXVALUE 9999999999 NOCACHE ORDER ;
+CREATE SEQUENCE GR_id_SEQ START WITH 1 MAXVALUE 99999 NOCACHE ORDER ;
+CREATE SEQUENCE TR_id_SEQ START WITH 1 MAXVALUE 99999 NOCACHE ORDER ;
+CREATE SEQUENCE US_id_SEQ START WITH 1 MAXVALUE 99999 NOCACHE ORDER ;
+
 
 INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(1,'andres',5645646,'asdasd@email.com','asddasddssd','contreras', TO_DATE('21-08-1986','DD-MM-YY'),'M','andres111','468946431');
 commit;
