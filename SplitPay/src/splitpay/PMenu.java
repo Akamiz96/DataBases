@@ -99,6 +99,10 @@ public class PMenu extends JPanel {
 			System.out.println("creo navegacion dos");
 			navGruposNor = new NavGrupoNormal(principal,this);
 		}
+		else
+		{
+			navGruposNor.RevisarDueno();
+		}
 		
 		
 		navGruposNor.setSize(780, 87); // tamano del jpanel
@@ -152,7 +156,7 @@ public class PMenu extends JPanel {
 		}
 		else
 		{
-			grupos.limpiar();
+			grupos.mostrarDatos();
 		}
 		grupos.setSize(780, 460); // tamano del jpanel
 		grupos.setLocation(0, 0); // posicion dentro del panel principal
