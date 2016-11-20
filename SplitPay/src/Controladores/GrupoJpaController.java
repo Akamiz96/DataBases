@@ -350,18 +350,18 @@ public class GrupoJpaController implements Serializable {
             em.close();
         }
     }
-    public List<String> UsuariosdeGrupo(int idGrupo) {
+    public List<BigDecimal> UsuariosdeGrupo(int idGrupo) {
         EntityManager em = getEntityManager();
         Query buscarNombres;
         buscarNombres = em.createNativeQuery("SELECT distinct u.nombre,u.id FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =u.id and p.Grupo_id= ?").setParameter(1, idGrupo); //Probar de esta forma
         List<Object[]> listaNombres = buscarNombres.getResultList();
-        List<String> nombresUsuario = new ArrayList<String>();
+        List<BigDecimal> idsUsuario = new ArrayList<BigDecimal>();
         for (int i = 0; i < listaNombres.size(); i++) {
-            String nombre = (String) listaNombres.get(i)[0];
-            nombresUsuario.add(nombre);
-            System.out.println(nombre);
+            BigDecimal idUsu = (BigDecimal) listaNombres.get(i)[1];
+            idsUsuario.add(idUsu);
+            System.out.println(idUsu);
         }
-        return nombresUsuario;
+        return idsUsuario;
     }
     
     public List<String> RealizarBalancedeUsuariosporGrupos(int idGrupo) {
@@ -372,12 +372,12 @@ public class GrupoJpaController implements Serializable {
         // Si ocurre un error puede ser que el emf este en un null, tocaria volver a asignarle el EntityManagerFactory
         buscaridGrupo = em.createNativeQuery("Select g.id,g.nombre from Grupo g Where g.id=?  ").setParameter(1, idGrupo);
         List<Object[]> listidGr = buscaridGrupo.getResultList();
-        List<String> listaUsuarios = UsuariosdeGrupo(idGrupo);
+        List<BigDecimal> listaUsuarios = UsuariosdeGrupo(idGrupo);
         String devolver, nombCuenta, balanceS;
         int total = 0, balance;
         List<String> listaDevolver = new ArrayList<String>();
         for (int i = 0; i < listaUsuarios.size(); i++) {
-            Query buscarnombre = em.createNativeQuery("Select u.id,u.user_name from Usuario u Where u.nombre=?  ").setParameter(1, listaUsuarios.get(i));
+            Query buscarnombre = em.createNativeQuery("Select u.id,u.user_name from Usuario u Where u.id=?  ").setParameter(1, listaUsuarios.get(i));
             List<Object[]> listidUsu = buscarnombre.getResultList();
             BigDecimal idUsu = (BigDecimal) listidUsu.get(0)[0];
             List<String> cuentasUsu = controCuenta.RealizarBalanceCuentasdeUsuario(idGrupo, idUsu.intValueExact());
