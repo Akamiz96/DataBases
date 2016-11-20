@@ -54,42 +54,42 @@ public class JPCrearCuenta extends JPanel {
 		
 		JLabel lblNewLabel = new JLabel("Crear Cuenta");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 36));
-		lblNewLabel.setBounds(237, 16, 238, 44);
+		lblNewLabel.setBounds(237, 0, 238, 44);
 		panel.add(lblNewLabel);
 		
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblNombre.setBounds(15, 94, 115, 20);
+		lblNombre.setBounds(15, 71, 115, 20);
 		panel.add(lblNombre);
 		
 		JLabel lblCosto = new JLabel("Costo");
 		lblCosto.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblCosto.setBounds(15, 141, 69, 20);
+		lblCosto.setBounds(25, 110, 69, 20);
 		panel.add(lblCosto);
 		
 		JLabel lblComentarios = new JLabel("Comentarios");
 		lblComentarios.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblComentarios.setBounds(15, 187, 96, 20);
+		lblComentarios.setBounds(15, 146, 96, 20);
 		panel.add(lblComentarios);
 		
 		JLabel lblReci = new JLabel("recibo");
 		lblReci.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblReci.setBounds(429, 95, 69, 20);
+		lblReci.setBounds(462, 55, 69, 20);
 		panel.add(lblReci);
 		
 		TFNombre = new JTextField();
-		TFNombre.setBounds(130, 92, 146, 26);
+		TFNombre.setBounds(130, 69, 146, 26);
 		panel.add(TFNombre);
 		TFNombre.setColumns(10);
 		
 		TFCosto = new JTextField();
 		TFCosto.setColumns(10);
-		TFCosto.setBounds(130, 138, 146, 26);
+		TFCosto.setBounds(130, 108, 146, 26);
 		panel.add(TFCosto);
 		
 		TFComentarios = new JTextField();
 		TFComentarios.setColumns(10);
-		TFComentarios.setBounds(130, 184, 146, 26);
+		TFComentarios.setBounds(130, 146, 146, 26);
 		panel.add(TFComentarios);
 		
 		BT_Recibo = new JButton("B");
@@ -98,12 +98,12 @@ public class JPCrearCuenta extends JPanel {
 				explorador();
 			}
 		});
-		BT_Recibo.setBounds(536, 90, 115, 29);
+		BT_Recibo.setBounds(593, 52, 115, 29);
 		panel.add(BT_Recibo);
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");
 		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\bibliotecapuj\\Downloads\\WhatsApp Image 2016-11-20 at 1.59.38 PM.jpeg"));
-		lblNewLabel_1.setBounds(462, 130, 313, 170);
+		lblNewLabel_1.setBounds(462, 94, 313, 170);
 		panel.add(lblNewLabel_1);
 		
 		JButton btnTerminar = new JButton("terminar");
@@ -118,7 +118,7 @@ public class JPCrearCuenta extends JPanel {
 				}
 			}
 		});
-		btnTerminar.setBounds(507, 398, 115, 29);
+		btnTerminar.setBounds(660, 415, 115, 29);
 		panel.add(btnTerminar);
 
 	} 
