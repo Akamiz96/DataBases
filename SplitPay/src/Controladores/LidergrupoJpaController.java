@@ -272,13 +272,4 @@ public class LidergrupoJpaController implements Serializable {
             em.close();
         }
     }
-    public void CrearLider(int idGrupo, int idLider,GregorianCalendar date){
-        Lidergrupo nuevoLider= new Lidergrupo() ;
-        EntityManager em = getEntityManager();
-        //Buscar los datos de Usuario y Lider con los ids y colocarlos en un objeto de cada uno
-        Query buscarLider = em.createNamedQuery("Select id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena,\"online\" from Usuario where id= ?").setParameter(1,idLider) ;
-        Query buscarGrupo = em.createNamedQuery("Select id,nombre,UsuarioDueno_id,Fecha_creacion,disuelto,retenido from Grupo where id = ?").setParameter(1,idGrupo);
-        Grupo grupo = new Grupo();
-        
-    }
 }
