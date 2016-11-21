@@ -5,6 +5,7 @@
  */
 package Controladores;
 
+import Conecciones.ConeccionDatos;
 import Controladores.exceptions.IllegalOrphanException;
 import Controladores.exceptions.NonexistentEntityException;
 import Controladores.exceptions.PreexistingEntityException;
@@ -21,6 +22,9 @@ import java.util.List;
 import Negocio.PerteneceA;
 import Negocio.Lidergrupo;
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 import javax.persistence.EntityManager;
@@ -400,13 +404,22 @@ public class GrupoJpaController implements Serializable {
         EntityManager em = getEntityManager();
         //Averiguar como se hace un dato Date con la fecha actual  
         GregorianCalendar date = new GregorianCalendar() ; // Esto me da la fecha actual
-        LidergrupoJpaController liderController = new LidergrupoJpaController(emf);
+        
+        int anio = date.get(Calendar.YEAR) ;
+        int mes = date.get(Calendar.MONTH)   ;
+        int dia = date.get(Calendar.DAY_OF_MONTH)  ; 
+        String union = anio+"$" + mes + "$"+ dia ;
+        System.out.println(union);
+            Date fecha = new Date(anio, mes, dia);
+        ConeccionDatos ccn = new ConeccionDatos();
         try
         {   EntityTransaction et = em.getTransaction();
             et.begin();
-            Query cambiarEstadoFechaSalida = em.createNativeQuery( "UPDATE LiderGrupo l SET l.fechaSalida=? WHERE l.Grupo_id = ? and l.Usuario_id=? ").setParameter(1,date).setParameter(2,idGrupo).setParameter(3,idLider);
+            Query cambiarEstadoFechaSalida = em.createNativeQuery( "UPDATE LiderGrupo l SET l.fechaSalida=? WHERE l.Grupo_id = ? ").setParameter(1,fecha).setParameter(2,idGrupo);
             cambiarEstadoFechaSalida.executeUpdate();
-            liderController.CrearLider( idGrupo, idLider,date);
+            ccn.CrearLiderGrupo( idGrupo, idLider,fecha);
+            Query cambiarIdLiderGrupo = em.createNativeQuery( "UPDATE Grupo g SET g.UsuarioDueno_id=? WHERE g.id = ? ").setParameter(1,idLider).setParameter(2,idGrupo) ;
+            cambiarIdLiderGrupo.executeUpdate();
             et.commit();
         }
         catch( Exception e )
@@ -419,7 +432,7 @@ public class GrupoJpaController implements Serializable {
         }
     }
     
-  public int revisarDueno(int id)
+    public int revisarDueno(int id)
   {
 	  EntityManager em = getEntityManager();
       Query buscaridGrupo;
@@ -428,5 +441,24 @@ public class GrupoJpaController implements Serializable {
       BigDecimal id2 = (BigDecimal)xd ; 
       int idUser = id2.intValueExact();
       return idUser;
-  }
+}
+    public void cambiarNombreGrupo(int idGrupo, String nombre){
+        EntityManager em = getEntityManager();
+        try{
+        EntityTransaction et = em.getTransaction();
+            et.begin();
+        Query cambiarNombre = em.createNativeQuery("UPDATE GRUPO SET nombre=? WHERE id = ?").setParameter(1,nombre).setParameter(2,idGrupo) ;
+        cambiarNombre.executeUpdate();
+        et.commit() ;
+        }catch( Exception e )
+        {
+            System.out.println(e);
+        }
+        finally
+        {
+            em.close();      
+        }
+        
+    }
+    
 }
