@@ -327,7 +327,7 @@ public class CuentaJpaController implements Serializable {
         return listaDevolver;
     }
     public List<String> TablaUsuarioCuentaGrupo(int idUsu) {
-        // Busco los grupos del usuario 
+        // Busco los grupos del usuario
         // Le mando el id del grupo y el id del usuario al metodo RealizarBalanceCuentasdeUsuario
         //Esto me manda una lista de las cuentas junto con su balance
         EntityManager em = getEntityManager();
@@ -352,12 +352,12 @@ public class CuentaJpaController implements Serializable {
         }
         return listaDevolver;
     }
-    
+
     public List<String> fechas()
     {
         EntityManager em = getEntityManager();
         List<String> resultado;
-        try {   
+        try {
             Query insertar = em.createNativeQuery("select to_char(cuenta.FECHA_CREACION, 'yyyy-month') as fecha from cuenta group by to_char(cuenta.FECHA_CREACION, 'yyyy-month')");
             resultado = insertar.getResultList();
         } catch(Exception e) {
@@ -368,7 +368,7 @@ public class CuentaJpaController implements Serializable {
         }
         return resultado;
     }
-    
+
     public int numBillsPorFecha( int grupoId, String fecha )
     {
         EntityManager em = getEntityManager();
@@ -386,7 +386,7 @@ public class CuentaJpaController implements Serializable {
         }
     	return resultado;
     }
-    
+
     public int totalPorGrupo( int grupoId )
     {
         EntityManager em = getEntityManager();
@@ -403,7 +403,7 @@ public class CuentaJpaController implements Serializable {
         }
     	return resultado;
     }
-    public void crearCuenta(String username,int cantidad) throws SQLException{
+     public void crearCuenta(String username,int cantidad) throws SQLException{
    	 EntityManager em = getEntityManager();
    	 Query q = em.createNativeQuery("select Max(id) FROM Cuenta");
    	 BigDecimal id = (BigDecimal)q.getSingleResult();
@@ -417,7 +417,7 @@ public class CuentaJpaController implements Serializable {
         {
             EntityTransaction et = em.getTransaction();
             et.begin();
-            Query insertar = em.createNativeQuery("INSERT INTO Cuenta values(?,?,?,CU_id_SEQ.NEXTVAL)");
+            Query insertar = em.createNativeQuery("INSERT INTO deuda values(?,?,?,CU_id_SEQ.NEXTVAL)");
             insertar.setParameter(1, cantidad);
             insertar.setParameter(2, idUser);
             insertar.setParameter(3, idMax);
