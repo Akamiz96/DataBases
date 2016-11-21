@@ -5,20 +5,25 @@
  */
 package Conecciones;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -72,7 +77,7 @@ String thinConn = "jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR";
         }
     }
      public void agregarRecibo(String ubi,String nombre,String comentarios,int costo,int idUser,int IdGrupo) throws SQLException, FileNotFoundException{
-
+    	
     	Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR", "is102317", "bQmLIqN6HV");
     	File ubicacion = new File(ubi);
     	FileInputStream archivo = new FileInputStream(ubicacion);
@@ -80,7 +85,7 @@ String thinConn = "jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR";
     	System.out.println(costo);
     	System.out.println(IdGrupo);
     	PreparedStatement ps = conn.prepareStatement("insert into CUENTA values(CU_id_SEQ.NEXTVAL,?,?,?,sysdate,?,?,?)");
-
+    	
     	ps.setString(1, nombre);
     	ps.setInt(2, costo);
     	ps.setBinaryStream(3, archivo,ubicacion.length());
@@ -101,7 +106,22 @@ String thinConn = "jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR";
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
-
+        
+      
     }
-
+    
+    public ImageIcon imagen1(int id) throws SQLException{
+    	Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR", "is102317", "bQmLIqN6HV");
+    	PreparedStatement ps = conn.prepareStatement("select recibo from cuenta where id = ?");
+    	ps.setInt(1, id);
+    	ResultSet result = ps.executeQuery();
+    	byte[] imagen = null;
+    	while(result.next()){
+    		imagen = result.getBytes("recibo");
+    	}
+    	Image img = Toolkit.getDefaultToolkit().createImage(imagen);
+    	ImageIcon icon = new ImageIcon(img);
+    	return icon;
+    }
+   
 }
