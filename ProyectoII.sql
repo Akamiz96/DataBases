@@ -1,3 +1,28 @@
+--------------------------------------------------------------------------
+--DELETES DE LAS TABLAS--
+-------------------------------------------------------------------------
+DELETE FROM AuditoriaAprobada;
+DELETE FROM AuditoriaContactos;
+DELETE FROM AuditoriaCuenta;
+DELETE FROM AuditoriaDeuda;
+DELETE FROM AuditoriaGrupos;
+DELETE FROM AuditoriaPertenece;
+DELETE FROM AuditoriaTransaccion;
+DELETE FROM AuditoriaUbicacion;
+DELETE FROM AuditoriaUsuario;
+DELETE FROM AuditoriaLiderGrupo;
+DELETE FROM Transaccion;
+DELETE FROM Ubicacion;
+DELETE FROM Deuda;
+DELETE FROM Cuenta;
+DELETE FROM ES_APROBADA;
+DELETE FROM Pertenece_a;
+DELETE FROM Cuenta;
+DELETE FROM Contacto_de;
+DELETE FROM LiderGrupo;
+DELETE FROM Grupo;
+DELETE FROM Usuario;
+
 -------------------------------------------------------------------------
 --Tablas de Auditorias--
 ------------------------------------------------------------------------
@@ -366,21 +391,21 @@ CREATE SEQUENCE TR_id_SEQ START WITH 1 MAXVALUE 99999 NOCACHE ORDER ;
 CREATE SEQUENCE US_id_SEQ START WITH 1 MAXVALUE 99999 NOCACHE ORDER ;
 
 
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(1,'andres',5645646,'asdasd@email.com','asddasddssd','contreras', TO_DATE('21-08-1986','DD-MM-YY'),'M','andres111','468946431');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'andres',5645646,'asdasd@email.com','asddasddssd','contreras', TO_DATE('21-08-1986','DD-MM-YY'),'M','andres111','468946431');
 commit;
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(2,'felipe',6456487,'felipe@email.com','12121ww','ramirez',TO_DATE('22-08-1981','DD-MM-YY'),'M','felipe4564','12468qd');
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(3,'carlos',11122235,'carlos@email.com','11aa1d12s1','rodrigez',TO_DATE('15-01-1984','DD-MM-YY'),'M','carlos12q','87rer87r');
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(4,'pedro',78115775,'pedro@email.com','a121a1001a1','morales',TO_DATE('22-08-1985','DD-MM-YY'),'M','pedro154e','124qqasd');
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(5,'pablo',6456487,'pablo@email.com','ppppaaab','ariza',TO_DATE('11-05-1989','DD-MM-YY'),'M','pabloar','87121pgfh');
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(6,'alejandro',5489712,'alejandro@email.com','78dsafd','castro',TO_DATE('22-07-1983','DD-MM-YY'),'M','ajenjadro45d','121err');
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(7,'santiago',712347,'santiago@email.com','445sdggf','salamanca',TO_DATE('12-08-1983','DD-MM-YY'),'M','santiago12','78dsf41');
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(8,'julio',425215410,'julio@email.com','54fd12fg','torres',TO_DATE('12-12-1989','DD-MM-YY'),'M','juliot12','45we1sdf');
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(9,'juan',456473,'juan@email.com','421dff12','castañeda',TO_DATE('12-09-1986','DD-MM-YY'),'M','juan4112','18112');
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(10,'santiago',425215410,'sanchuster@email.com','54fd12fg','chuster',TO_DATE('22-12-1986','DD-MM-YY'),'M','chuster12','41213fgh');
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(11,'maria',1586478,'maria@email.com','sdfsdfc4','lozano',TO_DATE('14-07-1987','DD-MM-YY'),'F','maria486d','13456dfd');
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(12,'juana',784523264,'juana@email.com','f1564sdf1d','perez',TO_DATE('12-12-1982','DD-MM-YY'),'F','juana4564','1214541sdf');
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(13,'tulia',4252154,'tulia@email.com','45d4f5fs','jimenez',TO_DATE('12-12-1982','DD-MM-YY'),'F','tulia154','011010101');
-INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(14,'lucia',425215410,'lucia@email.com','5454sdf','torres',TO_DATE('12-12-1987','DD-MM-YY'),'F','lucia81d','31101101');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'felipe',6456487,'felipe@email.com','12121ww','ramirez',TO_DATE('22-08-1981','DD-MM-YY'),'M','felipe4564','12468qd');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'carlos',11122235,'carlos@email.com','11aa1d12s1','rodrigez',TO_DATE('15-01-1984','DD-MM-YY'),'M','carlos12q','87rer87r');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'pedro',78115775,'pedro@email.com','a121a1001a1','morales',TO_DATE('22-08-1985','DD-MM-YY'),'M','pedro154e','124qqasd');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'pablo',6456487,'pablo@email.com','ppppaaab','ariza',TO_DATE('11-05-1989','DD-MM-YY'),'M','pabloar','87121pgfh');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'alejandro',5489712,'alejandro@email.com','78dsafd','castro',TO_DATE('22-07-1983','DD-MM-YY'),'M','ajenjadro45d','121err');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'santiago',712347,'santiago@email.com','445sdggf','salamanca',TO_DATE('12-08-1983','DD-MM-YY'),'M','santiago12','78dsf41');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'julio',425215410,'julio@email.com','54fd12fg','torres',TO_DATE('12-12-1989','DD-MM-YY'),'M','juliot12','45we1sdf');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'juan',456473,'juan@email.com','421dff12','castañeda',TO_DATE('12-09-1986','DD-MM-YY'),'M','juan4112','18112');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'santiago',425215410,'sanchuster@email.com','54fd12fg','chuster',TO_DATE('22-12-1986','DD-MM-YY'),'M','chuster12','41213fgh');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'maria',1586478,'maria@email.com','sdfsdfc4','lozano',TO_DATE('14-07-1987','DD-MM-YY'),'F','maria486d','13456dfd');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'juana',784523264,'juana@email.com','f1564sdf1d','perez',TO_DATE('12-12-1982','DD-MM-YY'),'F','juana4564','1214541sdf');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'tulia',4252154,'tulia@email.com','45d4f5fs','jimenez',TO_DATE('12-12-1982','DD-MM-YY'),'F','tulia154','011010101');
+INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'lucia',425215410,'lucia@email.com','5454sdf','torres',TO_DATE('12-12-1987','DD-MM-YY'),'F','lucia81d','31101101');
 commit;
 
 INSERT INTO UBICACION values(TO_DATE('24-08-1986','DD-MM-YY'), 124,24,35,12,34,12,1);
@@ -522,12 +547,12 @@ INSERT INTO CONTACTO_DE values (11,9);
 INSERT INTO CONTACTO_DE values (11,10);
 commit;
 
-INSERT INTO grupo values(1,'grupo_1',1,TO_DATE('21-08-2016','DD-MM-YY'),'N','N');
+INSERT INTO grupo values(GR_id_SEQ.NEXTVAL,'grupo_1',1,TO_DATE('21-08-2016','DD-MM-YY'),'N','N');
 commit;
-INSERT INTO grupo values(2,'grupo_2',2,TO_DATE('14-02-2016','DD-MM-YY'),'N','N');
-INSERT INTO grupo values(3,'grupo_3',3,TO_DATE('29-09-2016','DD-MM-YY'),'N','N');
-INSERT INTO grupo values(4,'grupo_4',1,TO_DATE('05-01-2016','DD-MM-YY'),'N','N');
-INSERT INTO grupo values(5,'grupo_5',1,TO_DATE('20-08-2016','DD-MM-YY'),'N','N');
+INSERT INTO grupo values(GR_id_SEQ.NEXTVAL,'grupo_2',2,TO_DATE('14-02-2016','DD-MM-YY'),'N','N');
+INSERT INTO grupo values(GR_id_SEQ.NEXTVAL,'grupo_3',3,TO_DATE('29-09-2016','DD-MM-YY'),'N','N');
+INSERT INTO grupo values(GR_id_SEQ.NEXTVAL,'grupo_4',1,TO_DATE('05-01-2016','DD-MM-YY'),'N','N');
+INSERT INTO grupo values(GR_id_SEQ.NEXTVAL,'grupo_5',1,TO_DATE('20-08-2016','DD-MM-YY'),'N','N');
 commit;
 
 INSERT INTO LIDERGRUPO values(TO_DATE('21-08-2016','DD-MM-YY'),null,1,1);
@@ -565,22 +590,22 @@ INSERT INTO pertenece_a values(5,4,TO_DATE('22-06-2016','DD-MM-YY'),null);
 INSERT INTO pertenece_a values(6,4,TO_DATE('22-06-2016','DD-MM-YY'),null);
 commit;
 
-INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(1,'almuerzo',300000,null,TO_DATE('22-07-2016','DD-MM-YY'),1,1);
+INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(CU_id_SEQ.NEXTVAL,'almuerzo',300000,null,TO_DATE('22-07-2016','DD-MM-YY'),1,1);
 commit;
-INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(2,'spotify',800000,null,TO_DATE('03-07-2016','DD-MM-YY'),1,2);
-INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(9,'televisor',450000,null,TO_DATE('22-07-2016','DD-MM-YY'),1,8);
-INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(10,'utiles',600000,null,TO_DATE('22-07-2016','DD-MM-YY'),1,3);
+INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(CU_id_SEQ.NEXTVAL,'spotify',800000,null,TO_DATE('03-07-2016','DD-MM-YY'),1,2);
+INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(CU_id_SEQ.NEXTVAL,'televisor',450000,null,TO_DATE('22-07-2016','DD-MM-YY'),1,8);
+INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(CU_id_SEQ.NEXTVAL,'utiles',600000,null,TO_DATE('22-07-2016','DD-MM-YY'),1,3);
 
-INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(3,'salida',500000,null,TO_DATE('13-05-2016','DD-MM-YY'),2,3);
-INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(8,'transporte',300000,null,TO_DATE('18-07-2016','DD-MM-YY'),2,1);
+INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(CU_id_SEQ.NEXTVAL,'salida',500000,null,TO_DATE('13-05-2016','DD-MM-YY'),2,3);
+INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(CU_id_SEQ.NEXTVAL,'transporte',300000,null,TO_DATE('18-07-2016','DD-MM-YY'),2,1);
 
-INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(4,'paseo',900000,null,TO_DATE('22-02-2016','DD-MM-YY'),3,4);
-INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(7,'donacion',100000,null,TO_DATE('22-08-2016','DD-MM-YY'),3,7);
+INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(CU_id_SEQ.NEXTVAL,'paseo',900000,null,TO_DATE('22-02-2016','DD-MM-YY'),3,4);
+INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(CU_id_SEQ.NEXTVAL,'donacion',100000,null,TO_DATE('22-08-2016','DD-MM-YY'),3,7);
 
-INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(5,'reunion',100000,null,TO_DATE('22-10-2016','DD-MM-YY'),4,5);
-INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(6,'deuda',250000,null,sysdate,4,6);
+INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(CU_id_SEQ.NEXTVAL,'reunion',100000,null,TO_DATE('22-10-2016','DD-MM-YY'),4,5);
+INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(CU_id_SEQ.NEXTVAL,'deuda',250000,null,sysdate,4,6);
 
-INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(11,'evento',600000,null,sysdate,5,5);
+INSERT INTO cuenta(id,nombre,costo,recibo,FECHA_CREACION,GRUPO_ID,USUARIO_ID) values(CU_id_SEQ.NEXTVAL,'evento',600000,null,sysdate,5,5);
 commit;
 
 INSERT INTO Deuda values(60000,2,1,1);
@@ -645,49 +670,49 @@ INSERT INTO Deuda values(300000,4,11,49);
 INSERT INTO Deuda values(300000,8,11,50);
 commit;
 
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(1,TO_DATE('23-07-2015','DD-MM-YY'),20000,1,2,1,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(2,TO_DATE('24-07-2015','DD-MM-YY'),2000,1,2,1,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(3,TO_DATE('25-07-2015','DD-MM-YY'),10000,1,2,1,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(4,TO_DATE('12-09-2015','DD-MM-YY'),5000,1,3,2,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(5,TO_DATE('12-09-2015','DD-MM-YY'),1000,1,3,2,'O');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(6,TO_DATE('12-09-2015','DD-MM-YY'),3000,1,3,2,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(7,TO_DATE('07-07-2015','DD-MM-YY'),10000,9,1,6,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(8,TO_DATE('07-07-2015','DD-MM-YY'),30000,9,1,6,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(9,TO_DATE('08-10-2015','DD-MM-YY'),22000,9,3,7,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(10,TO_DATE('08-10-2015','DD-MM-YY'),12000,9,3,7,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(11,TO_DATE('08-10-2015','DD-MM-YY'),4000,9,3,7,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(12,TO_DATE('24-05-2015','DD-MM-YY'),35000,10,1,11,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(13,TO_DATE('24-05-2015','DD-MM-YY'),12000,10,1,11,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(14,TO_DATE('22-02-2015','DD-MM-YY'),15000,10,2,12,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(15,TO_DATE('22-02-2015','DD-MM-YY'),15000,10,2,12,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(16,TO_DATE('28-03-2015','DD-MM-YY'),50000,2,7,19,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(17,TO_DATE('28-03-2015','DD-MM-YY'),10000,2,7,19,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(18,TO_DATE('28-03-2015','DD-MM-YY'),5000,2,7,19,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(19,TO_DATE('10-08-2015','DD-MM-YY'),50000,2,8,20,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(20,TO_DATE('10-08-2015','DD-MM-YY'),10000,2,8,20,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(21,TO_DATE('20-07-2015','DD-MM-YY'),35000,3,2,22,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(22,TO_DATE('24-08-2015','DD-MM-YY'),42000,3,4,23,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(23,TO_DATE('01-10-2015','DD-MM-YY'),50000,8,3,25,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(24,TO_DATE('01-10-2015','DD-MM-YY'),5000,8,3,25,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(25,TO_DATE('02-07-2015','DD-MM-YY'),30000,8,4,26,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(26,TO_DATE('03-10-2015','DD-MM-YY'),20000,4,3,29,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(27,TO_DATE('03-10-2015','DD-MM-YY'),12000,4,3,29,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(28,TO_DATE('04-05-2015','DD-MM-YY'),65000,4,11,30,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(29,TO_DATE('11-05-2015','DD-MM-YY'),46000,4,7,31,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(30,TO_DATE('11-05-2015','DD-MM-YY'),8000,4,7,31,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(31,TO_DATE('18-07-2015','DD-MM-YY'),3000,7,3,34,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(32,TO_DATE('25-11-2015','DD-MM-YY'),8000,7,4,35,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(33,TO_DATE('23-07-2015','DD-MM-YY'),3000,5,9,39,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(34,TO_DATE('23-07-2015','DD-MM-YY'),1000,5,9,39,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(35,TO_DATE('19-10-2015','DD-MM-YY'),5000,5,10,40,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(36,TO_DATE('19-05-2015','DD-MM-YY'),9000,5,12,41,'P');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(37,TO_DATE('27-05-2015','DD-MM-YY'),13000,6,5,44,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(38,TO_DATE('27-05-2015','DD-MM-YY'),2000,6,5,44,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(39,TO_DATE('03-07-2015','DD-MM-YY'),18000,6,10,46,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(40,TO_DATE('09-02-2015','DD-MM-YY'),22000,6,13,48,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(41,TO_DATE('05-07-2015','DD-MM-YY'),115000,11,4,49,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(42,TO_DATE('05-07-2015','DD-MM-YY'),8000,11,4,49,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(43,TO_DATE('04-07-2015','DD-MM-YY'),98000,11,8,50,'C');
-INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(44,TO_DATE('04-07-2015','DD-MM-YY'),5000,11,8,50,'O');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('23-07-2015','DD-MM-YY'),20000,1,2,1,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('24-07-2015','DD-MM-YY'),2000,1,2,1,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('25-07-2015','DD-MM-YY'),10000,1,2,1,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('12-09-2015','DD-MM-YY'),5000,1,3,2,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('12-09-2015','DD-MM-YY'),1000,1,3,2,'O');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('12-09-2015','DD-MM-YY'),3000,1,3,2,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('07-07-2015','DD-MM-YY'),10000,9,1,6,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('07-07-2015','DD-MM-YY'),30000,9,1,6,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('08-10-2015','DD-MM-YY'),22000,9,3,7,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('08-10-2015','DD-MM-YY'),12000,9,3,7,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('08-10-2015','DD-MM-YY'),4000,9,3,7,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('24-05-2015','DD-MM-YY'),35000,10,1,11,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('24-05-2015','DD-MM-YY'),12000,10,1,11,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('22-02-2015','DD-MM-YY'),15000,10,2,12,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('22-02-2015','DD-MM-YY'),15000,10,2,12,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('28-03-2015','DD-MM-YY'),50000,2,7,19,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('28-03-2015','DD-MM-YY'),10000,2,7,19,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('28-03-2015','DD-MM-YY'),5000,2,7,19,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('10-08-2015','DD-MM-YY'),50000,2,8,20,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('10-08-2015','DD-MM-YY'),10000,2,8,20,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('20-07-2015','DD-MM-YY'),35000,3,2,22,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('24-08-2015','DD-MM-YY'),42000,3,4,23,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('01-10-2015','DD-MM-YY'),50000,8,3,25,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('01-10-2015','DD-MM-YY'),5000,8,3,25,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('02-07-2015','DD-MM-YY'),30000,8,4,26,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('03-10-2015','DD-MM-YY'),20000,4,3,29,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('03-10-2015','DD-MM-YY'),12000,4,3,29,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('04-05-2015','DD-MM-YY'),65000,4,11,30,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('11-05-2015','DD-MM-YY'),46000,4,7,31,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('11-05-2015','DD-MM-YY'),8000,4,7,31,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('18-07-2015','DD-MM-YY'),3000,7,3,34,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('25-11-2015','DD-MM-YY'),8000,7,4,35,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('23-07-2015','DD-MM-YY'),3000,5,9,39,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('23-07-2015','DD-MM-YY'),1000,5,9,39,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('19-10-2015','DD-MM-YY'),5000,5,10,40,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('19-05-2015','DD-MM-YY'),9000,5,12,41,'P');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('27-05-2015','DD-MM-YY'),13000,6,5,44,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('27-05-2015','DD-MM-YY'),2000,6,5,44,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('03-07-2015','DD-MM-YY'),18000,6,10,46,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('09-02-2015','DD-MM-YY'),22000,6,13,48,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('05-07-2015','DD-MM-YY'),115000,11,4,49,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('05-07-2015','DD-MM-YY'),8000,11,4,49,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('04-07-2015','DD-MM-YY'),98000,11,8,50,'C');
+INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(TR_id_SEQ.NEXTVAL,TO_DATE('04-07-2015','DD-MM-YY'),5000,11,8,50,'O');
 
 commit;
