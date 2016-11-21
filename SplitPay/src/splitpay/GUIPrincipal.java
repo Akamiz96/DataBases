@@ -109,6 +109,7 @@ public class GUIPrincipal extends JFrame {
 			// si ya exixte solo se activa el timer 
 			System.out.println("entro else");
 			crear.timer();
+			crear.limpiar();
 		}
 		crear.setSize(780, 610); // tamano del jpanel
 		crear.setLocation(5, 5); // posicion dentro del panel principal

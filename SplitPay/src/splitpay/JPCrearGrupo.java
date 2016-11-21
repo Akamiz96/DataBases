@@ -1,7 +1,9 @@
 package splitpay;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -22,6 +24,7 @@ import Negocio.Usuario;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -128,14 +131,23 @@ public class JPCrearGrupo extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO crear grupo
 				String nombre = TF_nombreG.getText();
-				if (nombre != null) {
+				if (nombre != null && usernameIC.size() > 1) {
 					int id = principal.userActual.getId();
 					ConeccionDatos conn = new ConeccionDatos();
 					conn.CrearGrupo(nombre, id);
 					agregarMiembros();
+					JOptionPane.showMessageDialog(null,
+							"Se ha creado el grupo");
+					usernameIC.clear();
+					usernameI.clear();
+					usernamesNC.clear();
+					usernamesN.clear();
+					mostrarDatosContactos();
+					mostrarDatosGrupo();
+					TF_nombreG.setText("");
 				} else {
 					JOptionPane.showMessageDialog(null,
-							"No ha eligido un nombre valido");
+							"No ha eligido un nombre de grupo valido o no ha seleccionado miembros para el grupo");
 				}
 			}
 		});
@@ -266,8 +278,12 @@ public class JPCrearGrupo extends JPanel {
 		// TODO Auto-generated method stub NC IC
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
 		PerteneceAJpaController contro = new PerteneceAJpaController(emf);
+		GrupoJpaController controGrupo = new GrupoJpaController(emf);
+		EntityManager em = contro.getEntityManager();
+		Query query = em.createNativeQuery("SELECT MAX (ID) FROM GRUPO");
+		BigDecimal id = (BigDecimal) query.getSingleResult();
 		for(int identificacion : usernameIC){
-			contro.agregarUsuarioAGrupo(identificacion, principal.grupoActual);
+			contro.agregarUsuarioAGrupo(identificacion, Integer.valueOf(id+""));
 		}
 	}
 	

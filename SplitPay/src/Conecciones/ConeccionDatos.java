@@ -35,7 +35,6 @@ public class ConeccionDatos implements ConeccionBases {
 String thinConn = "jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR";
 
     public void CrearUsuario(String user_name,String nombre,int telefono,String email,String paypal,String apellido,Date fecha, String genero,String contrasena) {
-
         try {
             Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR", "is102317", "bQmLIqN6HV");
             CallableStatement cSmt = conn.prepareCall("{call RegistrarUsuario (?,?,?,?,?,?,?,?,?,?)");
