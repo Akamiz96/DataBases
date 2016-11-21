@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.TrayIcon;
+import java.awt.TrayIcon.MessageType;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -22,6 +24,8 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JOptionPane;
+import oracle.jdbc.driver.Message;
 
 public class JPTransacciones extends JPanel {
 	private GUIPrincipal principal;
@@ -147,6 +151,9 @@ public class JPTransacciones extends JPanel {
             long cuentaId = new Long(cuentaID.get(tableCuenta.getSelectedRow()));
             System.out.println("splitpay.JPTransacciones.memberToMemberTrans()");
             short deudaId = (short) controDeuda.DeudasdeUsuario((int) cuentaId, principal.userActual.getId());
-            System.out.println(controTrans.memberToMemberTrans(principal.userActual.getId(), cuentaId, deudaId, cantidad, tipo));
+            if(controTrans.memberToMemberTrans(principal.userActual.getId(), cuentaId, deudaId, cantidad, tipo))
+                JOptionPane.showMessageDialog(null, "La Transaccion se ha realizado", "Transaccion Exitosa",JOptionPane.INFORMATION_MESSAGE);
+            else
+                JOptionPane.showMessageDialog(null, "Transaccion Fallida", "Error", JOptionPane.ERROR_MESSAGE);
         }
 }
