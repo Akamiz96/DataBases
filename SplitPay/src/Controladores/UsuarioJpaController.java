@@ -6,6 +6,7 @@
  */
 package Controladores;
 
+import Conecciones.ConeccionDatos;
 import Controladores.exceptions.IllegalOrphanException;
 import Controladores.exceptions.NonexistentEntityException;
 import Controladores.exceptions.PreexistingEntityException;
@@ -31,6 +32,7 @@ import Negocio.Lidergrupo;
 import Negocio.Deuda;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
@@ -768,4 +770,27 @@ public class UsuarioJpaController implements Serializable {
             return false ;
         }
     }
+        public void crearUsuario(String user_name,String nombre,int telefono,String email,String paypal,String apellido,Date fecha, String genero,String contrasena){
+            ConeccionDatos cn = new ConeccionDatos();
+         EntityManager em = getEntityManager();
+        try
+        {   
+            EntityTransaction et = em.getTransaction();
+            et.begin();
+            cn.CrearUsuario(user_name,nombre,telefono,email,paypal,apellido,fecha,genero,contrasena);
+            et.commit();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+          
+        }
+        finally
+        {
+            em.close();
+        }
+        }
+     public void EliminarUsuarioGrupo(){
+         
+     }
 }

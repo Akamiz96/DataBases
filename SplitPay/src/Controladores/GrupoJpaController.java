@@ -523,5 +523,26 @@ public class GrupoJpaController implements Serializable {
         return resultado;
  
    }
+    
+     public void crearGrupo(String nombre, int duenoID){
+        ConeccionDatos cn = new ConeccionDatos();
+         EntityManager em = getEntityManager();
+        try
+        {   
+            EntityTransaction et = em.getTransaction();
+            et.begin();
+            cn.CrearGrupo(nombre, duenoID);
+            et.commit();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+          
+        }
+        finally
+        {
+            em.close();
+        }
+    }
 
 }
