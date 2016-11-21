@@ -56,7 +56,7 @@ public class JPCambiarMiembros extends JPanel {
 		scrollPane_1.setBounds(515, 130, 235, 384);
 		panel.add(scrollPane_1);
 		
-		table_2 = new JTable();
+		table_2 = getTable_2();
 		scrollPane_1.setViewportView(table_2);
 		
 		JButton btnAdicionar = new JButton("Adicionar");
@@ -65,7 +65,7 @@ public class JPCambiarMiembros extends JPanel {
 				//TODO ADICIONAR UN MIEMBRO
 			}
 		});
-		btnAdicionar.setBounds(378, 228, 89, 23);
+		btnAdicionar.setBounds(378, 261, 89, 23);
 		panel.add(btnAdicionar);
 		
 		JButton btnRetirar = new JButton("Retirar");
@@ -74,7 +74,7 @@ public class JPCambiarMiembros extends JPanel {
 				//TODO RETIRAR UN MIEMBRO 
 			}
 		});
-		btnRetirar.setBounds(378, 297, 89, 23);
+		btnRetirar.setBounds(378, 349, 89, 23);
 		panel.add(btnRetirar);
 		
 		JLabel lblMiembros = new JLabel("Miembros");
@@ -106,7 +106,7 @@ public class JPCambiarMiembros extends JPanel {
 			columSerV = new Vector(Arrays.asList(this.columnSer));
 			rowDataSer = new Vector();
 			table_2 = new JTable(this.rowDataSer, columSerV);
-			scrollPane.setViewportView(table_2);
+			scrollPane_1.setViewportView(table_2);
 
 		}
 		return table_2;
