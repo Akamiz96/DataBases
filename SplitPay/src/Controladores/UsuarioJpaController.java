@@ -655,9 +655,10 @@ public class UsuarioJpaController implements Serializable {
         UsuarioJpaController controUsu= new UsuarioJpaController(emf);
         for (z = 0; z < Grupos.size(); z++) {
             total2 = new BigDecimal("0");
-            buscarCuentas = em.createNativeQuery("Select c.id,c.nombre from Cuenta c Where c.Grupo_id=? ").setParameter(1, Grupos.get(z));
+            buscarCuentas = em.createNativeQuery("Select c.id,c.nombre,c.Usuario_id from Cuenta c Where c.Grupo_id=? ").setParameter(1, Grupos.get(z));
             List<Object[]> listaCuentas = buscarCuentas.getResultList();
             List<BigDecimal> idCuentas = new ArrayList<BigDecimal>();
+            
             buscarNombreGrupo = em.createNativeQuery("Select g.nombre,g.id from Grupo g Where g.id=? ").setParameter(1, Grupos.get(z));
             List<Object[]> nombreGrupo = buscarNombreGrupo.getResultList();
             String nombreGr = (String) nombreGrupo.get(0)[0];
@@ -666,6 +667,7 @@ public class UsuarioJpaController implements Serializable {
             BigDecimal idGru = (BigDecimal)nombreGrupo.get(0)[1]; 
             //devolver =  ; //Devolver seria igual al nombre del grupo, cuando lo busque ;
             for (i = 0; i < listaCuentas.size(); i++) {
+                BigDecimal usuCuentaID =(BigDecimal)listaCuentas.get(i)[2];
                 BigDecimal id_cuenta = (BigDecimal) listaCuentas.get(i)[0];
                 idCuentas.add(id_cuenta);
                 System.out.println("Este es el id de la cuenta : " + id_cuenta);
@@ -690,18 +692,20 @@ public class UsuarioJpaController implements Serializable {
                     total2 = total2.add(total);
                 }
                 if (deuda_cuenta.size() == 0) {
+                    System.out.println("DEUDA CUENTA SIZE == 0");
                     System.out.println("Entro a que la deuda esta vacia");
                 	System.out.println("Este es el id del usuario " + idUsu );
                 	System.out.println("Este es el id del grupo "+ idGru);
-                    buscarDuenoCuenta = em.createNativeQuery("Select c.costo,c.nombre from Cuenta c Where c.Grupo_id=? and c.Usuario_id=?").setParameter(1, idGru).setParameter(2, idUsu);
+                    buscarDuenoCuenta = em.createNativeQuery("Select c.costo,c.nombre from Cuenta c Where c.Grupo_id=? and c.Usuario_id=? and c.id= ?").setParameter(1, idGru).setParameter(2, idUsu).setParameter(3,id_cuenta);
                     List<Object[]> listaCosto = buscarDuenoCuenta.getResultList();
                     if(listaCosto.size()==0){
                     	total = new BigDecimal(0) ;
                     	total2 = total2.add(total);     	
                     }
                     else{
+                        String nomCuenta = (String)listaCosto.get(0)[1];
                     	costoCuenta = (BigDecimal) listaCosto.get(0)[0];
-                        System.out.println("Es dueno de la cuenta y vale "+costoCuenta );
+                        System.out.println("ES DUENO DE LA CUENTA "+nomCuenta+ " y vale "+costoCuenta );
                         total = costoCuenta;
                         System.out.println("Esto es total "+total);
                         total2 = total2.add(total);
