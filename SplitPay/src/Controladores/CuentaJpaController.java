@@ -310,18 +310,17 @@ public class CuentaJpaController implements Serializable {
                     sumaTransacciones = sumaTransacciones.add(cant_Transaccion);
                     total = sumaTransacciones.subtract(deuda_cantidad);
                 }
-                devolver = devolver + "$" + total;
+                devolver = devolver + "$" + total + "$" + id_cuenta;
                 System.out.println("Esto es total : " + devolver);
                 listaDevolver.add(devolver);
             }
             if (deuda_cuenta.size() == 0) {
                 buscarDuenoCuenta = em.createNativeQuery("Select c.costo,c.nombre from Cuenta c Where c.Grupo_id=? and c.Usuario_id=?").setParameter(1, idGrupo).setParameter(2, idUsu);
                 List<Object[]> listaCosto = buscarDuenoCuenta.getResultList();
-                
                 if(listaCosto.size()!=0){
                     BigDecimal costoCuenta = (BigDecimal) listaCosto.get(0)[0];
                     total = costoCuenta;
-                devolver = devolver + "$" + total;
+                devolver = devolver + "$" + total+ "$"+ id_cuenta;
                 listaDevolver.add(devolver);
                 System.out.println(" Esto es el costo de la cuenta en la que es dueño : " + devolver);
                 }

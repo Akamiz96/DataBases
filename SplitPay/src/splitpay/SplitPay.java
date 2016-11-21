@@ -45,6 +45,8 @@ public class SplitPay {
         }
         */
         UsuarioJpaController controUsu = new UsuarioJpaController(emf) ;
-        controUsu.RealizarBalanceGruposdeUsuario(1);
+        //controUsu.RealizarBalanceGruposdeUsuario(1);
+        CuentaJpaController controCuenta = new CuentaJpaController(emf) ;
+        controCuenta.TablaUsuarioCuentaGrupo(1) ;
     }
 }
