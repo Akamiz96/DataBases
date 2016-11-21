@@ -119,9 +119,12 @@ String thinConn = "jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR";
     	while(result.next()){
     		imagen = result.getBytes("recibo");
     	}
-    	Image img = Toolkit.getDefaultToolkit().createImage(imagen);
-    	ImageIcon icon = new ImageIcon(img);
-    	return icon;
+    	if(imagen != null){
+    		Image img = Toolkit.getDefaultToolkit().createImage(imagen);
+    		ImageIcon icon = new ImageIcon(img);
+    		return icon;
+    	}
+    	return null;
     }
    
 }
