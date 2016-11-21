@@ -6,7 +6,6 @@
  */
 package Controladores;
 
-import Conecciones.ConeccionDatos;
 import Controladores.exceptions.IllegalOrphanException;
 import Controladores.exceptions.NonexistentEntityException;
 import Controladores.exceptions.PreexistingEntityException;
@@ -21,6 +20,7 @@ import javax.persistence.criteria.Root;
 import Negocio.Usuario;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +32,7 @@ import Negocio.Lidergrupo;
 import Negocio.Deuda;
 
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.GregorianCalendar;
-import java.util.StringTokenizer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -569,6 +566,7 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
+    
     public Usuario signIn( String userName, String contrasena )throws SQLException
     {
         EntityManager em = getEntityManager();
@@ -586,15 +584,19 @@ public class UsuarioJpaController implements Serializable {
             update.executeUpdate();
             et.commit();
             return user;
+            
         }
         catch( Exception e )
         {
+            
             throw new SQLException();
         }
         finally
         {
-            em.close();
+            em.close(); 
+            
         }
+       
     }
     
     public void signOut( Usuario user )
@@ -614,31 +616,28 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
         
-}
+    }
     public List<BigDecimal> GruposdeUsuario(int idUsuario) {
         EntityManager em = getEntityManager();
         Query buscarNombres;
         //buscarNombres = em.createNativeQuery("SELECT u.nombre,u.id FROM Cuenta u" ); //Probar de esta forma
         // buscarNombres = em.createNativeQuery("SELECT g.nombre,g.id,p.Usuario_id FROM Grupo g,Usuario u,Pertenece_a p");
-        buscarNombres = em.createNativeQuery("SELECT distinct g.nombre,g.id,p.fecha_salida FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =? and g.id = p.Grupo_id").setParameter(1, idUsuario);
+        buscarNombres = em.createNativeQuery("SELECT distinct g.nombre,g.id FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =? and g.id = p.Grupo_id").setParameter(1, idUsuario);
         List<Object[]> gruponombres = buscarNombres.getResultList();
         int x = 0;
         List<BigDecimal> idGrupos = new ArrayList<BigDecimal>();
         for (int i = 0; i < gruponombres.size(); i++) {
-            Timestamp fechaSalida = (Timestamp) gruponombres.get(i)[2] ;
-            if(fechaSalida==null){
-                BigDecimal idGrupo = (BigDecimal) gruponombres.get(i)[1];
+            BigDecimal idGrupo = (BigDecimal) gruponombres.get(x)[1];
             idGrupos.add(idGrupo);
             x++;
-            }
-            
         }
         for (int j = 0; j < idGrupos.size(); j++) {
             System.out.println(idGrupos.get(j));
         }
         return idGrupos;
+
     }
-     public List<String> RealizarBalanceGruposdeUsuario(int idUsu) {
+    public List<String> RealizarBalanceGruposdeUsuario(int idUsu) {
         EntityManager em = getEntityManager();
         Query buscarCuentas;
         Query buscarDeudas;
@@ -685,25 +684,30 @@ public class UsuarioJpaController implements Serializable {
                     }
                     total2 = total2.add(total);
                 }
-               if (deuda_cuenta.size() == 0) {
+                if (deuda_cuenta.size() == 0) {
+                	System.out.println("Este es el id del usuario " + idUsu );
+                	System.out.println("Este es el id del grupo "+ idGru);
                     buscarDuenoCuenta = em.createNativeQuery("Select c.costo,c.nombre from Cuenta c Where c.Grupo_id=? and c.Usuario_id=?").setParameter(1, idGru).setParameter(2, idUsu);
                     List<Object[]> listaCosto = buscarDuenoCuenta.getResultList();
                     if(listaCosto.size()==0){
-                        total = new BigDecimal(0);
-                    total2 = total2.add(total);
+                    	total = new BigDecimal(0) ;
+                    	total2 = total2.add(total);
+                    	
                     }
                     else{
-                        costoCuenta = (BigDecimal) listaCosto.get(0)[0];                  
-                    total = costoCuenta;
-                    total2 = total2.add(total);
+                    	costoCuenta = (BigDecimal) listaCosto.get(0)[0];
+                        total = costoCuenta;
+                        total2 = total2.add(total);
                     }
+                    
+                }
             }
            
             
             devolver = devolver + "$" + total2 + "$" + idGru;
             listaDevolver.add(devolver);
             System.out.println("Este es valor que tiene en el grupo: " + devolver);
-            }
+
         }
         return listaDevolver;
     }
@@ -732,69 +736,36 @@ public class UsuarioJpaController implements Serializable {
         }
         return listaDevolver;
     }
+      
      public List<String> TransaccionesdeUsuario(int idUsu){
          // Como posibilidad, mostrar tambien si la transaccion fue aceptada o no 
          EntityManager em = getEntityManager();
-         Query buscarTransacciones = em.createNativeQuery("Select t.fecha,t.cantidad,t.tipo,t.Deuda_Cuenta_Id  from Transaccion t where t.Deuda_Usuario_Id= ?").setParameter(1,idUsu) ;
+         Query buscarTransacciones = em.createNativeQuery("Select t.fecha,t.cantidad,t.tipo  from Transaccion t where t.Deuda_Usuario_Id= ?").setParameter(1,idUsu) ;
          List<Object[]> transaccion = buscarTransacciones.getResultList();
-         List<String> listaDevolver = new ArrayList<String>();
+         List<String> devolver = new ArrayList<String>();
          BigDecimal cantidad ;
          String tipo ;
+         
          for(int i=0;i<transaccion.size();i++){
-             Timestamp fecha = (Timestamp)transaccion.get(i)[0] ;
+             GregorianCalendar fecha = (GregorianCalendar)transaccion.get(i)[0] ;
              cantidad = (BigDecimal)transaccion.get(i)[1];
              tipo = (String)transaccion.get(i)[2];
              String fechaS= fecha.toString();
-             StringTokenizer st = new StringTokenizer(fechaS,"-") ;
-             String anio = st.nextToken().trim();
-             String mes = st.nextToken().trim();
-             String diaTok = st.nextToken().trim();
-             StringTokenizer st2 = new StringTokenizer(diaTok," ");
-             String dia = st2.nextToken().trim();
-             String union = anio+"/"+mes+"/"+dia ;
-             BigDecimal idCuenta = (BigDecimal)transaccion.get(i)[3];
-             Query buscarUsername = em.createNativeQuery("Select u.user_name,u.id from Usuario u, Cuenta c where c.id=? and c.Usuario_id=u.id").setParameter(1,idCuenta) ;
-             List<Object[]> listaUser = buscarUsername.getResultList();
-             String username = (String)listaUser.get(0)[0];
-             String devolver = cantidad + "$" + tipo + "$" + union + "$" + username;
-             listaDevolver.add(devolver);
-             System.out.println(devolver) ;
+             System.out.println(fechaS);
          }
-         return listaDevolver ;
+         return devolver ;
      }
-        public boolean fechaSalidaUsuario(int idUsu, int idGrupo){
-        EntityManager em = getEntityManager();
-        Query buscarFechaSalida = em.createNativeQuery("Select p.fecha_salida,p.fecha_ingreso from Pertenece_a p where p.Usuario_id=? and p.Grupo_id=?").setParameter(1,idUsu).setParameter(2,idGrupo) ;
-        List<Object[]> fechas = buscarFechaSalida.getResultList();
-        Timestamp fechaSalida = (Timestamp)fechas.get(0)[0] ;
-        if(fechaSalida==null){
-            return true ;
-        }
-        else{
-            return false ;
-        }
-    }
-        public void crearUsuario(String user_name,String nombre,int telefono,String email,String paypal,String apellido,Date fecha, String genero,String contrasena){
-            ConeccionDatos cn = new ConeccionDatos();
+     
+     public boolean fechaSalidaUsuario(int idUsu, int idGrupo){
          EntityManager em = getEntityManager();
-        try
-        {   
-            EntityTransaction et = em.getTransaction();
-            et.begin();
-            cn.CrearUsuario(user_name,nombre,telefono,email,paypal,apellido,fecha,genero,contrasena);
-            et.commit();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
-          
-        }
-        finally
-        {
-            em.close();
-        }
-        }
-     public void EliminarUsuarioGrupo(){
-         
+         Query buscarFechaSalida = em.createNativeQuery("Select p.fecha_salida,p.fecha_ingreso from Pertenece_a p where p.Usuario_id=? and p.Grupo_id=?").setParameter(1,idUsu).setParameter(2,idGrupo) ;
+         List<Object[]> fechas = buscarFechaSalida.getResultList();
+         Timestamp fechaSalida = (Timestamp)fechas.get(0)[0] ;
+         if(fechaSalida==null){
+             return true ;
+         }
+         else{
+             return false ;
+         }
      }
 }

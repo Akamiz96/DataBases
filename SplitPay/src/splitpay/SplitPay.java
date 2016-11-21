@@ -24,6 +24,7 @@ public class SplitPay {
     public static void main(String[] args) {
     	EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
 	CuentaJpaController contro = new CuentaJpaController(emf);
+        /*
         List<String> fechas = contro.fechas();
 	for( String fecha : fechas )
         {
@@ -42,5 +43,8 @@ public class SplitPay {
         {
             System.out.println(nombre);
         }
+        */
+        UsuarioJpaController controUsu = new UsuarioJpaController(emf) ;
+        controUsu.RealizarBalanceGruposdeUsuario(1);
     }
 }
