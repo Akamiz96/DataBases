@@ -72,17 +72,21 @@ String thinConn = "jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR";
         }
     }
      public void agregarRecibo(String ubi,String nombre,String comentarios,int costo,int idUser,int IdGrupo) throws SQLException, FileNotFoundException{
-    	
-    	Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR", "is102311", "bQmLIqN6HV");
+
+    	Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR", "is102317", "bQmLIqN6HV");
     	File ubicacion = new File(ubi);
     	FileInputStream archivo = new FileInputStream(ubicacion);
     	System.out.println(nombre);
     	System.out.println(costo);
     	System.out.println(IdGrupo);
-    	PreparedStatement ps = conn.prepareStatement("insert into CUENTA values(CU_id_SEQ.NEXTVAL,'ASD',10122,null,sysdate,1,2,null)");
+    	PreparedStatement ps = conn.prepareStatement("insert into CUENTA values(CU_id_SEQ.NEXTVAL,?,?,?,sysdate,?,?,?)");
 
-    	//ps.setBinaryStream(1, archivo,ubicacion.length());
-
+    	ps.setString(1, nombre);
+    	ps.setInt(2, costo);
+    	ps.setBinaryStream(3, archivo,ubicacion.length());
+    	ps.setInt(4, IdGrupo);
+    	ps.setInt(5, idUser);
+    	ps.setString(6, comentarios);
     	ps.execute();
 }
     public void CrearLiderGrupo(int idGrupo, int idnuevoLider,Date dateIngreso){
@@ -97,7 +101,7 @@ String thinConn = "jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR";
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
-        
+
     }
-    
+
 }

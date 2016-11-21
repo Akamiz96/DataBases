@@ -41,6 +41,7 @@ public class JPCrearCuenta extends JPanel {
 	private JTextField TFComentarios;
 	private JFileChooser fc;
 	private JButton BT_Recibo;
+	private JLabel lblNewLabel_1;
 	private String ruta;
 	private List<String> usernamesN;
 	private List<String> usernamesNC;
@@ -127,13 +128,6 @@ public class JPCrearCuenta extends JPanel {
 		BT_Recibo.setBounds(593, 52, 115, 29);
 		panel.add(BT_Recibo);
 
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1
-				.setIcon(new ImageIcon(
-						"C:\\Users\\bibliotecapuj\\Downloads\\WhatsApp Image 2016-11-20 at 1.59.38 PM.jpeg"));
-		lblNewLabel_1.setBounds(462, 94, 313, 170);
-		panel.add(lblNewLabel_1);
-
 		JButton btnTerminar = new JButton("terminar");
 		btnTerminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -195,6 +189,13 @@ public class JPCrearCuenta extends JPanel {
 		mostrarDatosC();
 		mostrarDatosG();
 
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(490, 125, 285, 215);
+		panel.add(scrollPane);
+
+						lblNewLabel_1 = new JLabel("");
+						scrollPane.setViewportView(lblNewLabel_1);
+
 	}
 
 	private void explorador() {
@@ -209,11 +210,9 @@ public class JPCrearCuenta extends JPanel {
 			try {
 				ruta = inFile.getPath();
 				System.out.println(ruta);
+				lblNewLabel_1
+				.setIcon(new ImageIcon(ruta));
 
-				/*
-				 * ManejoArchivos.ingresarIPS(empresa, nombreArchivo);
-				 * JOptionPane.showMessageDialog(null, "Exito cargando archivo")
-				 */;
 
 			} catch (Exception e1) {
 
@@ -294,10 +293,10 @@ public class JPCrearCuenta extends JPanel {
 		}
 		/*
 		 * for(String grupo: grupos) {
-		 * 
+		 *
 		 * StringTokenizer st = new StringTokenizer(grupo, "$");
 		 * fila.add(st.nextToken().trim()); fila.add(st.nextToken().trim());
-		 * 
+		 *
 		 * this.rowDataSer.add(fila); System.out.println(fila.toString()); }
 		 */
 		// refrescar el JTable dentro del JScrollPane:
@@ -360,9 +359,9 @@ public class JPCrearCuenta extends JPanel {
 
 	private void agregarDeudas() throws SQLException {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
-		
+
 		CuentaJpaController contro = new CuentaJpaController(emf);
-		
+
 		int valorDeuda = (Integer.parseInt(TFCosto.getText()) / usernamesNC
 				.size());
 		for (String dato : usernamesNC) {
