@@ -437,4 +437,19 @@ public class CuentaJpaController implements Serializable {
             em.close();
         }
     }
+     
+     public List<Cuenta> todasCuentadeGrupo( int idGrupo ) {
+         EntityManager em = getEntityManager();
+         List<Cuenta> resultado;
+         try {
+             Query consulta = em.createNativeQuery("select * from cuenta where grupo_id = ?", Cuenta.class);
+             consulta.setParameter(1, idGrupo);
+             resultado = consulta.getResultList();
+         } catch ( Exception e ) {
+             return null;
+         } finally {
+             em.close();
+         }
+         return resultado;
+     }
 }

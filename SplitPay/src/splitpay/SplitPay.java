@@ -9,9 +9,11 @@ import Negocio.Usuario;
 import java.math.BigDecimal;
 
 import java.util.List;
+import java.util.Vector;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JTable;
 
 /**
  *
@@ -57,4 +59,22 @@ public class SplitPay {
         CuentaJpaController controCuenta = new CuentaJpaController(emf) ;
         controCuenta.TablaUsuarioCuentaGrupo(1) ;
     }
+    
+    
+    /*public void mostrarDatos() {
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
+    CuentaJpaController controCuenta = new CuentaJpaController(emf);
+    List<Object[]> cuentas = controCuenta.todasCuenta();
+    for( int i=0 ; i<cuentas.size();i++) {
+    Vector fila = new Vector();
+    fila.add(cuentas.get(i)[1]);
+    fila.add(cuentas.get(i)[2]) ;
+    rowDataSer.add(fila);
+    BigDecimal idCu = (BigDecimal)cuentas.get(i)[0];
+    idCuenta.add(idCu.intValueExact());
+    }
+    tableCuenta = new JTable(rowDataSer, columSerV);
+    scrollPane.setViewportView(tableCuenta);
+    emf.close();
+    }*/
 }

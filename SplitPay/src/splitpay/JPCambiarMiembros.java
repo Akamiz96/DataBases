@@ -157,6 +157,7 @@ public class JPCambiarMiembros extends JPanel {
                 tableContactos = new JTable(this.rowDataSerContacto, this.columSerVContacto);
 		System.out.println("#ser");
 		scrollPaneContactos.setViewportView(tableContactos);
+                emf.close();
 	}
 
     public void agregarUsuarioAGrupo() {
@@ -169,6 +170,8 @@ public class JPCambiarMiembros extends JPanel {
             JOptionPane.showMessageDialog(null, "Error en agregar el usuario al grupo", "Error",JOptionPane.ERROR_MESSAGE);
         } else if ( filas == 1) {
             JOptionPane.showMessageDialog(null, "Se ha agregado el usario al grupo", "Agregacion Exitosa",JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Ya existe el miembro en el grupo", "Agregacion Fallida",JOptionPane.WARNING_MESSAGE);
         }
     }
     
@@ -182,6 +185,9 @@ public class JPCambiarMiembros extends JPanel {
             JOptionPane.showMessageDialog(null, "Error en elimminar el usuario del grupo", "Error",JOptionPane.ERROR_MESSAGE);
         } else if ( filas == 1) {
             JOptionPane.showMessageDialog(null, "Se ha eliminado el usario del grupo", "Agregacion Exitosa",JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "No existe el miembro en el grupo", "Eliminación Fallida",JOptionPane.WARNING_MESSAGE);
         }
+        
     }
 }
