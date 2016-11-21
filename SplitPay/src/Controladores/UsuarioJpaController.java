@@ -710,12 +710,9 @@ public class UsuarioJpaController implements Serializable {
                     
                 }
             }
-           
-            
             devolver = devolver + "$" + total2 + "$" + idGru;
             listaDevolver.add(devolver);
             System.out.println("Este es valor que tiene en el grupo: " + devolver);
-
         }
         return listaDevolver;
     }
