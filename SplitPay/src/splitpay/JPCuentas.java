@@ -2,6 +2,7 @@ package splitpay;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -168,7 +169,12 @@ public class JPCuentas extends JPanel {
 		if(filaS != -1){
 				int id = idCuenta.get(filaS);
 				ConeccionDatos d = new ConeccionDatos();
-				imagen.setIcon(d.imagen1(id));
+				ImageIcon img = d.imagen1(id);
+				if(img != null)
+					imagen.setIcon(img);
+				else{
+					imagen.setIcon(null);
+				}
 				scrollPane_1.setViewportView(imagen);// refresca el JTable
 			}
 			else {
