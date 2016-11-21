@@ -18,8 +18,12 @@ import Negocio.Grupo;
 import Negocio.Usuario;
 import Negocio.Deuda;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -340,5 +344,56 @@ public class CuentaJpaController implements Serializable {
 
         }
         return listaDevolver;
+    }
+    
+    public List<String> fechas()
+    {
+        EntityManager em = getEntityManager();
+        List<String> resultado;
+        try {   
+            Query insertar = em.createNativeQuery("select to_char(cuenta.FECHA_CREACION, 'yyyy-month') as fecha from cuenta group by to_char(cuenta.FECHA_CREACION, 'yyyy-month')");
+            resultado = insertar.getResultList();
+        } catch(Exception e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            em.close();
+        }
+        return resultado;
+    }
+    
+    public int numBillsPorFecha( int grupoId, String fecha )
+    {
+        EntityManager em = getEntityManager();
+        int resultado = 0;
+        try {
+            Query insertar = em.createNativeQuery("select count(*) from cuenta where ? = cuenta.GRUPO_ID AND to_char(cuenta.FECHA_CREACION, 'yyyy-month') like '%'|| ? ||'%' group by to_char(cuenta.FECHA_CREACION, 'yyyy-month')");
+            insertar.setParameter(1, grupoId);
+            insertar.setParameter(2, fecha);
+            resultado = ((BigDecimal) insertar.getSingleResult()).intValue();
+        } catch(Exception e) {
+            System.out.println(e);
+            return -1;
+        } finally {
+            em.close();
+        }
+    	return resultado;
+    }
+    
+    public int totalPorGrupo( int grupoId )
+    {
+        EntityManager em = getEntityManager();
+        int resultado = 0;
+        try {
+            Query insertar = em.createNativeQuery("select count(*) from cuenta where ? = cuenta.GRUPO_ID");
+            insertar.setParameter(1, grupoId);
+            resultado = ((BigDecimal) insertar.getSingleResult()).intValue();
+        } catch(Exception e) {
+            System.out.println(e);
+            return -1;
+        } finally {
+            em.close();
+        }
+    	return resultado;
     }
 }

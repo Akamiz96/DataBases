@@ -30,6 +30,7 @@ public class PMenu extends JPanel {
 	private JPLimpiarDeudas limpiarDeu = null;
 	private JPTutoMain tutoMain = null;
 	private JPTutoGrupo tutoGrupo = null;
+        private JPIformeBills bills = null;
 	 
 	/**
 	 * Create the panel.
@@ -248,20 +249,20 @@ public class PMenu extends JPanel {
 	}
 	
 	public void contactos(){
-		if(contactos == null)
+		if(bills == null)
 		{
-			contactos = new JPContactos(principal,this);
+			bills = new JPIformeBills(principal,this);
 		}
 		else
 		{
-			contactos.mostrarDatos();
+			bills.mostrarDatos();
 		}
 		
-		contactos.setSize(780, 460); // tamano del jpanel
-		contactos.setLocation(0, 0); // posicion dentro del panel principal
+		bills.setSize(780, 460); // tamano del jpanel
+		bills.setLocation(0, 0); // posicion dentro del panel principal
 		 
 		PA_informacion.removeAll();
-		PA_informacion.add(contactos, BorderLayout.CENTER);
+		PA_informacion.add(bills, BorderLayout.CENTER);
 		PA_informacion.revalidate();
 		PA_informacion.repaint();
 		System.out.println("PA_informacion");
