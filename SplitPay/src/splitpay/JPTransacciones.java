@@ -1,5 +1,9 @@
 package splitpay;
 
+import Controladores.CuentaJpaController;
+import Controladores.DeudaJpaController;
+import Controladores.TransaccionJpaController;
+import Negocio.Usuario;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -11,14 +15,25 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.Vector;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 public class JPTransacciones extends JPanel {
 	private GUIPrincipal principal;
 	private PMenu menu;
 	private JTextField textField;
-	private JTable table;
+	private JTable tableCuenta;
 	private JScrollPane scrollPane;
 	private JComboBox comboBox;
+        private String[] columnSer = {"Nombre","Balance"};
+	private Vector rowDataSer;
+	private Vector columSerV;
+        private List<Integer> cuentaID = new ArrayList<>();
 
 	/**
 	 * Create the panel.
@@ -44,7 +59,8 @@ public class JPTransacciones extends JPanel {
 		JButton btnRealizarTransaccion = new JButton("Realizar transaccion");
 		btnRealizarTransaccion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO MEMBER TO MEMBER TRANSACCION
+				memberToMemberTrans(); 
+                                mostrarDatos();
 			}
 		});
 		btnRealizarTransaccion.setBounds(593, 389, 176, 44);
@@ -71,19 +87,25 @@ public class JPTransacciones extends JPanel {
 		scrollPane.setBounds(21, 116, 358, 317);
 		panel.add(scrollPane);
 		
-		table = new JTable();
-		scrollPane.setViewportView(table);
+		tableCuenta = getTable();
+		scrollPane.setViewportView(tableCuenta);
 		
 		JLabel lblCuentas = new JLabel("Cuentas");
 		lblCuentas.setBounds(21, 91, 46, 14);
 		panel.add(lblCuentas);
-
+                mostrarDatos();
 	} 
 	public JScrollPane getScrollPane() {
 		return scrollPane;
 	}
 	public JTable getTable() {
-		return table;
+		if (tableCuenta == null) {			
+			columSerV = new Vector(Arrays.asList(this.columnSer));
+			rowDataSer = new Vector();
+			tableCuenta = new JTable(this.rowDataSer, columSerV);
+			scrollPane.setViewportView(tableCuenta);
+		}
+		return tableCuenta;
 	}
 	public JTextField getTextField() {
 		return textField;
@@ -91,4 +113,40 @@ public class JPTransacciones extends JPanel {
 	public JComboBox getComboBox() {
 		return comboBox;
 	}
+        
+        public void mostrarDatos(){
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
+		CuentaJpaController contro = new CuentaJpaController(emf);
+                rowDataSer = new Vector();
+		List<String> informacion = contro.TablaUsuarioCuentaGrupo(principal.userActual.getId());
+		for( String infCuenta : informacion )
+		{
+			Vector fila = new Vector();
+			StringTokenizer st = new StringTokenizer(infCuenta, "$");
+			fila.add(st.nextToken().trim());
+			fila.add(st.nextToken().trim());
+			this.rowDataSer.add(fila);
+                        cuentaID.add(Integer.parseInt(st.nextToken().trim()));
+		}
+		tableCuenta = new JTable(this.rowDataSer, this.columSerV);
+		System.out.println("#ser");
+		scrollPane.setViewportView(tableCuenta);
+                comboBox.removeAllItems();
+                comboBox.addItem("PayPal");
+                comboBox.addItem("Cash");
+                comboBox.addItem("Other");
+	}
+    
+        public void memberToMemberTrans()
+        {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
+            DeudaJpaController controDeuda = new DeudaJpaController(emf);
+            TransaccionJpaController controTrans = new TransaccionJpaController(emf);
+            char tipo = ((String) comboBox.getSelectedItem()).charAt(0);
+            long cantidad = Long.parseLong(textField.getText());
+            long cuentaId = new Long(cuentaID.get(tableCuenta.getSelectedRow()));
+            System.out.println("splitpay.JPTransacciones.memberToMemberTrans()");
+            short deudaId = (short) controDeuda.DeudasdeUsuario((int) cuentaId, principal.userActual.getId());
+            System.out.println(controTrans.memberToMemberTrans(principal.userActual.getId(), cuentaId, deudaId, cantidad, tipo));
+        }
 }

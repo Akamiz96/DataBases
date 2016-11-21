@@ -491,5 +491,37 @@ public class GrupoJpaController implements Serializable {
         return datosUsuario;
     }
    
+    public List<BigDecimal> listaID()
+    {
+        EntityManager em = getEntityManager();
+        List<BigDecimal> resultado;
+        try {   
+            Query insertar = em.createNativeQuery("select ID from grupo");
+            resultado = insertar.getResultList();
+        } catch(Exception e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            em.close();
+        }
+        return resultado;
+    }
     
+    public List<String> listaNombre()
+    {
+        EntityManager em = getEntityManager();
+        List<String> resultado;
+        try {   
+            Query insertar = em.createNativeQuery("select nombre from grupo");
+            resultado = insertar.getResultList();
+        } catch(Exception e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            em.close();
+        }
+        return resultado;
+ 
+   }
+
 }

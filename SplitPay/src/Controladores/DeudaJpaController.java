@@ -276,7 +276,9 @@ public class DeudaJpaController implements Serializable {
      public int DeudasdeUsuario(int  idCuenta, int idUsu){
          
          EntityManager em = getEntityManager();
-         Query buscarDeuda = em.createNamedQuery("Select d.id, d.cantidad from Deuda d where d.Usuario_id= ? and d.Cuenta_id = ? ").setParameter(1,idUsu).setParameter(2,idCuenta) ;
+         System.out.println("Eto es el id_cuenta "+ idCuenta);
+         System.out.println("Eto es el id_usu "+ idUsu);
+         Query buscarDeuda = em.createNativeQuery("Select d.id_deuda, d.cantidad from Deuda d where d.Usuario_id= ? and d.Cuenta_id = ? ").setParameter(1,idUsu).setParameter(2,idCuenta) ;
          List<Object[]> deuda = buscarDeuda.getResultList();
          BigDecimal idDeudaBig = (BigDecimal)deuda.get(0)[0] ;
          int idDeuda = idDeudaBig.intValueExact();
