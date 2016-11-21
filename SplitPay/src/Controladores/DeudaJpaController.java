@@ -291,5 +291,53 @@ public class DeudaJpaController implements Serializable {
          }
          return idDeuda ;
      }
-    
+    public void resolverDeudas(int idCuenta){
+        //Me toca crear Transacciones para cada usuario que debe es esa cuenta para dejar la deuda en 0
+        //Debo sumar las sumas de las Transaccion que haya hecho un usuario para despues restarlo con la cantidad cuenta para saber si tengo que crear otra Transaccion
+        EntityManager em = getEntityManager();
+        Query buscarCostoCuenta = em.createNativeQuery("Select c.costo,c.nombre from Cuenta c where c.id= ?").setParameter(1,idCuenta) ;
+        List<Object[]> datosCuenta = buscarCostoCuenta.getResultList();
+        BigDecimal costCuenta = (BigDecimal)datosCuenta.get(0)[0] ;
+        int costoCuenta = costCuenta.intValueExact();
+        Query buscarDeuda = em.createNativeQuery("Select d.cantidad,d.Usuario_id,d.Id_Deuda from Deuda d where d.Cuenta_id = ?").setParameter(1,idCuenta) ;
+        List<Object[]> listaDeudas = buscarDeuda.getResultList();
+        TransaccionJpaController controTrans = new TransaccionJpaController(emf) ;
+        BigDecimal idUsu = new BigDecimal(0);
+        for(int i=0;i<listaDeudas.size();i++){
+            int totalDeuda=0;
+            int totalTransaccion =0 ;
+           BigDecimal deudac= (BigDecimal)listaDeudas.get(i)[0] ;
+           BigDecimal deuda_id_usuario = (BigDecimal)listaDeudas.get(i)[1] ;
+           BigDecimal deudaID = (BigDecimal)listaDeudas.get(i)[2] ;
+           System.out.println("Este es el id de la deuda "+ deudaID);
+           System.out.println("Este es el id del usuario "+ deuda_id_usuario);
+           System.out.println("Esta es la cantidad de la deuda " + deudac);
+           int deudaCant = deudac.intValueExact();
+            Query buscarTransacciones = em.createNativeQuery("Select t.cantidad,t.id,t.Deuda_Usuario_Id  from Transaccion t,Usuario u where t.Deuda_Cuenta_id=? and t.Deuda_Id_Deuda=? and u.id = t.Deuda_Usuario_Id").setParameter(1,idCuenta).setParameter(2,deudaID.intValueExact());
+            List<Object[]>listaTrans = buscarTransacciones.getResultList();
+            if(listaTrans.size()!=0){
+             for(int j=0;j<listaTrans.size();j++){
+                BigDecimal cantT= (BigDecimal)listaTrans.get(j)[0] ;
+                int cantTransac = cantT.intValueExact();
+                totalTransaccion = totalTransaccion + cantTransac ;
+                BigDecimal mismoUsuario = (BigDecimal) listaTrans.get(j)[2] ;
+                System.out.println("Este tiene que ser el mismo Usuario "+mismoUsuario );
+                 idUsu=(BigDecimal)listaTrans.get(0)[2];              
+            }   
+            }// Cuando el usuario no hay hecho ninguna transaccion, se hace una transaccion con el total de la deuda         
+            System.out.println("Este es el total de las transacciones "+ totalTransaccion) ;
+            int idUsuInt = deuda_id_usuario.intValueExact();
+            totalDeuda= deudaCant - totalTransaccion ;
+            System.out.println("Este es el usuario "+ idUsuInt);
+            System.out.println("Este es total deuda "+ totalDeuda);
+            if(totalDeuda>0){     
+              System.out.println("Entra al if ");
+                long idCuentaLong=(long)idCuenta ;
+                short idDeudashort = deudaID.shortValueExact() ;
+                controTrans.memberToMemberTrans(idUsuInt, idCuenta, idDeudashort, totalDeuda, 'C') ; 
+                          
+}
+        }
+    }
+
 }
