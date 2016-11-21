@@ -6,19 +6,11 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JComboBox;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class JPCrearGrupo extends JPanel {
 	private GUIPrincipal principal;
 	private PMenu menu;
 	private JTextField TF_nombreG;
-	private JTable table;
-	private JScrollPane scrollPane;
-	private JComboBox comboBox;
 
 	/**
 	 * Create the panel.
@@ -51,41 +43,16 @@ public class JPCrearGrupo extends JPanel {
 		TF_nombreG.setColumns(10);
 		
 		JButton btnAgregar = new JButton("Agregar ");
-		btnAgregar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//TODO Agregar usuario
-			}
-		});
-		btnAgregar.setBounds(531, 309, 154, 33);
+		btnAgregar.setBounds(296, 358, 154, 33);
 		panel.add(btnAgregar);
 		
 		JLabel lblSeleccioneLosIntegrantes = new JLabel("Seleccione los integrantes");
 		lblSeleccioneLosIntegrantes.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblSeleccioneLosIntegrantes.setBounds(10, 105, 214, 27);
 		panel.add(lblSeleccioneLosIntegrantes);
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(40, 160, 231, 276);
-		panel.add(scrollPane);
-		
-		table = new JTable();
-		scrollPane.setViewportView(table);
-		
-		comboBox = new JComboBox();
-		comboBox.setBounds(404, 188, 355, 60);
-		panel.add(comboBox);
 
 	} 
 	public void limpiar(){
 		
-	}
-	public JScrollPane getScrollPane() {
-		return scrollPane;
-	}
-	public JTable getTable() {
-		return table;
-	}
-	public JComboBox getComboBox() {
-		return comboBox;
 	}
 }
