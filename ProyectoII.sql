@@ -216,7 +216,7 @@ CREATE TABLE Cuenta
     id     NUMBER (10) NOT NULL ,
     nombre VARCHAR2 (20 CHAR) NOT NULL ,
     costo  NUMBER (20) NOT NULL ,
-    recibo CLOB ,
+    recibo BLOB ,
     fecha_creacion DATE NOT NULL ,
     Grupo_id       NUMBER (5) NOT NULL ,
     Usuario_id     NUMBER (5) NOT NULL ,
