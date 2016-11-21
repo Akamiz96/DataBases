@@ -9,21 +9,30 @@ import Controladores.exceptions.IllegalOrphanException;
 import Controladores.exceptions.NonexistentEntityException;
 import Controladores.exceptions.PreexistingEntityException;
 import Negocio.Cuenta;
+
 import java.io.Serializable;
+
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
 import Negocio.Grupo;
 import Negocio.Usuario;
 import Negocio.Deuda;
+
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -266,75 +275,59 @@ public class CuentaJpaController implements Serializable {
             em.close();
         }
     }
-
     public List<String> RealizarBalanceCuentasdeUsuario(int idGrupo, int idUsu) {
         EntityManager em = getEntityManager();
         Query buscarCuentas;
         Query buscarDeudas;
         Query buscarTransaccion;
         Query buscarDuenoCuenta;
-        UsuarioJpaController controUsu = new UsuarioJpaController(emf);
         int i, j, z;
-        BigDecimal total, devolverID;
+        BigDecimal total;
         List<String> listaDevolver = new ArrayList<String>();
-        //IF IMPORTANTE
-        if (controUsu.fechaSalidaUsuario(idUsu, idGrupo) == true) {
-            buscarCuentas = em.createNativeQuery("Select c.id,c.nombre from Cuenta c Where c.Grupo_id=? ").setParameter(1, idGrupo);
-            List<Object[]> listaCuentas = buscarCuentas.getResultList();
-            List<BigDecimal> idCuentas = new ArrayList<BigDecimal>();
-            String devolver = "";
-            for (i = 0; i < listaCuentas.size(); i++) {
-                BigDecimal id_cuenta = (BigDecimal) listaCuentas.get(i)[0];
-                idCuentas.add(id_cuenta);
-                //System.out.println(id_cuenta);
-                devolver = (String) listaCuentas.get(i)[1];
-                devolverID = (BigDecimal) listaCuentas.get(i)[0];
-                //System.out.println(devolver);
-                buscarDeudas = em.createNativeQuery("Select d.cantidad,d.Id_Deuda from Deuda d Where d.Usuario_id=? and d.Cuenta_id=? ").setParameter(1, idUsu).setParameter(2, idCuentas.get(i));
-                List<Object[]> deuda_cuenta = buscarDeudas.getResultList();
-                if (deuda_cuenta.size() > 0) {
-                    BigDecimal deuda_cantidad = (BigDecimal) deuda_cuenta.get(0)[0];
-                    BigDecimal id_deuda = (BigDecimal) deuda_cuenta.get(0)[1];
-                    buscarTransaccion = em.createNativeQuery("Select t.cantidad,t.id from Transaccion t Where t.Deuda_Usuario_id=? and t.Deuda_Cuenta_id=? and t.Deuda_Id_Deuda= ? ").setParameter(1, idUsu).setParameter(2, idCuentas.get(i)).setParameter(3, id_deuda);
-                    // Un posible error cuando pase este codigo al proyecto, verificar el nombre de los atributos en la busqueda de la Transaccion como t.Deuda_Id_Deuda
-                    List<Object[]> listaTransacciones = buscarTransaccion.getResultList();
-                    BigDecimal sumaTransacciones = new BigDecimal("0");
-                    BigDecimal mult = new BigDecimal("-1");
-                    total = deuda_cantidad.multiply(mult);
-                    for (j = 0; j < listaTransacciones.size(); j++) {
-                        BigDecimal cant_Transaccion = (BigDecimal) listaTransacciones.get(j)[0];
-                        sumaTransacciones = sumaTransacciones.add(cant_Transaccion);
-                        total = sumaTransacciones.subtract(deuda_cantidad);
-                    }
-                    devolver = devolver + "$" + total + "$" + devolverID;
-                    //Devuelve el nombre de la cuenta, su balance total y el ID de la cuenta
-                    System.out.println("Esto es total : " + devolver);
-                    listaDevolver.add(devolver);
+        buscarCuentas = em.createNativeQuery("Select c.id,c.nombre from Cuenta c Where c.Grupo_id=? ").setParameter(1, idGrupo);
+        List<Object[]> listaCuentas = buscarCuentas.getResultList();
+        List<BigDecimal> idCuentas = new ArrayList<BigDecimal>();
+        String devolver = "";
+        for (i = 0; i < listaCuentas.size(); i++) {
+            BigDecimal id_cuenta = (BigDecimal) listaCuentas.get(i)[0];
+            idCuentas.add(id_cuenta);
+            System.out.println(id_cuenta);
+            devolver = (String) listaCuentas.get(i)[1];
+            System.out.println(devolver);
+            buscarDeudas = em.createNativeQuery("Select d.cantidad,d.Id_Deuda from Deuda d Where d.Usuario_id=? and d.Cuenta_id=? ").setParameter(1, idUsu).setParameter(2, idCuentas.get(i));
+            List<Object[]> deuda_cuenta = buscarDeudas.getResultList();
+            if (deuda_cuenta.size() > 0) {
+                BigDecimal deuda_cantidad = (BigDecimal) deuda_cuenta.get(0)[0];
+                BigDecimal id_deuda = (BigDecimal) deuda_cuenta.get(0)[1];
+                buscarTransaccion = em.createNativeQuery("Select t.cantidad,t.id from Transaccion t Where t.Deuda_Usuario_id=? and t.Deuda_Cuenta_id=? and t.Deuda_Id_Deuda= ? ").setParameter(1, idUsu).setParameter(2, idCuentas.get(i)).setParameter(3, id_deuda);
+                // Un posible error cuando pase este codigo al proyecto, verificar el nombre de los atributos en la busqueda de la Transaccion como t.Deuda_Id_Deuda
+                List<Object[]> listaTransacciones = buscarTransaccion.getResultList();
+                BigDecimal sumaTransacciones = new BigDecimal("0");
+                BigDecimal mult = new BigDecimal("-1");
+                total = deuda_cantidad.multiply(mult);
+                for (j = 0; j < listaTransacciones.size(); j++) {
+                    BigDecimal cant_Transaccion = (BigDecimal) listaTransacciones.get(j)[0];
+                    sumaTransacciones = sumaTransacciones.add(cant_Transaccion);
+                    total = sumaTransacciones.subtract(deuda_cantidad);
                 }
-                if (deuda_cuenta.size() == 0) {
-                    buscarDuenoCuenta = em.createNativeQuery("Select c.costo,c.nombre from Cuenta c Where c.Grupo_id=? and c.Usuario_id=?").setParameter(1, idGrupo).setParameter(2, idUsu);
-                    List<Object[]> listaCosto = buscarDuenoCuenta.getResultList();
-                    if (listaCosto.size() == 0) {
-                        System.out.println("XD");
-                        total= new BigDecimal(0) ;
-                        devolver = devolver + "$" + total + "$" + devolverID;
-                    } else {
-                        BigDecimal costoCuenta = (BigDecimal) listaCosto.get(0)[0];
-                        total = costoCuenta;
-                        devolver = devolver + "$" + total + "$" + devolverID;
-                        listaDevolver.add(devolver);
-                        System.out.println(" Esto es el costo de la cuenta en la que es dueño : " + devolver);
-                    }
-
-                }
+                devolver = devolver + "$" + total;
+                System.out.println("Esto es total : " + devolver);
+                listaDevolver.add(devolver);
+            }
+            if (deuda_cuenta.size() == 0) {
+                buscarDuenoCuenta = em.createNativeQuery("Select c.costo,c.nombre from Cuenta c Where c.Grupo_id=? and c.Usuario_id=?").setParameter(1, idGrupo).setParameter(2, idUsu);
+                List<Object[]> listaCosto = buscarDuenoCuenta.getResultList();
+                BigDecimal costoCuenta = (BigDecimal) listaCosto.get(0)[0];
+                total = costoCuenta;
+                devolver = devolver + "$" + total;
+                listaDevolver.add(devolver);
+                System.out.println(" Esto es el costo de la cuenta en la que es dueño : " + devolver);
             }
         }
-
         return listaDevolver;
     }
-
     public List<String> TablaUsuarioCuentaGrupo(int idUsu) {
-        // Busco los grupos del usuario
+        // Busco los grupos del usuario 
         // Le mando el id del grupo y el id del usuario al metodo RealizarBalanceCuentasdeUsuario
         //Esto me manda una lista de las cuentas junto con su balance
         EntityManager em = getEntityManager();
@@ -344,30 +337,27 @@ public class CuentaJpaController implements Serializable {
         List<String> listaDevolver = new ArrayList<String>();
         String devolver;
         for (int i = 0; i < gruposUsu.size(); i++) {
-            if (controUsu.fechaSalidaUsuario(idUsu, gruposUsu.get(i).intValueExact()) == true) {
-                List<String> cuentaUsu = RealizarBalanceCuentasdeUsuario(gruposUsu.get(i).intValueExact(), idUsu);
-                for (int j = 0; j < cuentaUsu.size(); j++) {
-                    Query nombreGrupo = em.createNativeQuery("Select g.nombre,g.id from Grupo g Where g.id=? ").setParameter(1, gruposUsu.get(i));
-                    List<Object[]> nGrupo = nombreGrupo.getResultList();
-                    String grupo = (String) nGrupo.get(0)[0];
-                    BigDecimal decgrupo = (BigDecimal) nGrupo.get(0)[1];
-                    int id_grupo = decgrupo.intValueExact();
-                    System.out.println("Esto es el nombre del grupo : " + grupo);
-                    devolver = cuentaUsu.get(j) + "$" + grupo + "$" + id_grupo;
-                    System.out.println("Esto es el devolver de tablas " + devolver);
-                    listaDevolver.add(devolver);
-                }
+            List<String> cuentaUsu = RealizarBalanceCuentasdeUsuario(gruposUsu.get(i).intValueExact(), idUsu);
+            for (int j = 0; j < cuentaUsu.size(); j++) {
+                Query nombreGrupo = em.createNativeQuery("Select g.nombre,g.id from Grupo g Where g.id=? ").setParameter(1, gruposUsu.get(i));
+                List<Object[]> nGrupo = nombreGrupo.getResultList();
+                String grupo = (String) nGrupo.get(0)[0];
+                System.out.println("Esto es el nombre del grupo : " + grupo);
+                BigDecimal decgrupo = (BigDecimal) nGrupo.get(0)[1];
+                int id_grupo = decgrupo.intValueExact();
+                devolver = cuentaUsu.get(j) + "$" + grupo+ "$"+id_grupo;
+                listaDevolver.add(devolver);
             }
-        }
 
+        }
         return listaDevolver;
     }
-
+    
     public List<String> fechas()
     {
         EntityManager em = getEntityManager();
         List<String> resultado;
-        try {
+        try {   
             Query insertar = em.createNativeQuery("select to_char(cuenta.FECHA_CREACION, 'yyyy-month') as fecha from cuenta group by to_char(cuenta.FECHA_CREACION, 'yyyy-month')");
             resultado = insertar.getResultList();
         } catch(Exception e) {
@@ -378,7 +368,7 @@ public class CuentaJpaController implements Serializable {
         }
         return resultado;
     }
-
+    
     public int numBillsPorFecha( int grupoId, String fecha )
     {
         EntityManager em = getEntityManager();
@@ -396,7 +386,7 @@ public class CuentaJpaController implements Serializable {
         }
     	return resultado;
     }
-
+    
     public int totalPorGrupo( int grupoId )
     {
         EntityManager em = getEntityManager();
@@ -413,36 +403,35 @@ public class CuentaJpaController implements Serializable {
         }
     	return resultado;
     }
+    public void crearCuenta(String username,int cantidad) throws SQLException{
+   	 EntityManager em = getEntityManager();
+   	 Query q = em.createNativeQuery("select Max(id) FROM Cuenta");
+   	 BigDecimal id = (BigDecimal)q.getSingleResult();
+   	 int idMax = id.intValueExact();
 
-     public void crearCuenta(String username,int cantidad) throws SQLException{
-    	 EntityManager em = getEntityManager();
-    	 Query q = em.createNativeQuery("select Max(id) FROM Cuenta");
-    	 BigDecimal id = (BigDecimal)q.getSingleResult();
-    	 int idMax = id.intValueExact();
+   	  q = em.createNativeQuery("select id FROM Usuario where user_name = ?").setParameter(1, username);
+   	 id = (BigDecimal)q.getSingleResult();
+   	 int idUser = id.intValueExact();
 
-    	  q = em.createNativeQuery("select id FROM Usuario where user_name = ?").setParameter(1, username);
-    	 id = (BigDecimal)q.getSingleResult();
-    	 int idUser = id.intValueExact();
+   	 try
+        {
+            EntityTransaction et = em.getTransaction();
+            et.begin();
+            Query insertar = em.createNativeQuery("INSERT INTO Cuenta values(?,?,?,CU_id_SEQ.NEXTVAL)");
+            insertar.setParameter(1, cantidad);
+            insertar.setParameter(2, idUser);
+            insertar.setParameter(3, idMax);
 
-    	 try
-         {
-             EntityTransaction et = em.getTransaction();
-             et.begin();
-             Query insertar = em.createNativeQuery("INSERT INTO Cuenta values(?,?,?,CU_id_SEQ.NEXTVAL)");
-             insertar.setParameter(1, cantidad);
-             insertar.setParameter(2, idUser);
-             insertar.setParameter(3, idMax);
-
-             insertar.executeUpdate();
-             et.commit();
-         }
-         catch(Exception e)
-         {
-             System.out.println(e);
-         }
-         finally
-         {
-             em.close();
-         }
-   }
+            insertar.executeUpdate();
+            et.commit();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        finally
+        {
+            em.close();
+        }
+  }
 }
