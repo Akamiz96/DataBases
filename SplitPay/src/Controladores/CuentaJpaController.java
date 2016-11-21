@@ -18,10 +18,12 @@ import Negocio.Grupo;
 import Negocio.Usuario;
 import Negocio.Deuda;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -437,13 +439,10 @@ public class CuentaJpaController implements Serializable {
          catch(Exception e)
          {
              System.out.println(e);
-
          }
          finally
          {
              em.close();
          }
-
-
    }
 }

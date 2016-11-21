@@ -685,21 +685,25 @@ public class UsuarioJpaController implements Serializable {
                     }
                     total2 = total2.add(total);
                 }
-                if (deuda_cuenta.size() == 0) {
+               if (deuda_cuenta.size() == 0) {
                     buscarDuenoCuenta = em.createNativeQuery("Select c.costo,c.nombre from Cuenta c Where c.Grupo_id=? and c.Usuario_id=?").setParameter(1, idGru).setParameter(2, idUsu);
                     List<Object[]> listaCosto = buscarDuenoCuenta.getResultList();
-                    costoCuenta = (BigDecimal) listaCosto.get(0)[0];
-                    
+                    if(listaCosto.size()==0){
+                        total = new BigDecimal(0);
+                    total2 = total2.add(total);
+                    }
+                    else{
+                        costoCuenta = (BigDecimal) listaCosto.get(0)[0];                  
                     total = costoCuenta;
                     total2 = total2.add(total);
-                }
+                    }
             }
            
             
             devolver = devolver + "$" + total2 + "$" + idGru;
             listaDevolver.add(devolver);
             System.out.println("Este es valor que tiene en el grupo: " + devolver);
-
+            }
         }
         return listaDevolver;
     }
