@@ -32,6 +32,8 @@ import Negocio.Lidergrupo;
 import Negocio.Deuda;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.persistence.EntityManager;
@@ -671,6 +673,7 @@ public class UsuarioJpaController implements Serializable {
                 if (deuda_cuenta.size() > 0) {
                     BigDecimal deuda_cantidad = (BigDecimal) deuda_cuenta.get(0)[0];
                     BigDecimal id_deuda = (BigDecimal) deuda_cuenta.get(0)[1];
+                    System.out.println("Este es el id de la deuda "+id_deuda );
                     buscarTransaccion = em.createNativeQuery("Select t.cantidad,t.id from Transaccion t Where t.Deuda_Usuario_id=? and t.Deuda_Cuenta_id=? and t.Deuda_Id_Deuda= ? ").setParameter(1, idUsu).setParameter(2, idCuentas.get(i)).setParameter(3, id_deuda);
                     // Un posible error cuando pase este codigo al proyecto, verificar el nombre de los atributos en la busqueda de la Transaccion como t.Deuda_Id_Deuda
                     List<Object[]> listaTransacciones = buscarTransaccion.getResultList();
@@ -679,25 +682,29 @@ public class UsuarioJpaController implements Serializable {
                     total = deuda_cantidad.multiply(mult);
                     for (j = 0; j < listaTransacciones.size(); j++) {
                         BigDecimal cant_Transaccion = (BigDecimal) listaTransacciones.get(j)[0];
+                        System.out.println("Este es la cantidad de la transaccion "+cant_Transaccion );
                         sumaTransacciones = sumaTransacciones.add(cant_Transaccion);
                         total = sumaTransacciones.subtract(deuda_cantidad);
                     }
                     total2 = total2.add(total);
                 }
                 if (deuda_cuenta.size() == 0) {
+                    System.out.println("Entro a que la deuda esta vacia");
                 	System.out.println("Este es el id del usuario " + idUsu );
                 	System.out.println("Este es el id del grupo "+ idGru);
                     buscarDuenoCuenta = em.createNativeQuery("Select c.costo,c.nombre from Cuenta c Where c.Grupo_id=? and c.Usuario_id=?").setParameter(1, idGru).setParameter(2, idUsu);
                     List<Object[]> listaCosto = buscarDuenoCuenta.getResultList();
                     if(listaCosto.size()==0){
                     	total = new BigDecimal(0) ;
-                    	total2 = total2.add(total);
-                    	
+                    	total2 = total2.add(total);     	
                     }
                     else{
                     	costoCuenta = (BigDecimal) listaCosto.get(0)[0];
+                        System.out.println("Es dueno de la cuenta y vale "+costoCuenta );
                         total = costoCuenta;
+                        System.out.println("Esto es total "+total);
                         total2 = total2.add(total);
+                       System.out.println("Esto es TOTAL 2  "+total2);
                     }
                     
                 }
@@ -768,4 +775,16 @@ public class UsuarioJpaController implements Serializable {
              return false ;
          }
      }
+     public void EliminarUsuarioGrupo(int idUsuario, int idGrupo){
+         EntityManager em = getEntityManager();
+         GregorianCalendar date = new GregorianCalendar() ; // Esto me da la fecha actual
+        int anio = date.get(Calendar.YEAR) ;
+        int mes = date.get(Calendar.MONTH)   ;
+        int dia = date.get(Calendar.DAY_OF_MONTH)  ; 
+        String union = anio+"$" + mes + "$"+ dia ;
+            Date fecha = new Date(anio, mes, dia);
+         Query colocarFechaSalida = em.createNativeQuery("UPDATE Pertenece_a SET fecha_salida=? WHERE Usuario_id = ? and Grupo_id = ?").setParameter(1,fecha).setParameter(2,idUsuario).setParameter(3,idGrupo) ;
+         colocarFechaSalida.executeUpdate();
+     }
+     
 }
