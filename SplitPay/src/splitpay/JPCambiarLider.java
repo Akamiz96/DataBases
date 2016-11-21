@@ -5,6 +5,8 @@ import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
 
 public class JPCambiarLider extends JPanel {
 
@@ -27,9 +29,16 @@ public class JPCambiarLider extends JPanel {
 		
 		JLabel lblNewLabel = new JLabel("cambiar lider");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 36));
-		lblNewLabel.setBounds(227, 174, 296, 44);
+		lblNewLabel.setBounds(10, 11, 296, 44);
 		panel.add(lblNewLabel);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(60, 102, 432, 75);
+		panel.add(comboBox);
+		
+		JButton btnConfirmarCambio = new JButton("Confirmar cambio");
+		btnConfirmarCambio.setBounds(623, 112, 115, 55);
+		panel.add(btnConfirmarCambio);
 
 	}
-
 }
