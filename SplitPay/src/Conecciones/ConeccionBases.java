@@ -5,7 +5,8 @@
  */
 package Conecciones;
 
-import java.sql.Date;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
 
 /**
  *
@@ -14,5 +15,5 @@ import java.sql.Date;
 public interface ConeccionBases {
     void CrearUsuario();
     void CrearGrupo();
-    void CrearLiderGrupo(int idGrupo, int idnuevoLider,Date date);
+    void agregarRecibo(String ubi,String nombre,String comentarios,int costo,int idUser,int IdGrupo) throws SQLException, FileNotFoundException;
 }

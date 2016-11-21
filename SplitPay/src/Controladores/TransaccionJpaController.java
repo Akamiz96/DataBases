@@ -264,7 +264,6 @@ public class TransaccionJpaController implements Serializable {
             insertar.setParameter(4, idDeuda);
             insertar.setParameter(5, tipo);
             insertar.executeUpdate();
-            System.out.println("Controladores.TransaccionJpaController.memberToMemberTrans()------------------: ");
             et.commit();
         }
         catch(Exception e)
