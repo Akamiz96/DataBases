@@ -5,6 +5,7 @@ import Controladores.CuentaJpaController;
 import Controladores.GrupoJpaController;
 import Controladores.UsuarioJpaController;
 import Negocio.Grupo;
+import Negocio.Usuario;
 import java.math.BigDecimal;
 
 import java.util.List;
@@ -46,5 +47,11 @@ public class SplitPay {
         */
         UsuarioJpaController controUsu = new UsuarioJpaController(emf) ;
         controUsu.RealizarBalanceGruposdeUsuario(1);
+        List<Usuario> usuarios = controUsu.usuariosDeUnGrupo(1);
+        for( Usuario user : usuarios )
+            System.out.println(user);
+        usuarios = controUsu.contactos(1);
+        for( Usuario user : usuarios )
+            System.out.println(user);
     }
 }

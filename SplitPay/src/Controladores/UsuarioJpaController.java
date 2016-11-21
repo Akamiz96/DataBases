@@ -617,6 +617,7 @@ public class UsuarioJpaController implements Serializable {
         }
         
     }
+    
     public List<BigDecimal> GruposdeUsuario(int idUsuario) {
         EntityManager em = getEntityManager();
         Query buscarNombres;
@@ -767,5 +768,37 @@ public class UsuarioJpaController implements Serializable {
          else{
              return false ;
          }
+     }
+     
+     public List<Usuario> usuariosDeUnGrupo( int idGrupo )
+            {
+                EntityManager em = getEntityManager();
+                List<Usuario> resultado = null;
+                try {   
+                Query consulta = em.createNativeQuery("select DISTINCT u.* from PERTENECE_A, usuario u where PERTENECE_A.USUARIO_ID = u.ID and PERTENECE_A.GRUPO_ID = ?", Usuario.class);
+                consulta.setParameter(1, idGrupo);
+                resultado = consulta.getResultList();
+                } catch( Exception e ) {
+                    return null;
+                } finally {
+                    em.close();
+                }
+                return resultado;
+            }
+     
+     public List<Usuario> contactos( int idUsuario )
+     {
+         EntityManager em = getEntityManager();
+         List<Usuario> resultado = null;
+         try {
+             Query consulta = em.createNativeQuery("select u.* from CONTACTO_DE, usuario u where CONTACTO_DE.USUARIO_ID = ? and CONTACTO_DE.USUARIO_ID1 = u.id", Usuario.class);
+             consulta.setParameter(1, idUsuario);
+             resultado = consulta.getResultList();
+         } catch ( Exception e ) {
+             return null;
+         } finally {
+             em.close();
+         }
+         return resultado;
      }
 }
