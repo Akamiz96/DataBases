@@ -1,16 +1,6 @@
 --------------------------------------------------------------------------
 --DELETES DE LAS TABLAS--
 -------------------------------------------------------------------------
-DELETE FROM AuditoriaAprobada;
-DELETE FROM AuditoriaContactos;
-DELETE FROM AuditoriaCuenta;
-DELETE FROM AuditoriaDeuda;
-DELETE FROM AuditoriaGrupos;
-DELETE FROM AuditoriaPertenece;
-DELETE FROM AuditoriaTransaccion;
-DELETE FROM AuditoriaUbicacion;
-DELETE FROM AuditoriaUsuario;
-DELETE FROM AuditoriaLiderGrupo;
 DELETE FROM Transaccion;
 DELETE FROM Ubicacion;
 DELETE FROM Deuda;
@@ -22,7 +12,16 @@ DELETE FROM Contacto_de;
 DELETE FROM LiderGrupo;
 DELETE FROM Grupo;
 DELETE FROM Usuario;
-
+DELETE FROM AuditoriaAprobada;
+DELETE FROM AuditoriaContactos;
+DELETE FROM AuditoriaCuenta;
+DELETE FROM AuditoriaDeuda;
+DELETE FROM AuditoriaGrupos;
+DELETE FROM AuditoriaPertenece;
+DELETE FROM AuditoriaTransaccion;
+DELETE FROM AuditoriaUbicacion;
+DELETE FROM AuditoriaUsuario;
+DELETE FROM AuditoriaLiderGrupo;
 -------------------------------------------------------------------------
 --Tablas de Auditorias--
 ------------------------------------------------------------------------
@@ -390,6 +389,9 @@ CREATE SEQUENCE GR_id_SEQ START WITH 1 MAXVALUE 99999 NOCACHE ORDER ;
 CREATE SEQUENCE TR_id_SEQ START WITH 1 MAXVALUE 99999 NOCACHE ORDER ;
 CREATE SEQUENCE US_id_SEQ START WITH 1 MAXVALUE 99999 NOCACHE ORDER ;
 
+-------------------------------------------------------------------------------------
+--Insercion de datos a las tablas--
+-------------------------------------------------------------------------------------
 
 INSERT INTO usuario(id,nombre,numeroTelefono,email,Paypal,apellidos,fecha_nacimiento,genero,user_name,contrasena) values(US_id_SEQ.NEXTVAL,'andres',5645646,'asdasd@email.com','asddasddssd','contreras', TO_DATE('21-08-1986','DD-MM-YY'),'M','andres111','468946431');
 commit;
