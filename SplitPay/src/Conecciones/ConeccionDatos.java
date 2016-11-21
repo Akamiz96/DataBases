@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -18,11 +19,12 @@ import java.util.GregorianCalendar;
  * @author santi
  */
 public class ConeccionDatos implements ConeccionBases {
-
+    String username = "is102317";
+    String password = "bQmLIqN6HV";
+    String thinConn = "jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR";
+    
+    @Override
     public void CrearUsuario() {
-        String username = "is102317";
-        String password = "bQmLIqN6HV";
-        String thinConn = "jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR";
         try {
             Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR", "is102311", "DAbTstfDxY");
             CallableStatement cSmt = conn.prepareCall("{call RegistrarUsuario (?,?,?,?,?,?,?,?,?,?)");
@@ -46,6 +48,7 @@ public class ConeccionDatos implements ConeccionBases {
         }
     }
 
+    @Override
     public void CrearGrupo() {
         try {
             Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR", "is102311", "DAbTstfDxY");
@@ -64,5 +67,17 @@ public class ConeccionDatos implements ConeccionBases {
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
+    }
+    
+    public void crearTransaccion( int idPK, int usuarioId, long cuentaId, short idDeuda, long cantidad, String tipo) throws SQLException
+    {
+        Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@orion.javeriana.edu.co:1521:PUJDISOR", "is102311", "DAbTstfDxY");
+        PreparedStatement insertar = conn.prepareStatement("INSERT INTO transaccion(id,FECHA,CANTIDAD,DEUDA_CUENTA_ID,DEUDA_USUARIO_ID,DEUDA_ID_DEUDA,TIPO) values(?,CURRENT_DATE,?,?,?,?,?);");
+        insertar.setInt(1, idPK);
+        insertar.setLong(2, cantidad);
+        insertar.setLong(3, cuentaId);
+        insertar.setInt(4, usuarioId);
+        insertar.setShort(5, idDeuda);
+        insertar.setString(6, tipo);
     }
 }

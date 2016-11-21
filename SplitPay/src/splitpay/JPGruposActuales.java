@@ -23,7 +23,9 @@ import javax.swing.JButton;
 import javax.swing.table.TableModel;
 
 import Controladores.CuentaJpaController;
+import Controladores.GrupoJpaController;
 import Controladores.UsuarioJpaController;
+import Negocio.Grupo;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -39,6 +41,7 @@ public class JPGruposActuales extends JPanel {
 	private JTable tablaGrupos;
 	private JScrollPane scrollPane;
 	private JLabel label_s;
+	private List<Integer> id_grupos =new ArrayList<Integer>();
 
 	/**
 	 * Create the panel.
@@ -102,11 +105,12 @@ public JTable mostrarDatos() {
 		
 		//datosDefectos(empresa);
 		System.out.println("SERVICIOS");
+		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
 		
-		CuentaJpaController contro = new CuentaJpaController(emf);
+		UsuarioJpaController contro = new UsuarioJpaController(emf);
 		
-		List<String> grupos = contro.RealizarBalanceCuentasdeUsuario(1,1);
+		List<String> grupos = contro.RealizarBalanceGruposdeUsuario(principal.userActual.getId());
 		this.rowDataSer = new Vector(); // datos de toda la tabla
 		
 		 
@@ -118,6 +122,7 @@ public JTable mostrarDatos() {
 			this.rowDataSer.add(fila);
 			System.out.println(fila.toString());
 		}*/
+		id_grupos.clear();
 		for(String grupo: grupos)
 		{
 			Vector fila = new Vector();
@@ -127,7 +132,7 @@ public JTable mostrarDatos() {
 			StringTokenizer st = new StringTokenizer(grupo, "$");
 			fila.add(st.nextToken().trim());
 			fila.add(st.nextToken().trim());
-			fila.add(st.nextToken().trim());
+			id_grupos.add(Integer.parseInt(st.nextToken().trim()));
 			this.rowDataSer.add(fila);
 			System.out.println(fila.toString());
 		}
@@ -142,9 +147,10 @@ public JTable mostrarDatos() {
 	{
 		int filaS = tablaGrupos.getSelectedRow();
 		if(filaS != -1){
-			TableModel model = tablaGrupos.getModel();
-			String codigoS =model.getValueAt(filaS, 0).toString();
-			label_s.setText(codigoS);
+			
+			principal.grupoActual = id_grupos.get(filaS);
+			
+			
 			menu.navGruposNor();
 			menu.tutoGrupo();
 			
@@ -154,9 +160,6 @@ public JTable mostrarDatos() {
 				JOptionPane.showMessageDialog(null, "No ha seleccionado ningun servicio");
 			}
 	}
-	public void limpiar()
-	{
-		
-	}
+	
 	
 }

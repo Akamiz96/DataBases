@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Deuda.findByCantidad", query = "SELECT d FROM Deuda d WHERE d.cantidad = :cantidad")
     , @NamedQuery(name = "Deuda.findByUsuarioId", query = "SELECT d FROM Deuda d WHERE d.deudaPK.usuarioId = :usuarioId")
     , @NamedQuery(name = "Deuda.findByCuentaId", query = "SELECT d FROM Deuda d WHERE d.deudaPK.cuentaId = :cuentaId")
-    , @NamedQuery(name = "Deuda.findByIdDeuda", query = "SELECT d FROM Deuda d WHERE d.deudaPK.idDeuda = :idDeuda")})
+    , @NamedQuery(name = "Deuda.findByIdDeuda", query = "SELECT d FROM Deuda d WHERE d.deudaPK.idDeuda = :idDeuda AND d.cuenta.usuarioId.id = :usuarioId")})
 public class Deuda implements Serializable {
 
     private static final long serialVersionUID = 1L;

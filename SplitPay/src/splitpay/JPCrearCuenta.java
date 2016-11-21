@@ -27,7 +27,7 @@ public class JPCrearCuenta extends JPanel {
 		
 		JLabel lblNewLabel = new JLabel("Crear Cuenta");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 36));
-		lblNewLabel.setBounds(260, 180, 238, 44);
+		lblNewLabel.setBounds(237, 16, 238, 44);
 		panel.add(lblNewLabel);
 
 	} 

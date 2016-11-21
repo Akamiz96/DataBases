@@ -418,4 +418,15 @@ public class GrupoJpaController implements Serializable {
             em.close();      
         }
     }
+    
+  public int revisarDueno(int id)
+  {
+	  EntityManager em = getEntityManager();
+      Query buscaridGrupo;
+      buscaridGrupo = em.createNativeQuery("select UsuarioDueno_id from grupo where id = ?").setParameter(1, id);
+      Object xd = buscaridGrupo.getSingleResult();
+      BigDecimal id2 = (BigDecimal)xd ; 
+      int idUser = id2.intValueExact();
+      return idUser;
+  }
 }

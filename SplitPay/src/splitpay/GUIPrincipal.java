@@ -27,7 +27,7 @@ public class GUIPrincipal extends JFrame {
 	private PInicioSec inicio = null;
 	private PMenu menu = null;
 	public Usuario userActual;
-	public Grupo grupoActual;
+	public int grupoActual;
 
 	/**
 	 * Launch the application.
@@ -80,6 +80,10 @@ public class GUIPrincipal extends JFrame {
 		if(menu == null)
 		{
 		menu = new PMenu(this);
+		}
+		else
+		{
+			menu.tutoMain();
 		}
 		
 		menu.setSize(780, 610); // tamano del jpanel

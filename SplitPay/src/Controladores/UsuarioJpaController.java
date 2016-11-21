@@ -1,4 +1,5 @@
 /*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -582,19 +583,15 @@ public class UsuarioJpaController implements Serializable {
             update.executeUpdate();
             et.commit();
             return user;
-            
         }
         catch( Exception e )
         {
-            
             throw new SQLException();
         }
         finally
         {
-            em.close(); 
-            
+            em.close();
         }
-       
     }
     
     public void signOut( Usuario user )
@@ -635,7 +632,7 @@ public class UsuarioJpaController implements Serializable {
         return idGrupos;
 
     }
-     public List<String> RealizarBalanceGruposdeUsuario(int idGrupo, int idUsu) {
+     public List<String> RealizarBalanceGruposdeUsuario(int idUsu) {
         EntityManager em = getEntityManager();
         Query buscarCuentas;
         Query buscarDeudas;
@@ -646,6 +643,7 @@ public class UsuarioJpaController implements Serializable {
         BigDecimal total, total2;
         List<String> listaDevolver = new ArrayList<String>();
         List<BigDecimal> Grupos = GruposdeUsuario(idUsu);
+        BigDecimal costoCuenta ;
         for (z = 0; z < Grupos.size(); z++) {
             total2 = new BigDecimal("0");
             buscarCuentas = em.createNativeQuery("Select c.id,c.nombre from Cuenta c Where c.Grupo_id=? ").setParameter(1, Grupos.get(z));
@@ -656,6 +654,7 @@ public class UsuarioJpaController implements Serializable {
             String nombreGr = (String) nombreGrupo.get(0)[0];
             String devolver = String.valueOf(nombreGr);
             System.out.println("Este es el nombre del grupo: " + devolver);
+            BigDecimal idGru = (BigDecimal)nombreGrupo.get(0)[1]; 
             //devolver =  ; //Devolver seria igual al nombre del grupo, cuando lo busque ;
             for (i = 0; i < listaCuentas.size(); i++) {
                 BigDecimal id_cuenta = (BigDecimal) listaCuentas.get(i)[0];
@@ -666,10 +665,10 @@ public class UsuarioJpaController implements Serializable {
                 if (deuda_cuenta.size() > 0) {
                     BigDecimal deuda_cantidad = (BigDecimal) deuda_cuenta.get(0)[0];
                     BigDecimal id_deuda = (BigDecimal) deuda_cuenta.get(0)[1];
-                    buscarTransaccion = em.createNativeQuery("Select t.cantidad,t.id from Transaccion t Where t.Deuda_Usuario_id=? and t.Deuda_Cuenta_id=? and t.id_Deuda= ? ").setParameter(1, idUsu).setParameter(2, idCuentas.get(i)).setParameter(3, id_deuda);
+                    buscarTransaccion = em.createNativeQuery("Select t.cantidad,t.id from Transaccion t Where t.Deuda_Usuario_id=? and t.Deuda_Cuenta_id=? and t.Deuda_Id_Deuda= ? ").setParameter(1, idUsu).setParameter(2, idCuentas.get(i)).setParameter(3, id_deuda);
                     // Un posible error cuando pase este codigo al proyecto, verificar el nombre de los atributos en la busqueda de la Transaccion como t.Deuda_Id_Deuda
                     List<Object[]> listaTransacciones = buscarTransaccion.getResultList();
-                    BigDecimal sumaTransacciones = new BigDecimal("0");
+                    BigDecimal sumaTransacciones = new BigDecimal("0");                    
                     BigDecimal mult = new BigDecimal("-1");
                     total = deuda_cantidad.multiply(mult);
                     for (j = 0; j < listaTransacciones.size(); j++) {
@@ -680,15 +679,16 @@ public class UsuarioJpaController implements Serializable {
                     total2 = total2.add(total);
                 }
                 if (deuda_cuenta.size() == 0) {
-                    buscarDuenoCuenta = em.createNativeQuery("Select c.costo,c.nombre from Cuenta c Where c.Grupo_id=? and c.Usuario_id=?").setParameter(1, idGrupo).setParameter(2, idUsu);
+                    buscarDuenoCuenta = em.createNativeQuery("Select c.costo,c.nombre from Cuenta c Where c.Grupo_id=? and c.Usuario_id=?").setParameter(1, idGru).setParameter(2, idUsu);
                     List<Object[]> listaCosto = buscarDuenoCuenta.getResultList();
-                    BigDecimal costoCuenta = (BigDecimal) listaCosto.get(0)[0];
+                    costoCuenta = (BigDecimal) listaCosto.get(0)[0];
+                    
                     total = costoCuenta;
                     total2 = total2.add(total);
                 }
             }
            
-             BigDecimal idGru = (BigDecimal)nombreGrupo.get(0)[1];
+            
             devolver = devolver + "$" + total2 + "$" + idGru;
             listaDevolver.add(devolver);
             System.out.println("Este es valor que tiene en el grupo: " + devolver);
