@@ -305,7 +305,7 @@ public class CuentaJpaController implements Serializable {
                         total = sumaTransacciones.subtract(deuda_cantidad);
                     }
                     devolver = devolver + "$" + total + "$" + devolverID;
-                    //Devuelve el nombre de la cuenta, su balance total y el ID de la cuenta 
+                    //Devuelve el nombre de la cuenta, su balance total y el ID de la cuenta
                     System.out.println("Esto es total : " + devolver);
                     listaDevolver.add(devolver);
                 }
@@ -332,7 +332,7 @@ public class CuentaJpaController implements Serializable {
     }
 
     public List<String> TablaUsuarioCuentaGrupo(int idUsu) {
-        // Busco los grupos del usuario 
+        // Busco los grupos del usuario
         // Le mando el id del grupo y el id del usuario al metodo RealizarBalanceCuentasdeUsuario
         //Esto me manda una lista de las cuentas junto con su balance
         EntityManager em = getEntityManager();
@@ -360,12 +360,12 @@ public class CuentaJpaController implements Serializable {
 
         return listaDevolver;
     }
-    
+
     public List<String> fechas()
     {
         EntityManager em = getEntityManager();
         List<String> resultado;
-        try {   
+        try {
             Query insertar = em.createNativeQuery("select to_char(cuenta.FECHA_CREACION, 'yyyy-month') as fecha from cuenta group by to_char(cuenta.FECHA_CREACION, 'yyyy-month')");
             resultado = insertar.getResultList();
         } catch(Exception e) {
@@ -376,7 +376,7 @@ public class CuentaJpaController implements Serializable {
         }
         return resultado;
     }
-    
+
     public int numBillsPorFecha( int grupoId, String fecha )
     {
         EntityManager em = getEntityManager();
@@ -394,7 +394,7 @@ public class CuentaJpaController implements Serializable {
         }
     	return resultado;
     }
-    
+
     public int totalPorGrupo( int grupoId )
     {
         EntityManager em = getEntityManager();
@@ -411,4 +411,39 @@ public class CuentaJpaController implements Serializable {
         }
     	return resultado;
     }
+
+     public void crearCuenta(String username,int cantidad) throws SQLException{
+    	 EntityManager em = getEntityManager();
+    	 Query q = em.createNativeQuery("select Max(id) FROM Cuenta");
+    	 BigDecimal id = (BigDecimal)q.getSingleResult();
+    	 int idMax = id.intValueExact();
+
+    	  q = em.createNativeQuery("select id FROM Usuario where user_name = ?").setParameter(1, username);
+    	 id = (BigDecimal)q.getSingleResult();
+    	 int idUser = id.intValueExact();
+
+    	 try
+         {
+             EntityTransaction et = em.getTransaction();
+             et.begin();
+             Query insertar = em.createNativeQuery("INSERT INTO Cuenta values(?,?,?,CU_id_SEQ.NEXTVAL)");
+             insertar.setParameter(1, cantidad);
+             insertar.setParameter(2, idUser);
+             insertar.setParameter(3, idMax);
+
+             insertar.executeUpdate();
+             et.commit();
+         }
+         catch(Exception e)
+         {
+             System.out.println(e);
+
+         }
+         finally
+         {
+             em.close();
+         }
+
+
+   }
 }
