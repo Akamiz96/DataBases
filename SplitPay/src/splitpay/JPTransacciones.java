@@ -126,10 +126,12 @@ public class JPTransacciones extends JPanel {
 		for( String infCuenta : informacion )
 		{
 			Vector fila = new Vector();
+                        System.out.println(infCuenta);
 			StringTokenizer st = new StringTokenizer(infCuenta, "$");
 			fila.add(st.nextToken().trim());
 			fila.add(st.nextToken().trim());
 			this.rowDataSer.add(fila);
+                        //System.out.println(st.nextToken().trim());
                         cuentaID.add(Integer.parseInt(st.nextToken().trim()));
 		}
 		tableCuenta = new JTable(this.rowDataSer, this.columSerV);

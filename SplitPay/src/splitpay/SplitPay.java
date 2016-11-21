@@ -53,5 +53,8 @@ public class SplitPay {
         usuarios = controUsu.contactos(1);
         for( Usuario user : usuarios )
             System.out.println(user);
+        //controUsu.RealizarBalanceGruposdeUsuario(1);
+        CuentaJpaController controCuenta = new CuentaJpaController(emf) ;
+        controCuenta.TablaUsuarioCuentaGrupo(1) ;
     }
 }

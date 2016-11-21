@@ -16,9 +16,13 @@ import Negocio.Grupo;
 import Negocio.PerteneceA;
 import Negocio.PerteneceAPK;
 import Negocio.Usuario;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -208,4 +212,46 @@ public class PerteneceAJpaController implements Serializable {
         }
     }
     
+    public int agregarUsuarioAGrupo( int idUsuario, int idGrupo)
+    {
+        EntityManager em = getEntityManager();
+        int filas;
+        try {
+            EntityTransaction et = em.getTransaction();
+            et.begin();
+            Query insertar = em.createNativeQuery("INSERT INTO pertenece_a values(?,?,CURRENT_DATE,null)");
+            insertar.setParameter(1, idUsuario);
+            insertar.setParameter(2, idGrupo);
+            filas = insertar.executeUpdate();
+            et.commit();
+        } catch ( Exception e ) {
+            return -1;
+        } finally {
+            em.close();                    
+        }
+        return filas;
+    }
+    
+    public int EliminarUsuarioGrupo(int idUsuario, int idGrupo){
+        EntityManager em = getEntityManager();
+        int filas;
+        try {
+            EntityTransaction et = em.getTransaction();
+            et.begin();
+            GregorianCalendar date = new GregorianCalendar() ; // Esto me da la fecha actual
+            int anio = date.get(Calendar.YEAR) ;
+            int mes = date.get(Calendar.MONTH)   ;
+            int dia = date.get(Calendar.DAY_OF_MONTH)  ; 
+            String union = anio+"$" + mes + "$"+ dia ;
+            Date fecha = new Date(anio, mes, dia);
+            Query colocarFechaSalida = em.createNativeQuery("UPDATE Pertenece_a SET fecha_salida=? WHERE Usuario_id = ? and Grupo_id = ?").setParameter(1,fecha).setParameter(2,idUsuario).setParameter(3,idGrupo) ;
+            filas = colocarFechaSalida.executeUpdate();
+            et.commit();
+        } catch ( Exception e ) {
+            return -1;
+        } finally {
+            em.close();
+        }
+        return filas;
+     }
 }
