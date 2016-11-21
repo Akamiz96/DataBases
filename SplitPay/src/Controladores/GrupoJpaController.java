@@ -353,7 +353,7 @@ public class GrupoJpaController implements Serializable {
     public List<BigDecimal> UsuariosdeGrupo(int idGrupo) {
         EntityManager em = getEntityManager();
         Query buscarNombres;
-        buscarNombres = em.createNativeQuery("SELECT distinct u.nombre,u.id FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =u.id and p.Grupo_id= ?").setParameter(1, idGrupo); //Probar de esta forma
+        buscarNombres = em.createNativeQuery("SELECT distinct u.user_name,u.id FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =u.id and p.Grupo_id= ?").setParameter(1, idGrupo); //Probar de esta forma
         List<Object[]> listaNombres = buscarNombres.getResultList();
         List<BigDecimal> idsUsuario = new ArrayList<BigDecimal>();
         for (int i = 0; i < listaNombres.size(); i++) {
@@ -390,6 +390,7 @@ public class GrupoJpaController implements Serializable {
                 total = total + balance;
                 System.out.println("Este es el nombre de la cuenta " + nombCuenta);
                 System.out.println("Este es el balance de la cuenta " + balance);
+                
             }
             String nomUsu = (String) listidUsu.get(0)[1];
             devolver = nomUsu + "$" + total;
@@ -458,6 +459,22 @@ public class GrupoJpaController implements Serializable {
             em.close();      
         }
         
+    }
+    
+    public List<String> UsuariosdeGrupoConUsername(int idGrupo) {
+        EntityManager em = getEntityManager();
+        Query buscarNombres;
+        buscarNombres = em.createNativeQuery("SELECT distinct u.user_name,u.id FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =u.id and p.Grupo_id= ?").setParameter(1, idGrupo); //Probar de esta forma
+        List<Object[]> listaNombres = buscarNombres.getResultList();
+        List<String> datosUsuario = new ArrayList<String>();
+        for (int i = 0; i < listaNombres.size(); i++) {
+            BigDecimal idUsu = (BigDecimal) listaNombres.get(i)[1];
+            String username = (String)listaNombres.get(i)[0] ;
+            String devolver = username + "$" + idUsu ;
+            datosUsuario.add(devolver);
+            System.out.println(devolver);
+        }
+        return datosUsuario;
     }
     
 }
