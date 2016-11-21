@@ -220,7 +220,7 @@ CREATE TABLE Cuenta
     fecha_creacion DATE NOT NULL ,
     Grupo_id       NUMBER (5) NOT NULL ,
     Usuario_id     NUMBER (5) NOT NULL ,
-    comentarios CLOB
+    comentarios varchar2(200)
   ) ;
 ALTER TABLE Cuenta ADD CONSTRAINT Cuenta_PK PRIMARY KEY ( id ) ;
 
