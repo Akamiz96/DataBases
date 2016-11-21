@@ -25,6 +25,7 @@ public class GUIPrincipal extends JFrame {
 	public JPanel panel_p;
 	private JPCrearUsuario crear = null;
 	private PInicioSec inicio = null;
+	private JPIformeBills bills = null;
 	private PMenu menu = null;
 	public Usuario userActual;
 	public int grupoActual;
@@ -156,6 +157,21 @@ public void pasarInicio(){
 	panel_p.add(inicio, BorderLayout.CENTER);
 	panel_p.revalidate();
 	panel_p.repaint();
+}
+
+public void informe(){
+	if(bills == null)
+	{
+		bills = new JPIformeBills(this);
+	}
+	bills.setSize(780, 610); // tamano del jpanel
+	bills.setLocation(5, 5); // posicion dentro del panel principal
+	 
+	panel_p.removeAll();
+	panel_p.add(bills, BorderLayout.CENTER);
+	panel_p.revalidate();
+	panel_p.repaint();
+	
 }
 
 
