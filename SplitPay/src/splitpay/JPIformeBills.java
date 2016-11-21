@@ -13,6 +13,12 @@ import javax.swing.JTable;
 import Controladores.CuentaJpaController;
 import Controladores.GrupoJpaController;
 import java.math.BigDecimal;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class JPIformeBills extends JPanel {
     private GUIPrincipal principal;
@@ -26,7 +32,7 @@ public class JPIformeBills extends JPanel {
     /**
      * Create the panel.
      */
-    public JPIformeBills(GUIPrincipal principal, PMenu menu) {
+    public JPIformeBills(GUIPrincipal principal) {
         this.principal = principal;
         this.menu = menu;
 			
@@ -45,6 +51,21 @@ public class JPIformeBills extends JPanel {
 		
 	tablaBill = getTableBill();
 	scrollPane.setViewportView(tablaBill);
+	
+	JLabel lblNewLabel = new JLabel("Reporte cuentas por grupo");
+	lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 21));
+	lblNewLabel.setBounds(0, 26, 790, 42);
+	panel.add(lblNewLabel);
+	
+	JButton btnVolverAInicio = new JButton("Volver a inicio");
+	btnVolverAInicio.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			principal.pasarInicio();
+		}
+	});
+	btnVolverAInicio.setBounds(266, 317, 205, 64);
+	panel.add(btnVolverAInicio);
 	
 	mostrarDatos();
     }

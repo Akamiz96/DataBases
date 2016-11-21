@@ -96,6 +96,15 @@ public class PInicioSec extends JPanel {
 		lblNewLabel_1.setIcon(new ImageIcon("./img/fondoini.png"));
 		lblNewLabel_1.setBounds(127, 63, 507, 328);
 		panel.add(lblNewLabel_1);
+		
+		JButton BT_informe = new JButton("Informe");
+		BT_informe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				principal.informe();
+			}
+		});
+		BT_informe.setBounds(648, 573, 132, 37);
+		panel.add(BT_informe);
 
 	}
 
