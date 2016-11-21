@@ -618,14 +618,18 @@ public class UsuarioJpaController implements Serializable {
         Query buscarNombres;
         //buscarNombres = em.createNativeQuery("SELECT u.nombre,u.id FROM Cuenta u" ); //Probar de esta forma
         // buscarNombres = em.createNativeQuery("SELECT g.nombre,g.id,p.Usuario_id FROM Grupo g,Usuario u,Pertenece_a p");
-        buscarNombres = em.createNativeQuery("SELECT distinct g.nombre,g.id FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =? and g.id = p.Grupo_id").setParameter(1, idUsuario);
+        buscarNombres = em.createNativeQuery("SELECT distinct g.nombre,g.id,p.fecha_salida FROM Usuario u ,Pertenece_a p ,Grupo g WHERE p.Usuario_id =? and g.id = p.Grupo_id").setParameter(1, idUsuario);
         List<Object[]> gruponombres = buscarNombres.getResultList();
         int x = 0;
         List<BigDecimal> idGrupos = new ArrayList<BigDecimal>();
         for (int i = 0; i < gruponombres.size(); i++) {
-            BigDecimal idGrupo = (BigDecimal) gruponombres.get(x)[1];
+            Timestamp fechaSalida = (Timestamp) gruponombres.get(i)[2] ;
+            if(fechaSalida==null){
+                BigDecimal idGrupo = (BigDecimal) gruponombres.get(i)[1];
             idGrupos.add(idGrupo);
             x++;
+            }
+            
         }
         for (int j = 0; j < idGrupos.size(); j++) {
             System.out.println(idGrupos.get(j));
@@ -644,6 +648,7 @@ public class UsuarioJpaController implements Serializable {
         List<String> listaDevolver = new ArrayList<String>();
         List<BigDecimal> Grupos = GruposdeUsuario(idUsu);
         BigDecimal costoCuenta ;
+        UsuarioJpaController controUsu= new UsuarioJpaController(emf);
         for (z = 0; z < Grupos.size(); z++) {
             total2 = new BigDecimal("0");
             buscarCuentas = em.createNativeQuery("Select c.id,c.nombre from Cuenta c Where c.Grupo_id=? ").setParameter(1, Grupos.get(z));
@@ -721,7 +726,6 @@ public class UsuarioJpaController implements Serializable {
         }
         return listaDevolver;
     }
-      
      public List<String> TransaccionesdeUsuario(int idUsu){
          // Como posibilidad, mostrar tambien si la transaccion fue aceptada o no 
          EntityManager em = getEntityManager();
@@ -752,4 +756,16 @@ public class UsuarioJpaController implements Serializable {
          }
          return listaDevolver ;
      }
+        public boolean fechaSalidaUsuario(int idUsu, int idGrupo){
+        EntityManager em = getEntityManager();
+        Query buscarFechaSalida = em.createNativeQuery("Select p.fecha_salida,p.fecha_ingreso from Pertenece_a p where p.Usuario_id=? and p.Grupo_id=?").setParameter(1,idUsu).setParameter(2,idGrupo) ;
+        List<Object[]> fechas = buscarFechaSalida.getResultList();
+        Timestamp fechaSalida = (Timestamp)fechas.get(0)[0] ;
+        if(fechaSalida==null){
+            return true ;
+        }
+        else{
+            return false ;
+        }
+    }
 }
