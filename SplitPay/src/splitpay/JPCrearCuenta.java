@@ -13,20 +13,8 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 import Conecciones.ConeccionDatos;
+import Controladores.CuentaJpaController;
 import Controladores.GrupoJpaController;
 import Controladores.UsuarioJpaController;
 
@@ -35,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -54,17 +43,18 @@ public class JPCrearCuenta extends JPanel {
 	private JButton BT_Recibo;
 	private String ruta;
 	private List<String> usernamesN;
+	private List<String> usernamesNC;
+
 	private List<Integer> usernameI;
-	
+
 	// para cuenta
 	private String[] columnSerC = { "User Name" };
 	private Vector rowDataSerC;
 	private Vector columSerVC;
-	
+
 	// para grupo
-		private Vector rowDataSerG;
-		
-		
+	private Vector rowDataSerG;
+
 	private JTable tablaCuenta;
 	private JTable tablaMiembros;
 	private JScrollPane panelCuenta;
@@ -76,56 +66,58 @@ public class JPCrearCuenta extends JPanel {
 	public JPCrearCuenta(GUIPrincipal principal, PMenu menu) {
 		this.principal = principal;
 		this.menu = menu;
-		
+		usernamesN = new ArrayList<String>();
+		usernamesNC = new ArrayList<String>();
+
 		setBackground(Color.WHITE);
 		setLayout(null);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(0, 0,790, 460);
+		panel.setBounds(0, 0, 790, 460);
 		add(panel);
 		panel.setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel("Crear Cuenta");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 36));
 		lblNewLabel.setBounds(237, 0, 238, 44);
 		panel.add(lblNewLabel);
-		
+
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNombre.setBounds(15, 71, 115, 20);
 		panel.add(lblNombre);
-		
+
 		JLabel lblCosto = new JLabel("Costo");
 		lblCosto.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblCosto.setBounds(61, 107, 69, 20);
 		panel.add(lblCosto);
-		
+
 		JLabel lblComentarios = new JLabel("Comentarios");
 		lblComentarios.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblComentarios.setBounds(15, 146, 126, 20);
 		panel.add(lblComentarios);
-		
+
 		JLabel lblReci = new JLabel("recibo");
 		lblReci.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblReci.setBounds(462, 55, 69, 20);
 		panel.add(lblReci);
-		
+
 		TFNombre = new JTextField();
 		TFNombre.setBounds(156, 60, 146, 26);
 		panel.add(TFNombre);
 		TFNombre.setColumns(10);
-		
+
 		TFCosto = new JTextField();
 		TFCosto.setColumns(10);
 		TFCosto.setBounds(156, 108, 146, 26);
 		panel.add(TFCosto);
-		
+
 		TFComentarios = new JTextField();
 		TFComentarios.setColumns(10);
 		TFComentarios.setBounds(156, 144, 146, 26);
 		panel.add(TFComentarios);
-		
+
 		BT_Recibo = new JButton("B");
 		BT_Recibo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -134,17 +126,20 @@ public class JPCrearCuenta extends JPanel {
 		});
 		BT_Recibo.setBounds(593, 52, 115, 29);
 		panel.add(BT_Recibo);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\bibliotecapuj\\Downloads\\WhatsApp Image 2016-11-20 at 1.59.38 PM.jpeg"));
+		lblNewLabel_1
+				.setIcon(new ImageIcon(
+						"C:\\Users\\bibliotecapuj\\Downloads\\WhatsApp Image 2016-11-20 at 1.59.38 PM.jpeg"));
 		lblNewLabel_1.setBounds(462, 94, 313, 170);
 		panel.add(lblNewLabel_1);
-		
+
 		JButton btnTerminar = new JButton("terminar");
 		btnTerminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					insertar();
+					agregarDeudas();
 				} catch (NumberFormatException | FileNotFoundException
 						| SQLException e1) {
 					// TODO Auto-generated catch block
@@ -154,44 +149,55 @@ public class JPCrearCuenta extends JPanel {
 		});
 		btnTerminar.setBounds(660, 415, 115, 29);
 		panel.add(btnTerminar);
-		
+
 		JLabel lblMiembrosDeCuenta = new JLabel("miembros de cuenta");
 		lblMiembrosDeCuenta.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblMiembrosDeCuenta.setBounds(15, 196, 115, 20);
 		panel.add(lblMiembrosDeCuenta);
-		
+
 		JLabel label = new JLabel("miembros de cuenta");
 		label.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		label.setBounds(309, 195, 115, 20);
 		panel.add(label);
-		
+
 		panelCuenta = new JScrollPane();
 		panelCuenta.setBounds(15, 232, 115, 196);
 		panel.add(panelCuenta);
-		
+
 		tablaCuenta = getTableC();
 		panelCuenta.setViewportView(tablaCuenta);
-		
+
 		panelGrupo = new JScrollPane();
 		panelGrupo.setBounds(309, 231, 115, 196);
 		panel.add(panelGrupo);
-		
+
 		tablaMiembros = getTableG();
 		panelGrupo.setViewportView(tablaMiembros);
-		
+
 		JButton button = new JButton("<< Agregar");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				agregarCuenta();
+			}
+		});
 		button.setBounds(145, 245, 131, 29);
 		panel.add(button);
-		
+
 		JButton btnQuitar = new JButton(" Quitar>>");
+		btnQuitar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				agregarGrupo();
+			}
+		});
 		btnQuitar.setBounds(145, 311, 131, 29);
 		panel.add(btnQuitar);
-		
+		llenarListas();
 		mostrarDatosC();
 		mostrarDatosG();
 
-	} 
-	private void explorador(){
+	}
+
+	private void explorador() {
 		fc = new JFileChooser();
 		fc.setDialogTitle("Ingresar archivos IPS");
 		fc.setCurrentDirectory(new File("./"));
@@ -201,24 +207,32 @@ public class JPCrearCuenta extends JPanel {
 			inFile = fc.getSelectedFile();
 
 			try {
-				 ruta = inFile.getPath();
+				ruta = inFile.getPath();
 				System.out.println(ruta);
-				
-					/*ManejoArchivos.ingresarIPS(empresa, nombreArchivo);
-					JOptionPane.showMessageDialog(null, "Exito cargando archivo")*/;
 
-			}catch (Exception e1) {
+				/*
+				 * ManejoArchivos.ingresarIPS(empresa, nombreArchivo);
+				 * JOptionPane.showMessageDialog(null, "Exito cargando archivo")
+				 */;
 
-				JOptionPane.showMessageDialog(null, "excepcion inesperada:" + e1.getMessage());
+			} catch (Exception e1) {
+
+				JOptionPane.showMessageDialog(null, "excepcion inesperada:"
+						+ e1.getMessage());
 			}
 		}
 	}
-	private void insertar() throws NumberFormatException, FileNotFoundException, SQLException{
+
+	private void insertar() throws NumberFormatException,
+			FileNotFoundException, SQLException {
+
 		ConeccionDatos coneccion = new ConeccionDatos();
-		coneccion.agregarRecibo(ruta, TFNombre.getText(), TFComentarios.getText(),Integer.parseInt(TFCosto.getText()), principal.userActual.getId(), principal.grupoActual);
-		
+		coneccion.agregarRecibo(ruta, TFNombre.getText(),
+				TFComentarios.getText(), Integer.parseInt(TFCosto.getText()),
+				principal.userActual.getId(), principal.grupoActual);
+
 	}
-	
+
 	public JTable getTableC() {
 		System.out.println("ENTRO GET SERV");
 		if (tablaCuenta == null) {
@@ -231,7 +245,7 @@ public class JPCrearCuenta extends JPanel {
 
 		return tablaCuenta;
 	}
-	
+
 	public JTable getTableG() {
 		System.out.println("ENTRO GET SERV");
 		if (tablaMiembros == null) {
@@ -244,32 +258,20 @@ public class JPCrearCuenta extends JPanel {
 
 		return tablaMiembros;
 	}
-	
+
 	public JTable mostrarDatosC() {
 
-		
 		System.out.println("SERVICIOS");
-		
+
 		this.rowDataSerC = new Vector(); // datos de toda la tabla
 
-		/*for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < usernamesNC.size(); i++) {
 			Vector fila = new Vector();
-			fila.add("C"+1 + i);
-			fila.add("C" + i);
-			fila.add("C" + (i + 100));
-			fila.add("C" + (i + 50));
-			fila.add("C" + (i + 27));
+			fila.add(usernamesNC.get(i));
 			this.rowDataSerC.add(fila);
 			System.out.println(fila.toString());
-		}*/
-		/*
-		 * for(String grupo: grupos) {
-		 * 
-		 * StringTokenizer st = new StringTokenizer(grupo, "$");
-		 * fila.add(st.nextToken().trim()); fila.add(st.nextToken().trim());
-		 * 
-		 * this.rowDataSer.add(fila); System.out.println(fila.toString()); }
-		 */
+		}
+
 		// refrescar el JTable dentro del JScrollPane:
 		tablaCuenta = new JTable(this.rowDataSerC, this.columSerVC);
 		System.out.println("#ser");
@@ -277,21 +279,16 @@ public class JPCrearCuenta extends JPanel {
 
 		return tablaCuenta;
 	}
-	
-public JTable mostrarDatosG() {
 
-		
+	public JTable mostrarDatosG() {
+
 		System.out.println("SERVICIOS");
-		
+
 		this.rowDataSerG = new Vector(); // datos de toda la tabla
 
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < usernamesN.size(); i++) {
 			Vector fila = new Vector();
-			fila.add("G"+1 + i);
-			fila.add("G" + i);
-			fila.add("G" + (i + 100));
-			fila.add("G" + (i + 50));
-			fila.add("G" + (i + 27));
+			fila.add(usernamesN.get(i));
 			this.rowDataSerG.add(fila);
 			System.out.println(fila.toString());
 		}
@@ -310,26 +307,67 @@ public JTable mostrarDatosG() {
 
 		return tablaMiembros;
 	}
-	private void llenarListas(){
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
+
+	private void llenarListas() {
+		EntityManagerFactory emf = Persistence
+				.createEntityManagerFactory("SplitPayPU");
 		GrupoJpaController contro = new GrupoJpaController(emf);
-		List<String> usuarios=contro.UsuariosdeGrupoConUsername(principal.grupoActual);
-		for(String dato:usuarios){
-		StringTokenizer st = new StringTokenizer(dato, "$");
-		/*st.nextToken().trim()
-		st.nextToken().trim()
-		fila.add(st.nextToken().trim());
-		*/
+		List<String> usuarios = contro
+				.UsuariosdeGrupoConUsername(principal.grupoActual);
+		usernamesN.clear();
+		for (String dato : usuarios) {
+			StringTokenizer st = new StringTokenizer(dato, "$");
+			String nombre = st.nextToken().trim();
+			if (!principal.userActual.getUserName().equals(nombre)) {
+				usernamesN.add(nombre);
+			}
+
 		}
-		
-		
+
 	}
-	
-	private void agregarCuenta(){
-		
+
+	private void agregarCuenta() {
+		int filaS = tablaMiembros.getSelectedRow();
+		if (filaS != -1) {
+			String nombre = usernamesN.get(filaS);
+			usernamesN.remove(filaS);
+			usernamesNC.add(nombre);
+			mostrarDatosC();
+			mostrarDatosG();
+
+		} else {
+			JOptionPane.showMessageDialog(null,
+					"No ha seleccionado ningun servicio");
+		}
+
 	}
-	
-	private void agregarGrupo(){
-		
+
+	private void agregarGrupo() {
+		int filaS = tablaCuenta.getSelectedRow();
+		if (filaS != -1) {
+			String nombre = usernamesN.get(filaS);
+			usernamesNC.remove(filaS);
+			usernamesN.add(nombre);
+			mostrarDatosC();
+			mostrarDatosG();
+
+		} else {
+			JOptionPane.showMessageDialog(null,
+					"No ha seleccionado ningun servicio");
+		}
+
 	}
+
+	private void agregarDeudas() throws SQLException {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SplitPayPU");
+		
+		CuentaJpaController contro = new CuentaJpaController(emf);
+		
+		int valorDeuda = (Integer.parseInt(TFCosto.getText()) / usernamesNC
+				.size());
+		for (String dato : usernamesNC) {
+			contro.crearCuenta(dato, valorDeuda);
+		}
+	}
+
 }
